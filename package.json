@@ -1,0 +1,25 @@
+{
+  "name": "innersearch",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yinyanfr/InnerSearch.js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yinyanfr/InnerSearch.js/issues"
+  },
+  "homepage": "https://github.com/yinyanfr/InnerSearch.js#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  }
+}

@@ -57,3 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# repertoire webstorm
+.idea/
+
+# trash from the retarded mac os file system
+.DS_Store
+
