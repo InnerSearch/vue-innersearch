@@ -1,3 +1,3 @@
 <php
-	COUCOU
+	echo "COUCOU"; //GROS CON
 ?>
