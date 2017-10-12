@@ -1,10 +1,12 @@
-# Use Babel et Webpack
+# Use Babel et Webpack, et uglify-js
 
-Babel compile ton es6, jsx ver es5
+Babel compile ton es6, jsx vers es5
 
-Webpack compile ton modules ver es5
+Webpack compile ton modules vers es5
 
-### 1 Installer babel et webpack
+Uglify-js compresser ton js vers min.js
+
+### 1 Installer
 
 - babel
 
@@ -18,7 +20,11 @@ env pour es6, react pour jsx
 
 `npm i --save webpack`
 
-### 2 Setup babel et webpack
+- uglify
+
+`$ npm i -g uglify-js`
+
+### 2 Setup
 
 - babel
 
@@ -26,11 +32,11 @@ dans `package.json`:
 
 ```json
 {
-    ...,
+    //...,
    "babel":{
     	"presets": ["babel-preset-env"]
 	},
-	...
+	//...
 }
 ```
 
@@ -47,7 +53,7 @@ module.exports = {
 }
 ```
 
-### 3 Utilisation de babel et webpack
+### 3 Utilisation
 
 - babel
 
@@ -56,6 +62,10 @@ module.exports = {
 - webpack
 
 `$ webpack`
+
+- uglify-js
+
+`$ uglifyjs -c -m -- app.js -o app.min.js`
 
 ### 4 Exemple: Utiliser jQuery
 
@@ -83,3 +93,66 @@ module.exports = {
 ```
 
 `$ webpack`
+
+### 5 Exemple: modern web compilation
+
+file1.js
+
+```javascript
+// ...
+
+module.exports = file1
+```
+
+app.js
+
+```javascript
+const file1 = require("./file1");
+// ...
+const fileN = require("./fileN");
+// ...
+```
+
+webpack.config.js
+
+```javascript
+module.exports = {
+    "entry": "./app.js",
+    "output": {
+        "filename": "app.bundled.js"
+    }
+}
+```
+
+terminal
+
+```bash
+$ webpack
+$ babel app.bundled.js --out-file app.bundled.es5.js
+$ uglifyjs -c -m -- app.bundled.es5.js -o app.bundled.es5.min.js
+```
+
+index.html
+
+```html
+<script src="app.bundled.es5.min.js"></script>
+```
+
+### 6 Exemple: modern web compilation ver. React
+
+```bash
+$ yarn build
+```
+
+- P.S. creer un nouveau project avec react
+
+```bash
+$ npm i -g create-react-app
+$ create-react-app monApp
+$ cd monApp
+$ yarn build
+$ yarn start
+```
+
+
+
