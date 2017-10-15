@@ -1,5 +1,7 @@
 # Use Babel et Webpack, et uglify-js
 
+**Cette methode est hyper importante. Lisez jusqu'a la fin.**
+
 Babel compile ton es6, jsx vers es5
 
 Webpack compile ton modules vers es5
@@ -94,65 +96,33 @@ module.exports = {
 
 `$ webpack`
 
-### 5 Exemple: modern web compilation
-
-file1.js
-
-```javascript
-// ...
-
-module.exports = file1
-```
-
-app.js
-
-```javascript
-const file1 = require("./file1");
-// ...
-const fileN = require("./fileN");
-// ...
-```
-
+### 5 Utiliser webpack avec babel
+`$ npm i --save webpack babel-core babel-loader babel-preset-env`
 webpack.config.js
-
 ```javascript
 module.exports = {
-    "entry": "./app.js",
-    "output": {
-        "filename": "app.bundled.js"
+    entry: './index.js',
+    output: {
+        filename: 'index.es5.js',
+    },
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }]
     }
 }
 ```
+`$ webpack`
 
-terminal
+### 6 Creer un live compilateur pendant le developpement
+`$ webpack --watch`
 
-```bash
-$ webpack
-$ babel app.bundled.js --out-file app.bundled.es5.js
-$ uglifyjs -c -m -- app.bundled.es5.js -o app.bundled.es5.min.js
-```
+permet de lancer webpack dans le mode "watch", i.e. quand le fichier js change est sauvegarde, il fait la compilation.
 
-index.html
+`$ live-server`
 
-```html
-<script src="app.bundled.es5.min.js"></script>
-```
+live-server va refresh le page html quand il y a un changement dans la repertoire de serveur
 
-### 6 Exemple: modern web compilation ver. React
-
-```bash
-$ yarn build
-```
-
-- P.S. creer un nouveau project avec react
-
-```bash
-$ npm i -g create-react-app
-$ create-react-app monApp
-$ cd monApp
-$ yarn build
-$ yarn start
-```
-
-
-
+**Congratulation! Maintenant vous n'avez plus besoin de toucher le F5**
