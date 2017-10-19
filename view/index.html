@@ -8,17 +8,17 @@
     <script type="text/javascript" src="/script/elastic.js"></script>
     <script>
         var local = { uri : "localhost:9200", index : "immobilier" },
-            remote = { uri : "https://qlap.limics.fr/search/", index : "qlap" };
+            remote = { uri : "https://qlap.limics.fr/search", index : "qlap" };
 
         var CaloSearch = {
-            Client : new elasticsearch.Client({ host: local.uri }),
-            Index : local.index
+            Client : new elasticsearch.Client({ host: remote.uri }),
+            Index : remote.index
         };
     </script>
 </head>
 <body>
     <div id="page">
-        <searchbox :autofocus="true" :realtime="true" :queries="['batiment.nom']" :placeholder="'Search by ID'"></searchbox>
+        <searchbox :autofocus="true" :realtime="true" :queries="['specialities.label']" :placeholder="'Search by ID'"></searchbox>
         <hits></hits>
     </div>
     <script type="text/javascript" src="/script/index.js"></script>

@@ -62,8 +62,7 @@ const hits = Vue.component("hits", {
             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
 
             <div style="margin : 20px 0;" v-for="item in hits.items">
-                <div><strong>Name :</strong> {{ item._source.nom }}</div>
-                <div><strong>Adr :</strong> {{ item._source.adresse_texte }}</div>
+                <div><strong>Name :</strong> {{ item._source.label }}</div>
             </div>
         </section>
     `
@@ -118,7 +117,7 @@ const searchBox = Vue.component("searchbox", {
                 type : query.type,
                 body : {
                     query : {
-                        match : {
+                        prefix : {
                             [query.prop] : val
                         }
                     }
@@ -149,7 +148,7 @@ const searchBox = Vue.component("searchbox", {
         }
     },
 
-    template : "<input type='text' v-model='entry' />",
+    template : "<input class='searchbox' type='text' v-model='entry' />",
 
     mounted : function() {
         // Autofocus property
