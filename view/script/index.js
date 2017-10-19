@@ -127,23 +127,23 @@ const searchBox = Vue.component("searchbox", {
                 output.commit("Reset");
                 var hits = resp.hits.hits;
                 if (hits.length === 0) {
-                    elt.innerHTML = "<p>Aucun résultat</p>";
+                    //elt.innerHTML = "<p>Aucun résultat</p>";
                     output.commit("Score", 0);
                 }
                 else {
                     var score = 0;
                     hits.forEach((obj) => {
                         score++;
-                        elt.innerHTML += "<p>";
+/*                         elt.innerHTML += "<p>";
                         for (var prop in obj._source)
                             elt.innerHTML += "<div><strong>" + prop + "</strong> : " + obj._source[prop] + "</div>";
-                        elt.innerHTML += "</p>";
+                        elt.innerHTML += "</p>"; */
                         output.commit("Item", obj);
                     });
                     output.commit("Score", score);
                 }
             }, function (err) {
-                elt.innerHTML = "<p>Aucun résultat</p>";
+                //elt.innerHTML = "<p>Aucun résultat</p>";
                 output.commit("Score", 0);
             });
         }
