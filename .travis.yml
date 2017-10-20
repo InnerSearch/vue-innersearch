@@ -25,7 +25,7 @@ script:
   ## CYPRESS_RECORD_KEY environment
   ## variable by default and apply
   ## this to the run.
-  - $(npm bin)/cypress run --record
+  - $(npm bin)/cypress run --record --key 17dbab5a-6067-42b9-a97e-8453a4ec1095
 
   ## alternatively we could specify
   ## a specific record key to use
