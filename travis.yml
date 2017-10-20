@@ -1,2 +1,4 @@
 script:
   - cypress run --record
+  notifications:
+    slack: calosearch:laHm03qpWkLRHO7jU2E4ZNXy
