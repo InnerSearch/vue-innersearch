@@ -1,1 +1,1 @@
-{"version":3,"sources":["webpack:///./css/css/main.scss"],"names":[],"mappings":"AAEA,EACI,UAA8B","file":"styles.css","sourcesContent":["$lightblue: #66ccff;\n\n* {\n    color: darken($lightblue, 50%);\n}\n\n\n\n// WEBPACK FOOTER //\n// ./css/css/main.scss"],"sourceRoot":""}
+{"version":3,"sources":["webpack:///./css/css/main.scss"],"names":[],"mappings":"AAEA,EACI,UAA8B","file":"styles.css","sourcesContent":["@import \"./components/var\";\n\n* {\n    color: darken($lightblue, 50%);\n}\n\n\n\n// WEBPACK FOOTER //\n// ./css/css/main.scss"],"sourceRoot":""}
