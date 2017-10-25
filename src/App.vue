@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
+    <input  class="searchbox">
     <router-view/>
   </div>
 </template>

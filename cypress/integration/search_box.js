@@ -3,7 +3,8 @@ describe('Test number one', () => {
       expect(true).to.equal(true);
   })
   it('is yinyan a chinese' , function () {
-      cy.visit('http://localhost:8080')
+      cy.server();
+      cy.visit('');
 
       cy.get('.searchbox')
           .type('a')

@@ -4,6 +4,7 @@ require('./check-versions')()
 const config = require('../config')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+  process.env.PORT = JSON.parse(config.dev.env.PORT)
 }
 
 const opn = require('opn')
@@ -15,6 +16,7 @@ const webpackConfig = require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
+console.log("le port de ouf " + process.env.PORT);
 // automatically open browser, if not set will be false
 const autoOpenBrowser = !!config.dev.autoOpenBrowser
 // Define HTTP proxies to your custom API backend
