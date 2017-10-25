@@ -34,3 +34,5 @@ script:
   ## - cypress run --record --key <your_record_key>
 notifications:
   slack: calosearch:laHm03qpWkLRHO7jU2E4ZNXy
+  webhooks:
+    - https://discordapp.com/api/webhooks/372840550233276416/Dpme3s10AkJ3o5v4K5Dyg60wJvyhiwSVS4TEFCl33DpOOdQuzg5dzHFPf8ogw1WDAEg-
