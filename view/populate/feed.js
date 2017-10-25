@@ -1,6 +1,9 @@
 import readJSON from "./readJSON";
+import Lukas from "./test.vue";
 
 readJSON("food.json").then(data => {
+    <Lukas></Lukas>
+
     let file = JSON.parse(data);
         if (file !== null) {
         var hits = file.hits.hits,
