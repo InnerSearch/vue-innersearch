@@ -16,7 +16,7 @@ before_script:
   ## we use the '&' ampersand which tells
   ## travis to run this process in the background
   ## else it would block execution and hang travis
-  - npm start -- --silent &
+  - npm run dev -- --silent &
 
 script:
   ## now run cypress headlessly
@@ -25,7 +25,7 @@ script:
   ## CYPRESS_RECORD_KEY environment
   ## variable by default and apply
   ## this to the run.
-  - $(npm bin)/cypress run --record --key 17dbab5a-6067-42b9-a97e-8453a4ec1095
+  - $(npm bin)/cypress run --record --key 0ae8477a-1492-4fcd-bffc-cf84b29700f1
 
   ## alternatively we could specify
   ## a specific record key to use
