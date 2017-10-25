@@ -63,3 +63,5 @@ typings/
 # trash from the retarded mac os file system
 .DS_Store
 
+# maps
+*.map
