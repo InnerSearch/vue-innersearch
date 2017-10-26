@@ -78,7 +78,7 @@
                             //elt.innerHTML += "<p>";
                             //for (var prop in obj._source)
                             //    elt.innerHTML += "<div><strong>" + prop + "</strong> : " + obj._source[prop] + "</div>";
-                            //elt.innerHTML += "</p>"; 
+                            //elt.innerHTML += "</p>";
                             //console.log(Store.state.hits);
                             Store.commit("Item", obj);
                         });
@@ -92,14 +92,14 @@
         },
 
         mounted : function() {
-            // Autofocus property
+            // Add autofocus property to html tag
             this.$el.autofocus = this.autofocus || false;
 
-            // Realtime property
-            if (this.realtime)
-                this.previewEl = this.$el.parentNode.insertBefore(document.createElement("div"), this.$el.nextSibling);
+            // Realtime property TODO
+            /*if (this.realtime)
+                this.previewEl = this.$el.parentNode.insertBefore(document.createElement("div"), this.$el.nextSibling);*/
 
-            // Placeholder property
+            // Add placeholder property to html tag
             this.$el.setAttribute("placeholder", this.placeholder);
         }
     };
