@@ -3,14 +3,14 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state: {
+    state : {
         hits : {
             items : [],
             score : null
         }
     },
 
-    mutations: {
+    mutations : {
         Score (state, value) {
             state.hits.score = value;
         },

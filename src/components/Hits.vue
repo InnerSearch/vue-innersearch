@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    import Store from '@/lib/Store';
     import Generics from '@/lib/Generics';
 
     export default {

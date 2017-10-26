@@ -47,14 +47,16 @@
                 var query = this.GetQuery(this.queries[0]);
 
                 // HTML result tag
-                var elt = this.previewEl;
-                elt.innerHTML = "";
+                //var elt = this.previewEl;
+                //elt.innerHTML = "";
 
                 // ElasticSearch request
                 ElasticSearch.Client.search({
                     index : ElasticSearch.Index,
                     type : query.type,
                     body : {
+                        from : 0,
+                        size : 100,
                         query : {
                             prefix : {
                                 [query.prop] : val
@@ -64,24 +66,26 @@
                 }).then(function (resp) {
                     Store.commit("Reset");
                     var hits = resp.hits.hits;
+                    console.log(hits);
                     if (hits.length === 0) {
-                        elt.innerHTML = "<p>Aucun résultat</p>";
+                        //elt.innerHTML = "<p>Aucun résultat</p>";
                         Store.commit("Score", 0);
                     }
                     else {
                         var score = 0;
                         hits.forEach((obj) => {
                             score++;
-                             elt.innerHTML += "<p>";
-                            for (var prop in obj._source)
-                                elt.innerHTML += "<div><strong>" + prop + "</strong> : " + obj._source[prop] + "</div>";
-                            elt.innerHTML += "</p>"; 
+                            //elt.innerHTML += "<p>";
+                            //for (var prop in obj._source)
+                            //    elt.innerHTML += "<div><strong>" + prop + "</strong> : " + obj._source[prop] + "</div>";
+                            //elt.innerHTML += "</p>"; 
+                            //console.log(Store.state.hits);
                             Store.commit("Item", obj);
                         });
                         Store.commit("Score", score);
                     }
                 }, function (err) {
-                    elt.innerHTML = "<p>Aucun résultat</p>";
+                    //elt.innerHTML = "<p>Aucun résultat</p>";
                     Store.commit("Score", 0);
                 });
             }
