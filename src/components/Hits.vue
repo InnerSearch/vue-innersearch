@@ -6,6 +6,9 @@
 
         <div style="margin : 20px 0;" v-for="item in hits.items">
             <div><strong>Name :</strong> {{ item._source.label }}</div>
+            <div>
+              <strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li>
+            </div>
         </div>
      </section>
 </template>

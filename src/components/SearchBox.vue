@@ -10,7 +10,6 @@
     export default {
         name : 'searchbox',
         mixins : [Generics],
-
         props : {
             "autofocus" : {
                 type : Boolean,
@@ -58,15 +57,25 @@
                         from : 0,
                         size : 100,
                         query : {
-                            prefix : {
-                                [query.prop] : val
+                            bool : {
+                              must : {
+                                prefix: {
+                                  [query.prop]: val
+                                }
+                              }
+                              ,
+                              filter : {
+                                bool : {
+                                  must: Store.getters.getFilters()
+                                }
+                              }
                             }
                         }
                     }
                 }).then(function (resp) {
                     Store.commit("Reset");
                     var hits = resp.hits.hits;
-                    console.log(hits);
+                    console.log(resp);
                     if (hits.length === 0) {
                         //elt.innerHTML = "<p>Aucun résultat</p>";
                         Store.commit("Score", 0);
@@ -82,7 +91,7 @@
                             //console.log(Store.state.hits);
                             Store.commit("Item", obj);
                         });
-                        Store.commit("Score", score);
+                        Store.commit("Score", resp.hits.total);
                     }
                 }, function (err) {
                     //elt.innerHTML = "<p>Aucun résultat</p>";

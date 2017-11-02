@@ -7,7 +7,8 @@ export default new Vuex.Store({
         hits : {
             items : [],
             score : null
-        }
+        },
+        filters : []
     },
 
     mutations : {
@@ -21,6 +22,14 @@ export default new Vuex.Store({
 
         Reset (state) {
             state.hits.items = [];
+        },
+        setFilter (state, value) {
+            state.filters = value;
         }
+    },
+    getters : {
+      getFilters : (state) => () => {
+        return state.filters;
+      }
     }
 });
