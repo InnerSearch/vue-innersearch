@@ -5,7 +5,7 @@
         <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
 
         <div style="margin : 20px 0;" v-for="item in hits.items">
-            <div><strong>Name :</strong> {{ item._source.label }}</div>
+            <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
             <div>
               <strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li>
             </div>

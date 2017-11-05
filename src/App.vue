@@ -1,8 +1,8 @@
 <template>
   <section>
     <div>
-      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['specialities.label']" :placeholder="'Search by ID'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
+      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="[Prefix('specialities.label')]" :placeholder="'Search by Label'"></searchbox>
+      <!--<refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>-->
     </div>
     <hits></hits>
   </section>
@@ -13,10 +13,18 @@
   import hits from '@/components/Hits';
   import refinementListFilter from '@/components/RefinementListFilter';
   export default {
+    methods : {
+      // TO DO
+      Prefix : function(property) {
+        // return { function : Prefix, properrty : properrty }
+        return property;
+      }
+    },
+
     components : {
       'refinement-list-filter' : refinementListFilter,
-      searchbox,
-      hits,
+      'searchbox' : searchbox,
+      'hits' : hits
     }
   }
 </script>

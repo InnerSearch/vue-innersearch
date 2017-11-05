@@ -11,17 +11,32 @@
         name : 'searchbox',
         mixins : [Generics],
         props : {
+            // autofocus : if the input is focused when the user load the page
             "autofocus" : {
                 type : Boolean,
                 default : false
             },
+
+            // realtime : if the Store object is updated for each change of the input
             "realtime" : {
                 type : Boolean,
                 default : false
             },
-            "queries" : {
-                type : Array
+
+            // case-sensitive : if text is case sensitive
+            "case-sensitive" : {
+                type : Boolean,
+                default : false
             },
+
+            // queries : contains the query request; each properties are separeted by a comma
+            // values of Array : [String|Object]
+            "queries" : {
+                type : Array,
+                required: true
+            },
+
+            // placeholder : text which appears into the input
             "placeholder" : {
                 type : String,
                 default : "Search"
@@ -30,8 +45,7 @@
 
         data : function() {
             return {
-                entry : null,
-                previewEl : null
+                entry : null // input value
             };
         },
 
@@ -43,11 +57,8 @@
 
         watch : {
             Entry : function(val) {
+                // Convert an array of properties to an ES request
                 var query = this.GetQuery(this.queries[0]);
-
-                // HTML result tag
-                //var elt = this.previewEl;
-                //elt.innerHTML = "";
 
                 // ElasticSearch request
                 ElasticSearch.Client.search({
@@ -77,26 +88,25 @@
                     var hits = resp.hits.hits;
                     console.log(resp);
                     if (hits.length === 0) {
-                        //elt.innerHTML = "<p>Aucun résultat</p>";
                         Store.commit("Score", 0);
                     }
                     else {
                         var score = 0;
                         hits.forEach((obj) => {
                             score++;
-                            //elt.innerHTML += "<p>";
-                            //for (var prop in obj._source)
-                            //    elt.innerHTML += "<div><strong>" + prop + "</strong> : " + obj._source[prop] + "</div>";
-                            //elt.innerHTML += "</p>";
-                            //console.log(Store.state.hits);
                             Store.commit("Item", obj);
                         });
                         Store.commit("Score", resp.hits.total);
                     }
                 }, function (err) {
-                    //elt.innerHTML = "<p>Aucun résultat</p>";
                     Store.commit("Score", 0);
                 });
+            }
+        },
+
+        methods : {
+            Prefix : function(property) {
+                console.log("Hey");
             }
         },
 
@@ -108,7 +118,7 @@
             /*if (this.realtime)
                 this.previewEl = this.$el.parentNode.insertBefore(document.createElement("div"), this.$el.nextSibling);*/
 
-            // Add placeholder property to html tag
+            // Add placeholder property to the input html tag
             this.$el.setAttribute("placeholder", this.placeholder);
         }
     };
