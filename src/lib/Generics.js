@@ -1,5 +1,5 @@
 import Vue from 'vue';
-  var elasticsearch = require('elasticsearch');
+import elasticsearch from "elasticsearch";
 
 export default Vue.mixin({
     data : function () {
