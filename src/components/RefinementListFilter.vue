@@ -14,8 +14,6 @@
 </template>
 <script>
   import Store from '@/lib/Store';
-  import Generics from '@/lib/Generics';
-  import ElasticSearch from "../lib/ElasticSearch";
 
   export default {
     name : "refinement-list-filter",
@@ -34,6 +32,7 @@
       return {
         items : null,
         checkedItems : [],
+        Generics : this.$parent
       };
     },
     created: function () {
@@ -41,8 +40,8 @@
       * first request to fetch aggs buckets
       * */
       var vm = this; // to be able to access @this from the vue instance in the promise .then()
-      ElasticSearch.Client.search({
-        index : ElasticSearch.Index,
+      this.Generics.Elasticsearch.Client.search({
+        index : this.Generics.Elasticsearch.Index,
         type : "specialities", // TODO change this
         size : 0,
         body : {

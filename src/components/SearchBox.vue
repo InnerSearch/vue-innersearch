@@ -3,13 +3,11 @@
 </template>
 
 <script>
-    import ElasticSearch from '@/lib/ElasticSearch';
     import Store from '@/lib/Store';
-    import Generics from '@/lib/Generics';
 
     export default {
         name : 'searchbox',
-        mixins : [Generics],
+        //mixins : [Generics],
         props : {
             // autofocus : if the input is focused when the user load the page
             "autofocus" : {
@@ -45,7 +43,8 @@
 
         data : function() {
             return {
-                entry : null // input value
+                entry : null, // input value
+                Generics : this.$parent
             };
         },
 
@@ -58,11 +57,11 @@
         watch : {
             Entry : function(val) {
                 // Convert an array of properties to an ES request
-                var query = this.GetQuery(this.queries[0]);
-
+                var query = this.Generics.GetQuery(this.queries[0]);
+                console.log(this.Generics.Elasticsearch.Client);
                 // ElasticSearch request
-                ElasticSearch.Client.search({
-                    index : ElasticSearch.Index,
+              this.Generics.Elasticsearch.Client.search({
+                    index : this.Generics.Elasticsearch.Index,
                     type : query.type,
                     body : {
                         from : 0,
@@ -120,6 +119,9 @@
 
             // Add placeholder property to the input html tag
             this.$el.setAttribute("placeholder", this.placeholder);
+        },
+        created : function () {
+          console.log(this.Generics.Elasticsearch.Client.transport.connectionPool._config.host);
         }
     };
 </script>

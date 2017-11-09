@@ -15,15 +15,13 @@
 
 <script>
     import Store from '@/lib/Store';
-    import Generics from '@/lib/Generics';
 
     export default {
         name : "hits",
-        mixins : [Generics],
-
         data : function() {
             return {
-                hits : Store.state.hits
+                hits : Store.state.hits,
+                Generics : this.$parent,
             };
         }
     };
