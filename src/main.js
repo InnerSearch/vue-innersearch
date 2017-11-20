@@ -70,7 +70,7 @@ new Vue({
   </hits>
     
   </section>
-` */
+` */ 
 
 
   template: `
