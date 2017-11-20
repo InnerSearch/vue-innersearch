@@ -34,7 +34,7 @@ export default Vue.mixin({
         searchOnBox : function (data) {
           var query = {
             index : this.Elasticsearch.Index,
-            type : data.query.type,
+            type :this.Elasticsearch.Type,
             body : {
               from : 0,
               size : 100,
@@ -42,7 +42,7 @@ export default Vue.mixin({
                 bool : {
                   must : {
                     prefix: {
-                      [data.query.prop]: data.val
+                      [data.query]: data.val
                     }
                   }
                   ,

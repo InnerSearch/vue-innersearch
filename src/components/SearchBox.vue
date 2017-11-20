@@ -57,11 +57,9 @@
         watch : {
             Entry : function(val) {
                 // Convert an array of properties to an ES request
-                var query = this.Generics.GetQuery(this.queries[0]);
-                console.log(this.Generics.Elasticsearch.Client);
                 // ElasticSearch request
                 this.Generics.searchOnBox({
-                  query : query,
+                  query : this.queries,
                   val : val
                 });
             }

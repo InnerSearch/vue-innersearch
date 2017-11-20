@@ -25,6 +25,7 @@ new Vue({
 /***
  * simple way to use InnerSearch
  */
+
 import searchbox from '@/components/SearchBox';
 import hits from '@/components/Hits';
 import refinementListFilter from '@/components/RefinementListFilter';
@@ -45,7 +46,7 @@ new Vue({
   template: `
   <section>
     <div>
-      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['specialities.label']" :placeholder="'Search by Label'"></searchbox>
+      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['label']" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
     </div>
     <hits>
@@ -56,6 +57,60 @@ new Vue({
         </div>
       </template>
     </hits>
-      
+
   </section>`,
 });
+
+
+/***
+ * simple way to use InnerSearch
+ *
+ *
+ * {
+    "account_number": 0,
+    "balance": 16623,
+    "firstname": "Bradshaw",
+    "lastname": "Mckenzie",
+    "age": 29,
+    "gender": "F",
+    "address": "244 Columbus Place",
+    "employer": "Euron",
+    "email": "bradshawmckenzie@euron.com",
+    "city": "Hobucken",
+    "state": "CO"
+}
+
+ */
+
+/*
+import searchbox from '@/components/SearchBox';
+import hits from '@/components/Hits';
+import refinementListFilter from '@/components/RefinementListFilter';
+import Generics from '@/lib/Generics';
+new Vue({
+  el: '#InnerSearch',
+  created : function () {
+    this.setHost("http://es.yinyan.fr/");
+    this.setIndex("bank");
+    this.setType("");
+  },
+
+  components : {
+    'refinement-list-filter' : refinementListFilter,
+    'searchbox' : searchbox,
+    'hits' : hits
+  },
+  template: `
+  <section>
+    <div>
+      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
+      <refinement-list-filter style="display:inline-block;" :field="'city'" :size="20"></refinement-list-filter>
+    </div>
+    <hits>
+        <template slot-scope="{ item }">
+          <p>{{item._source.firstname}}</p>
+      </template>
+    </hits>
+
+  </section>`,
+});*/
