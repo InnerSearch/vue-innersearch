@@ -15,7 +15,7 @@ InnerSearch is a suite of UI components built in Vue. The aim is to rapidly crea
 - [Hits](###Hits)
 - [RefinementListFilter](###RefinementListFilter)
 
-###SearchBox
+### SearchBox
 
 - **Tag name :** `<searchbox></searchbox>`
 - **Properties :**
@@ -24,10 +24,10 @@ InnerSearch is a suite of UI components built in Vue. The aim is to rapidly crea
   - `queries` (_Array_) :  An array of elasticsearch fields to search within
   - `placeholder` (_String_):  Placeholder for the input box
 
-###Hits
+### Hits
 - **Tag name :** `<hits></hits>`
 
-###RefinementListFilter
+### RefinementListFilter
 - **Tag name :** `<refinement-list-filter></refinement-list-filter>`
 - **Properties :**
   - `field` (_string_) : Name of the aggregation
