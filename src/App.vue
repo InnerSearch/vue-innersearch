@@ -13,6 +13,7 @@
   import hits from '@/components/Hits';
   import refinementListFilter from '@/components/RefinementListFilter';
   import Generics from '@/lib/Generics';
+
   export default {
     created : function () {
       this.setHost("https://qlap.limics.fr/search");
@@ -26,14 +27,3 @@
     }
   }
 </script>
-
-<style>
-#UserView {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

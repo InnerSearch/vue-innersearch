@@ -25,10 +25,12 @@ new Vue({
 /***
  * simple way to use InnerSearch
  */
+import "@/style.css";
 import searchbox from '@/components/SearchBox';
 import hits from '@/components/Hits';
 import refinementListFilter from '@/components/RefinementListFilter';
 import Generics from '@/lib/Generics';
+
 new Vue({
   el: '#InnerSearch',
   created : function () {
