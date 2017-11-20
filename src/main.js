@@ -48,9 +48,14 @@ new Vue({
       <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['specialities.label']" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
     </div>
-    <hits></hits>
-  </section>
-  
-  
-  `,
+    <hits>
+        <template slot-scope="{ item }">
+          <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
+        <div>
+          <strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li>
+        </div>
+      </template>
+    </hits>
+      
+  </section>`,
 });
