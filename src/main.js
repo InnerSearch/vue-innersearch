@@ -49,12 +49,16 @@ new Vue({
       <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
     </div>
     <hits>
-        <template slot-scope="{ item }">
-          <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
-        <div>
-          <strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li>
-        </div>
-      </template>
+        <template slot="hits" slot-scope="{ hits }">
+          <strong v-if="hits.score === 0">No result found</strong>
+          <strong v-else-if="hits.score === 1">1 result found</strong>
+          <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+
+          <div v-for="item in hits.items" :item="item">
+            <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
+            <div><strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li></div>
+          </div>
+        </template>
     </hits>
       
   </section>`,
