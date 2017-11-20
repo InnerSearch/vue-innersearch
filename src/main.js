@@ -67,6 +67,7 @@ new Vue({
 });
 
 
+
 /***
  * simple way to use InnerSearch
  *
