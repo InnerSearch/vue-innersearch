@@ -25,6 +25,8 @@ new Vue({
 /***
  * simple way to use InnerSearch
  */
+
+/*
 import "@/style.css";
 import searchbox from '@/components/SearchBox';
 import hits from '@/components/Hits';
@@ -62,10 +64,10 @@ new Vue({
           </div>
         </template>
     </hits>
-      
+
   </section>`,
 });
-
+*/
 
 
 /***
@@ -88,7 +90,7 @@ new Vue({
 
  */
 
-/*
+
 import searchbox from '@/components/SearchBox';
 import hits from '@/components/Hits';
 import refinementListFilter from '@/components/RefinementListFilter';
@@ -98,7 +100,7 @@ new Vue({
   created : function () {
     this.setHost("http://es.yinyan.fr/");
     this.setIndex("bank");
-    this.setType("");
+    this.setType("account");
   },
 
   components : {
@@ -119,4 +121,23 @@ new Vue({
     </hits>
 
   </section>`,
-});*/
+});
+
+/***
+ * TODO fix ça
+ *
+ *
+ *
+ * GET /bank/account/_search
+ {
+   "size": 0,
+   "aggs": {
+     "group_by_state": {
+       "terms": {
+         "field": "state.keyword"
+       }
+     }
+   }
+ }
+
+ */
