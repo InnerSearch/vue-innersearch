@@ -60,45 +60,9 @@
                 var query = this.Generics.GetQuery(this.queries[0]);
                 console.log(this.Generics.Elasticsearch.Client);
                 // ElasticSearch request
-              this.Generics.Elasticsearch.Client.search({
-                    index : this.Generics.Elasticsearch.Index,
-                    type : query.type,
-                    body : {
-                        from : 0,
-                        size : 100,
-                        query : {
-                            bool : {
-                              must : {
-                                prefix: {
-                                  [query.prop]: val
-                                }
-                              }
-                              ,
-                              filter : {
-                                bool : {
-                                  must: Store.getters.getFilters()
-                                }
-                              }
-                            }
-                        }
-                    }
-                }).then(function (resp) {
-                    Store.commit("Reset");
-                    var hits = resp.hits.hits;
-                    console.log(resp);
-                    if (hits.length === 0) {
-                        Store.commit("Score", 0);
-                    }
-                    else {
-                        var score = 0;
-                        hits.forEach((obj) => {
-                            score++;
-                            Store.commit("Item", obj);
-                        });
-                        Store.commit("Score", resp.hits.total);
-                    }
-                }, function (err) {
-                    Store.commit("Score", 0);
+                this.Generics.searchOnBox({
+                  query : query,
+                  val : val
                 });
             }
         },

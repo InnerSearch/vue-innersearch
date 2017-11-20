@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="[Prefix('specialities.label')]" :placeholder="'Search by Label'"></searchbox>
+      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['specialities.label']" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
     </div>
     <hits></hits>
@@ -14,13 +14,6 @@
   import refinementListFilter from '@/components/RefinementListFilter';
   import Generics from '@/lib/Generics';
   export default {
-    methods : {
-      // TO DO
-      Prefix : function(property) {
-        // return { function : Prefix, properrty : properrty }
-        return property;
-      }
-    },
     created : function () {
       this.setHost("https://qlap.limics.fr/search");
       this.setIndex("qlap");

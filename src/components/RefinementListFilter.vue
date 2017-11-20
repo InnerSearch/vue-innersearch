@@ -42,7 +42,7 @@
       var vm = this; // to be able to access @this from the vue instance in the promise .then()
       this.Generics.Elasticsearch.Client.search({
         index : this.Generics.Elasticsearch.Index,
-        type : "specialities", // TODO change this
+        type : this.Generics.Elasticsearch.Type,
         size : 0,
         body : {
           aggs : {
@@ -72,7 +72,8 @@
           obj.push({ term : { [vm.field] : e }});
         });
         Store.commit("setFilter",obj);
-        // todo update hits by making new query
+        console.log("searchCall");
+        this.Generics.search();
       }
     }
   };
