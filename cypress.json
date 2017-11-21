@@ -1,5 +1,5 @@
 {
   "projectId": "16yk6o",
-  "baseUrl" : "http://es.yinyan.fr",
+  "baseUrl" : "http://localhost:4000",
   "chromeWebSecurity": false
 }
