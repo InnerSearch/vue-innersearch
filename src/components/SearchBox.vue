@@ -7,7 +7,7 @@
 
     export default {
         name : 'searchbox',
-        //mixins : [Generics],
+
         props : {
             // autofocus : if the input is focused when the user load the page
             "autofocus" : {
@@ -58,16 +58,10 @@
             Entry : function(val) {
                 // Convert an array of properties to an ES request
                 // ElasticSearch request
-                this.Generics.searchOnBox({
+                this.Generics.SearchOnBox({
                   query : this.queries,
                   val : val
                 });
-            }
-        },
-
-        methods : {
-            Prefix : function(property) {
-                console.log("Hey");
             }
         },
 
@@ -82,8 +76,9 @@
             // Add placeholder property to the input html tag
             this.$el.setAttribute("placeholder", this.placeholder);
         },
+
         created : function () {
-          console.log(this.Generics.Elasticsearch.Client.transport.connectionPool._config.host);
+          console.log("Debug : ", this.Generics.Elasticsearch.Client.transport.connectionPool._config.host);
         }
     };
 </script>

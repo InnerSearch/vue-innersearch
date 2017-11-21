@@ -31,13 +31,15 @@ export default new Vuex.Store({
           state.query = value;
         }
     },
+
     getters : {
-      getFilters : (state) => () => {
-        return state.filters;
-      },
-      getQuery : (state) => () => {
-        state.query.body.query.bool.filter.bool.must = state.filters; // update filters
+        getFilters : (state) => () => {
+            return state.filters;
+        },
+
+        getQuery : (state) => () => {
+            state.query.body.query.bool.filter.bool.must = state.filters; // update filters
         return state.query;
-      }
+        }
     }
 });

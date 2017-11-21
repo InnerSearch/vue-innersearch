@@ -12,6 +12,7 @@ export default Vue.mixin({
         }
       }
     },
+
     methods: {
         GetQuery : function(query) {
             let vals = query.split(".");
@@ -20,18 +21,22 @@ export default Vue.mixin({
                 prop : vals[1]
             };
         },
-        setHost : function (host) {
+
+        SetHost : function (host) {
           this.Elasticsearch.Client = new elasticsearch.Client({
             host : host
           });
         },
-        setIndex : function (index) {
+
+        SetIndex : function (index) {
           this.Elasticsearch.Index = index;
         },
-        setType : function (type){
+
+        SetType : function (type) {
           this.Elasticsearch.Type = type;
         },
-        searchOnBox : function (data) {
+
+        SearchOnBox : function (data) {
           var query = {
             index : this.Elasticsearch.Index,
             type :this.Elasticsearch.Type,
@@ -58,9 +63,9 @@ export default Vue.mixin({
           Store.commit("setQuery",query);
 
           this.search();
-
         },
-        search : function (){
+
+        search : function () {
           var query = Store.getters.getQuery();
           console.log(query);
           this.Elasticsearch.Client.search(query).then(function (resp) {
@@ -81,9 +86,6 @@ export default Vue.mixin({
           }, function (err) {
             Store.commit("Score", 0);
           });
-
         }
-
-    },
-
+    }
 });

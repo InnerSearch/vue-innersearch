@@ -25,11 +25,11 @@ new Vue({
 /***
  * simple way to use InnerSearch
  */
-import "@/style.css";
-import searchbox from '@/components/SearchBox';
-import hits from '@/components/Hits';
-import refinementListFilter from '@/components/RefinementListFilter';
-import Generics from '@/lib/Generics';
+import '@/style.css';
+import Searchbox from '@/components/SearchBox';
+import Hits from '@/components/Hits';
+import RefinementListFilter from '@/components/RefinementListFilter';
+import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
 
 new Vue({
   el: '#InnerSearch',
@@ -38,15 +38,15 @@ new Vue({
     this.setIndex("qlap");
     this.setType("specialities"); */
 
-    this.setHost("http://es.yinyan.fr");
-    this.setIndex("bank");
-    this.setType("account");
+    this.SetHost("http://es.yinyan.fr");
+    this.SetIndex("bank");
+    this.SetType("account");
   },
 
   components : {
-    'refinement-list-filter' : refinementListFilter,
-    'searchbox' : searchbox,
-    'hits' : hits
+    'refinement-list-filter' : RefinementListFilter,
+    'searchbox' : Searchbox,
+    'hits' : Hits
   },
 
   
@@ -70,7 +70,7 @@ new Vue({
   </hits>
     
   </section>
-` */ 
+` */
 
 
   template: `
@@ -86,7 +86,7 @@ new Vue({
           <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
 
           <div v-for="item in hits.items" :item="item">
-            <div><strong>Name (label) :</strong> {{ item._source.lastname }}</div>
+            <div><strong>Name (label) :</strong> {{ item._source.firstname }}</div>
           </div>
         </template>
     </hits>
