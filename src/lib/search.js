@@ -5,16 +5,23 @@
 import esclient from "./ElasticSearch";
 // esclient : an instance of elasticsearch.Client, defined in ElasticSearch.js
 // key defined: host, index
-//var elasticsearch = require("elasticsearch");
-// var esclient = {
-//     Client : new elasticsearch.Client({ host: "https://qlap.limics.fr/search" }),
-//     Index : "qlap"
-// };
 
+/**
+ * Object => Object
+ * @param {*} queryObj 
+ * @returns {*} prefix
+ */
 const getQueryPairs = queryObj => {
     return queryObj.body.query.bool.must.prefix
 }
 
+/**
+ * String, String, Object => Promise
+ * @param {*} queryLabel 
+ * @param {*} queryString 
+ * @param {*} options 
+ * @returns Promise pendingSearchQuery
+ */
 const search = (queryLabel, queryString, options = {}) => {
     var query = {
             index : options.index || esclient.Index,
@@ -42,13 +49,6 @@ const search = (queryLabel, queryString, options = {}) => {
     return esclient.Client.search(query)
 }
 
-
-
-// query("label", "ta").then(response => {
-//     fs.writeFileSync("tmp1.json", JSON.stringify(getInfoList(response, "label")))
-// }, err => {
-//     throw err
-// })
 
 export default search;
 
