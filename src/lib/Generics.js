@@ -22,20 +22,24 @@ export default Vue.mixin({
             };
         },
 
+        // Set the ES server host
         SetHost : function (host) {
           this.Elasticsearch.Client = new elasticsearch.Client({
             host : host
           });
         },
 
+        // Set the ES server Index property
         SetIndex : function (index) {
           this.Elasticsearch.Index = index;
         },
 
+        // Set the ES server type property
         SetType : function (type) {
           this.Elasticsearch.Type = type;
         },
 
+        // Triggered when user uses SearchBox component
         SearchOnBox : function (data) {
           var query = {
             index : this.Elasticsearch.Index,

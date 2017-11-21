@@ -40,7 +40,7 @@
                 default : "Search"
             }
         },
-
+        
         data : function() {
             return {
                 entry : null, // input value
