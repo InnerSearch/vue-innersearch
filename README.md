@@ -1,17 +1,25 @@
 # What is InnerSearch ?
-InnerSearch is a suite of UI components built in Vue. The aim is to rapidly create beautiful faceted search applications using declarative components, and without being an ElasticSearch expert.
+InnerSearch is a suite of UI components for Vue.js 
+
+The aim is to rapidly create beautiful specified search applications using declarative components without being an ElasticSearch expert.
 
 See full [Documentation](https://yinyanfr.github.io/InnerSearch.js/)
 
-## Quick Intro
+## Quick Start
+```bash
+$ npm install --save innersearch
+```
 ```js
 /***
  * simple way to use InnerSearch
  */
-import searchbox from '@/components/SearchBox';
-import hits from '@/components/Hits';
-import refinementListFilter from '@/components/RefinementListFilter';
-import Generics from '@/lib/Generics';
+import InnerSearch, {
+    searchbox,
+    hits,
+    refinementListFilter,
+    Generics
+} from "innersearch";
+
 new Vue({
   el: '#InnerSearch',
   created : function () {
@@ -51,6 +59,9 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+
+# test
+npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
