@@ -25,7 +25,8 @@ export default Vue.mixin({
         // Set the ES server host
         SetHost : function (host) {
           this.Elasticsearch.Client = new elasticsearch.Client({
-            host : host
+            host
+            // modified 21/11 by Yan, ES6 obj key-value folding
           });
         },
 
