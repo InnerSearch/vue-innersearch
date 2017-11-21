@@ -49,7 +49,7 @@ new Vue({
     'hits' : Hits
   },
 
-  
+
 /* template : `
   <section>
   <div>
@@ -68,7 +68,7 @@ new Vue({
         </div>
       </template>
   </hits>
-    
+
   </section>
 ` */
 
@@ -77,7 +77,7 @@ new Vue({
   <section>
     <div>
       <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'city'" :size="20"></refinement-list-filter>
+      <refinement-list-filter style="display:inline-block;" :field="'state'" :size="20"></refinement-list-filter>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
