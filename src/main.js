@@ -30,13 +30,17 @@ import Searchbox from '@/components/SearchBox';
 import Hits from '@/components/Hits';
 import RefinementListFilter from '@/components/RefinementListFilter';
 import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
-/*
+
 new Vue({
   el: '#InnerSearch',
   created : function () {
     this.SetHost("https://qlap.limics.fr/search");
     this.SetIndex("qlap");
     this.SetType("specialities");
+
+/*     this.SetHost("http://es.yinyan.fr");
+    this.SetIndex("bank");
+    this.SetType("account"); */
   },
 
   components : {
@@ -45,6 +49,7 @@ new Vue({
     'hits' : Hits
   },
 
+  
   template : `
     <section>
     <h1 class='is-title'>InnerSearch.js</h1>
@@ -60,6 +65,7 @@ new Vue({
             <strong v-else-if="hits.score === 1">1 result found</strong>
             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
           </div>
+
           <div v-for="item in hits.items" class="is-item is-hits">
             <div><strong>Label :</strong> {{ item._source.label }}</div>
             <div><strong>Route(s) :</strong>
@@ -71,42 +77,27 @@ new Vue({
           </div>
         </template>
     </hits>
-
+      
     </section>
   `
-*/
 
-  new Vue({
-    el: '#InnerSearch',
-    created : function () {
-      this.SetHost("http://es.yinyan.fr");
-      this.SetIndex("bank");
-      this.SetType("account");
-    },
-
-    components : {
-      'refinement-list-filter' : RefinementListFilter,
-      'searchbox' : Searchbox,
-      'hits' : Hits
-    },
-
- template: `
+/*  template: `
   <section>
     <div>
       <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'state'" :size="20"></refinement-list-filter>
+      <refinement-list-filter style="display:inline-block;" :field="'city'" :size="20"></refinement-list-filter>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
-          <strong v-if="hits.score === 0" class="score">No result found</strong>
-          <strong v-else-if="hits.score === 1" class="score">1 result found</strong>
-          <strong v-else-if="hits.score > 1" class="score">{{ hits.score }} results found</strong>
+          <strong v-if="hits.score === 0">No result found</strong>
+          <strong v-else-if="hits.score === 1">1 result found</strong>
+          <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
 
           <div v-for="item in hits.items" :item="item">
             <div><strong>Name (label) :</strong> {{ item._source.firstname }}</div>
           </div>
         </template>
     </hits>
-
-  </section>`
+      
+  </section>`*/
 });
