@@ -75,7 +75,7 @@ export default Vue.mixin({
           this.Elasticsearch.Client.search(query).then(function (resp) {
             Store.commit("Reset");
             var hits = resp.hits.hits;
-            //console.log(resp);
+            console.log("Debug Hits : ", resp);
             if (hits.length === 0) {
               Store.commit("Score", 0);
             }

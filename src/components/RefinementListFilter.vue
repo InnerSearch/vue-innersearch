@@ -1,13 +1,13 @@
 <template>
-<div>
-  <div v-for="item in items">
+<div class="is-component is-refinement-list">
+  <div v-for="item in items" class="is-item is-refinement-list" ref="input">
     <input
         type="checkbox"
         :name="item.key"
         :value="item.key"
         v-model="checkedItems"
         @change="toggleRefinement()">
-    <label>{{ item.key }} ( {{ item.doc_count}} ) </label>
+    <label v-on:click='FocusOn(item.key)'>{{ item.key }} ( {{ item.doc_count}} ) </label>
   </div>
 </div>
 
@@ -65,6 +65,20 @@
       });
     },
     methods : {
+      // Check or uncheck an item for the input corresponding to the name
+      FocusOn : function(name) {
+        // Find input check with the right name
+        let tag = this.$refs.input.map((div) => {
+          return div.getElementsByTagName("input")[0];
+        }).filter((input) => {
+          return input.getAttribute("name") === name;
+        });
+
+        // Trigger click event on checkbox
+        if (tag[0])
+          tag[0].click();
+      },
+
       toggleRefinement(){
         var obj = [];
         var vm = this;
