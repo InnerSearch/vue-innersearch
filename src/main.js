@@ -30,17 +30,13 @@ import Searchbox from '@/components/SearchBox';
 import Hits from '@/components/Hits';
 import RefinementListFilter from '@/components/RefinementListFilter';
 import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
-
+/*
 new Vue({
   el: '#InnerSearch',
   created : function () {
     this.SetHost("https://qlap.limics.fr/search");
     this.SetIndex("qlap");
     this.SetType("specialities");
-
-/*     this.SetHost("http://es.yinyan.fr");
-    this.SetIndex("bank");
-    this.SetType("account"); */
   },
 
   components : {
@@ -49,46 +45,68 @@ new Vue({
     'hits' : Hits
   },
 
-  
   template : `
     <section>
+    <h1 class='is-title'>InnerSearch.js</h1>
+    <hr class='is-line' />
     <div>
-      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['label']" :placeholder="'Search by Label'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
+      <searchbox :autofocus="true" :realtime="true" :queries="['label']" :placeholder="'Search by Label'"></searchbox>
+      <refinement-list-filter :field="'administration_routes.label'" :size="20"></refinement-list-filter>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
-          <strong v-if="hits.score === 0">No result found</strong>
-          <strong v-else-if="hits.score === 1">1 result found</strong>
-          <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
-
-          <div v-for="item in hits.items" :item="item">
-            <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
-            <div><strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li></div>
+          <div class="is-score is-hits">
+            <strong v-if="hits.score === 0">No result found</strong>
+            <strong v-else-if="hits.score === 1">1 result found</strong>
+            <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+          </div>
+          <div v-for="item in hits.items" class="is-item is-hits">
+            <div><strong>Label :</strong> {{ item._source.label }}</div>
+            <div><strong>Route(s) :</strong>
+              <ul><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li></ul>
+            </div>
+            <div v-if="item._source.is_commercialized === 1" style="margin-top : 20px;">
+              <strong style="color : #0F4166;">Commercialized</strong>
+            </div>
           </div>
         </template>
     </hits>
-      
+
     </section>
   `
+*/
 
-/*  template: `
+  new Vue({
+    el: '#InnerSearch',
+    created : function () {
+      this.SetHost("http://es.yinyan.fr");
+      this.SetIndex("bank");
+      this.SetType("account");
+    },
+
+    components : {
+      'refinement-list-filter' : RefinementListFilter,
+      'searchbox' : Searchbox,
+      'hits' : Hits
+    },
+
+ template: `
   <section>
     <div>
       <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'city'" :size="20"></refinement-list-filter>
+      <refinement-list-filter style="display:inline-block;" :field="'state'" :size="20"></refinement-list-filter>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
-          <strong v-if="hits.score === 0">No result found</strong>
-          <strong v-else-if="hits.score === 1">1 result found</strong>
-          <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+          <strong v-if="hits.score === 0" class="score">No result found</strong>
+          <strong v-else-if="hits.score === 1" class="score">1 result found</strong>
+          <strong v-else-if="hits.score > 1" class="score">{{ hits.score }} results found</strong>
 
           <div v-for="item in hits.items" :item="item">
             <div><strong>Name (label) :</strong> {{ item._source.firstname }}</div>
           </div>
         </template>
     </hits>
-      
-  </section>`*/
+
+  </section>`
 });

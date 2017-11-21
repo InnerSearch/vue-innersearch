@@ -38,6 +38,7 @@ export default new Vuex.Store({
         },
 
         getQuery : (state) => () => {
+          console.log(state.query);
             state.query.body.query.bool.filter.bool.must = state.filters; // update filters
         return state.query;
         }

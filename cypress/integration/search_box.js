@@ -1,18 +1,17 @@
 describe('Test number one', () => {
   beforeEach(function() {
-    cy.visit('');
+    cy.visit('http://localhost:4000');
+    cy.server();
   })
-  it('is yinyan a chinese' , function () {
-      expect(true).to.equal(true);
-  })
-  it('is yinyan a chinese' , function () {
-      var searchbox = cy.get('.searchbox');
+  it('testing search and hits result score' , function () {
       cy.get('.searchbox')
-          .type('a')
-          .should('have.value', 'a')
+          .type('aurelia')
+          .should('have.value', 'aurelia')
+      cy.get('.score').contains('1 result found');
   })
 
   it('searchbox is autofocus' , function () {
     cy.focused().should('have.class','searchbox');
   });
+
 })
