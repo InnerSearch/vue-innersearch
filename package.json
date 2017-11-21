@@ -11,7 +11,8 @@
     "lint": "eslint --ext .js,.vue src",
     "serve": "node server/server.js",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "test": "npm run cypress:open"
   },
   "dependencies": {
     "elasticsearch": "^13.3.1",

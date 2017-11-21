@@ -12,3 +12,5 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+tmp.json
+tmp1.json
