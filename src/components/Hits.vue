@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section v-if="hits.score != null" class="is-component is-hits">
         <slot name="hits" v-bind:hits="hits"></slot>
     </section>
 </template>

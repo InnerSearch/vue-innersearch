@@ -1,13 +1,113 @@
-* {
-    margin : 0;
-    padding : 0;
+/*
+    Global fields
+*/
+
+.is-component {
+    border : 1px solid #A9A9A9;
+    font-family : Calibri, sans-serif;
 }
 
-#UserView {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+.is-icon {
+    background-repeat : no-repeat;
+    background-position : center center;
+    background-size : contain;
+}
+
+.is-field {
+    font-size : 2em;
+    padding : 5px;
+}
+
+.is-field:focus, .is-field:focus{
+    outline: none;
+}
+
+
+/*
+    Assets
+*/
+
+.is-title {
+    font-size : 4em;
+    color : #3C434B;
+    font-family : Calibri, sans-serif;
+    margin : 20px 0 10px 5%;
+}
+
+.is-line {
+    width : 90%;
+}
+
+
+/*
+    SearchBox
+*/
+
+.is-component.is-searchbox {
+    display : flex;
+    width : 90%;
+    margin : 20px auto;
+}
+
+.is-icon.is-searchbox {
+    width : 50px;
+    height : 50px;
+    margin : 5px;
+    background-image : url('./images/search.svg');
+    opacity : .4;
+}
+
+.is-field.is-searchbox {
+    width : 100%;
+    border : 0;
+    color : #2C2C2C;
+}
+
+
+/*
+    SearchBox
+*/
+
+.is-component.is-refinement-list {
+    width : 90%;
+    margin : 20px auto;
+    padding : 15px;
+    font-size : 1.25em;
+    box-sizing : border-box;
+}
+
+.is-item.is-refinement-list {
+    display : inline-block;
+    width : 20%;
+}
+
+
+/*
+    Hits
+*/
+
+.is-component.is-hits {
+    width : 90%;
+    margin : 20px auto;
+    padding : 15px;
+    font-size : 1.25em;
+    box-sizing : border-box;
+}
+
+.is-score.is-hits {
+    margin : 10px 0 20px 50px;
+    font-size : 1.75em;
+    font-weight : bolder;
+    font-variant : small-caps;
+}
+
+.is-item.is-hits {
+    width : 90%;
+    margin : 20px auto;
+    padding : 20px;
+    background : #EFEFEF;
+}
+
+.is-item.is-hits ul {
+    margin : 0;
 }

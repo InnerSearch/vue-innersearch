@@ -1,5 +1,8 @@
 <template>
-    <input class='searchbox' type='text' v-model='entry' />
+    <div class="is-component is-searchbox">
+        <div class="is-icon is-searchbox" ref='icon' v-on:click='FocusOn("input")'></div>
+        <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
+    </div>
 </template>
 
 <script>
@@ -65,20 +68,23 @@
             }
         },
 
+        methods : {
+            // Set the focus on "tag" DOM element when the function is called
+            FocusOn : function(tag) {
+                this.$refs[tag].focus();
+            }
+        },
+
         mounted : function() {
             // Add autofocus property to html tag
-            this.$el.autofocus = this.autofocus || false;
+            this.$refs.input.autofocus = this.autofocus || false;
 
             // Realtime property TODO
             /*if (this.realtime)
                 this.previewEl = this.$el.parentNode.insertBefore(document.createElement("div"), this.$el.nextSibling);*/
 
             // Add placeholder property to the input html tag
-            this.$el.setAttribute("placeholder", this.placeholder);
-        },
-
-        created : function () {
-          console.log("Debug : ", this.Generics.Elasticsearch.Client.transport.connectionPool._config.host);
+            this.$refs.input.setAttribute("placeholder", this.placeholder);
         }
     };
 </script>

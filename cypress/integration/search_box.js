@@ -1,17 +1,3 @@
-// describe('Test number one', () => {
-//   it('is yinyan a chinese' , function () {
-//       expect(true).to.equal(true);
-//   })
-//   it('is yinyan a chinese' , function () {
-//       cy.server();
-//       cy.visit('');
-
-//       cy.get('.searchbox')
-//           .type('a')
-//           .should('have.value', 'a')
-//   })
-// })
-
 import search from "./../../src/lib/search";
 
 const urlApp = "http://localhost:4000/"
@@ -55,4 +41,21 @@ describe("Search by query (website)", () => {
 
         //retriveInfoList(cy, "section")
     })
-})
+    
+// describe('Test number one', () => {
+//   beforeEach(function() {
+//     cy.visit('http://localhost:4000');
+//     cy.server();
+//   })
+//   it('testing search and hits result score' , function () {
+//       cy.get('.searchbox')
+//           .type('aurelia')
+//           .should('have.value', 'aurelia')
+//       cy.get('.score').contains('1 result found');
+//   })
+
+//   it('searchbox is autofocus' , function () {
+//     cy.focused().should('have.class','searchbox');
+//   });
+
+// })
