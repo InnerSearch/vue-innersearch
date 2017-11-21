@@ -35,12 +35,13 @@ describe("Search by query (website)", () => {
         const {label, str} = testPair;
         cy.visit(urlApp);
         
-        cy.get(".searchbox")
+        cy.get(".id-searchbox")
           .type(str)
           .should("have.value", str);
 
         //retriveInfoList(cy, "section")
     })
+})
     
 // describe('Test number one', () => {
 //   beforeEach(function() {
@@ -58,4 +59,3 @@ describe("Search by query (website)", () => {
 //     cy.focused().should('have.class','searchbox');
 //   });
 
-// })
