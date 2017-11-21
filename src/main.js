@@ -34,13 +34,13 @@ import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
 new Vue({
   el: '#InnerSearch',
   created : function () {
-/*     this.setHost("https://qlap.limics.fr/search");
-    this.setIndex("qlap");
-    this.setType("specialities"); */
+    this.SetHost("https://qlap.limics.fr/search");
+    this.SetIndex("qlap");
+    this.SetType("specialities");
 
-    this.SetHost("http://es.yinyan.fr");
+/*     this.SetHost("http://es.yinyan.fr");
     this.SetIndex("bank");
-    this.SetType("account");
+    this.SetType("account"); */
   },
 
   components : {
@@ -49,35 +49,34 @@ new Vue({
     'hits' : Hits
   },
 
+  
+  template : `
+    <section>
+    <div>
+      <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['label']" :placeholder="'Search by Label'"></searchbox>
+      <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
+    </div>
+    <hits>
+        <template slot="hits" slot-scope="{ hits }">
+          <strong v-if="hits.score === 0">No result found</strong>
+          <strong v-else-if="hits.score === 1">1 result found</strong>
+          <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
 
-/* template : `
-  <section>
-  <div>
-    <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['label']" :placeholder="'Search by Label'"></searchbox>
-    <refinement-list-filter style="display:inline-block;" :field="'administration_routes.label'" :size="20"></refinement-list-filter>
-  </div>
-  <hits>
-      <template slot="hits" slot-scope="{ hits }">
-        <strong v-if="hits.score === 0">No result found</strong>
-        <strong v-else-if="hits.score === 1">1 result found</strong>
-        <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+          <div v-for="item in hits.items" :item="item">
+            <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
+            <div><strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li></div>
+          </div>
+        </template>
+    </hits>
+      
+    </section>
+  `
 
-        <div v-for="item in hits.items" :item="item">
-          <div><strong>Name (label) :</strong> {{ item._source.label }}</div>
-          <div><strong>voie :</strong><li v-for="voies in item._source.administration_routes">{{ voies.label }}</li></div>
-        </div>
-      </template>
-  </hits>
-
-  </section>
-` */
-
-
-  template: `
+/*  template: `
   <section>
     <div>
       <searchbox style="display:inline-block;" :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
-      <refinement-list-filter style="display:inline-block;" :field="'state'" :size="20"></refinement-list-filter>
+      <refinement-list-filter style="display:inline-block;" :field="'city'" :size="20"></refinement-list-filter>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
@@ -91,5 +90,5 @@ new Vue({
         </template>
     </hits>
       
-  </section>`
+  </section>`*/
 });
