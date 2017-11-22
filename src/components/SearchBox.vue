@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Store from '@/lib/Store';
+    import Store from './../lib/Store';
 
     export default {
         name : 'searchbox',

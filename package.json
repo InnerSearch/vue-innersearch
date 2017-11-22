@@ -1,6 +1,6 @@
 {
   "name": "innersearch",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Bibliotheque d'elatsic serach",
   "main": "innersearch.js",
   "author": "Nous",

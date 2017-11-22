@@ -28,12 +28,13 @@ new Vue({
 /***
  * simple way to use InnerSearch
  */
-import '@/style.css';
-import Searchbox from '@/components/SearchBox';
-import Hits from '@/components/Hits';
-import RefinementListFilter from '@/components/RefinementListFilter';
-import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
-
+import './style.css';
+import InnerSearch, {
+  searchbox,
+  hits,
+  refinementListFilter,
+  Generics
+} from "./../innersearch";
 /*
 new Vue({
   el: '#InnerSearch',
@@ -94,9 +95,9 @@ new Vue({
   },
 
   components: {
-    'refinement-list-filter': RefinementListFilter,
-    'searchbox': Searchbox,
-    'hits': Hits
+    'refinement-list-filter': refinementListFilter,
+    'searchbox': searchbox,
+    'hits': hits
   },
 
 
