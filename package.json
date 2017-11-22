@@ -4,7 +4,6 @@
   "description": "Bibliotheque d'elatsic serach",
   "main": "innersearch.js",
   "author": "Nous",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "npm run dev",
