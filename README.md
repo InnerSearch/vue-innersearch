@@ -1,4 +1,4 @@
-# Innersearch
+# InnerSearch
 [![npm](https://img.shields.io/npm/v/innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![npm](https://img.shields.io/npm/dm/innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![coverage](https://img.shields.io/badge/coverage-90%25-green.svg)]()
