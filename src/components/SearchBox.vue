@@ -7,9 +7,11 @@
 
 <script>
     import Store from './../lib/Store';
+    import Generics from './../lib/Generics';
 
     export default {
         name : 'searchbox',
+        mixins : [Generics],
 
         props : {
             // autofocus : if the input is focused when the user load the page
@@ -85,6 +87,10 @@
 
             // Add placeholder property to the input html tag
             this.$refs.input.setAttribute("placeholder", this.placeholder);
+        },
+
+        created : function() {
+            console.log("Debug Store : ", this.Elasticsearch);
         }
     };
 </script>

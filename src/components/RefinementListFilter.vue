@@ -7,17 +7,19 @@
         :value="item.key"
         v-model="checkedItems"
         @change="toggleRefinement()">
-    <label v-on:click='FocusOn(item.key)'>{{ item.key }} ( {{ item.doc_count}} ) </label>
+    <label v-on:click='ClickOn(item.key)'>{{ item.key }} ( {{ item.doc_count}} ) </label>
   </div>
 </div>
 
 </template>
 <script>
   import Store from './../lib/Store';
+  import Generics from './../lib/Generics';
 
   export default {
     name : "refinement-list-filter",
-    mixins : [],
+    mixins : [Generics],
+
     props: {
         field : {
           type : String,
@@ -28,6 +30,7 @@
           default : 20
         }
     },
+
     data : function() {
       return {
         items : null,
@@ -35,14 +38,15 @@
         Generics : this.$parent
       };
     },
+
     created: function () {
       /*
       * first request to fetch aggs buckets
       * */
       var vm = this; // to be able to access @this from the vue instance in the promise .then()
-      this.Generics.Elasticsearch.Client.search({
-        index : this.Generics.Elasticsearch.Index,
-        type : this.Generics.Elasticsearch.Type,
+      this.Elasticsearch.Client.search({
+        index : this.Elasticsearch.Index,
+        type : this.Elasticsearch.Type,
         size : 0,
         body : {
           aggs : {
@@ -66,7 +70,7 @@
     },
     methods : {
       // Check or uncheck an item for the input corresponding to the name
-      FocusOn : function(name) {
+      ClickOn : function(name) {
         // Find input check with the right name
         let tag = this.$refs.input.map((div) => {
           return div.getElementsByTagName("input")[0];

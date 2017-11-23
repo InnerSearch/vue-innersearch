@@ -3,41 +3,55 @@ import elasticsearch from "elasticsearch";
 import Store from './Store';
 
 export default Vue.mixin({
-    data : function () {
-      return {
-        Elasticsearch : {
-          Client : {},
-          Index : "",
-          Type : "",
-        }
+    computed : {
+      Elasticsearch : function() {
+        return this.GetElasticsearch();
       }
     },
 
-    methods: {
+    methods : {
+
+        /*
+          Store Elasticsearch Header Getters
+        */
+        GetElasticsearch : () => {
+          return Store.getters["Elasticsearch/GetHeader"];
+        },
+
+
+        /*
+          Store Elasticsearch Header Setters
+        */
+        SetHost : (host) => {
+          Store.commit("Elasticsearch/SetHost", new elasticsearch.Client({ host }));
+        },
+
+        SetIndex : (index) => {
+          Store.commit("Elasticsearch/SetIndex", index);
+        },
+
+        SetType : (type) => {
+          Store.commit("Elasticsearch/SetType", type);
+        },
+
+
+        /*
+          Store Elasticsearch Request Getters
+        */
+
+
+
+        /*
+          Store Elasticsearch Request Setters
+        */
+
+
         GetQuery : function(query) {
             let vals = query.split(".");
             return {
                 type : vals[0],
                 prop : vals[1]
             };
-        },
-
-        // Set the ES server host
-        SetHost : function (host) {
-          this.Elasticsearch.Client = new elasticsearch.Client({
-            host
-            // modified 21/11 by Yan, ES6 obj key-value folding
-          });
-        },
-
-        // Set the ES server Index property
-        SetIndex : function (index) {
-          this.Elasticsearch.Index = index;
-        },
-
-        // Set the ES server type property
-        SetType : function (type) {
-          this.Elasticsearch.Type = type;
         },
 
         // Triggered when user uses SearchBox component
@@ -72,7 +86,6 @@ export default Vue.mixin({
 
         search : function () {
           var query = Store.getters.getQuery();
-          console.log(query);
           this.Elasticsearch.Client.search(query).then(function (resp) {
             Store.commit("Reset");
             var hits = resp.hits.hits;
