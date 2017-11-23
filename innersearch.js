@@ -1,7 +1,7 @@
-import searchbox from '@/components/SearchBox';
-import hits from '@/components/Hits';
-import refinementListFilter from '@/components/RefinementListFilter';
-import Generics from '@/lib/Generics';
+import searchbox from './src/components/SearchBox';
+import hits from './src/components/Hits';
+import refinementListFilter from './src/components/RefinementListFilter';
+import Generics from './src/lib/Generics';
 
 export {
     searchbox,

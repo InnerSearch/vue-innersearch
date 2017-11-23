@@ -9,10 +9,16 @@
 </template>
 
 <script>
-  import searchbox from '@/components/SearchBox';
-  import hits from '@/components/Hits';
-  import refinementListFilter from '@/components/RefinementListFilter';
-  import Generics from '@/lib/Generics';
+  // import searchbox from './components/SearchBox';
+  // import hits from './components/Hits';
+  // import refinementListFilter from './components/RefinementListFilter';
+  // import Generics from './lib/Generics';
+  import InnerSearch, {
+  searchbox,
+  hits,
+  refinementListFilter,
+  Generics
+} from "./../innersearch";
 
   export default {
     created : function () {

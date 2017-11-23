@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import elasticsearch from "elasticsearch";
-import Store from '@/lib/Store';
+import Store from './Store';
 
 export default Vue.mixin({
     data : function () {
