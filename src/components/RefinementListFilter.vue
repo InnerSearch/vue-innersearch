@@ -44,9 +44,9 @@
       * first request to fetch aggs buckets
       * */
       var vm = this; // to be able to access @this from the vue instance in the promise .then()
-      this.Elasticsearch.Client.search({
-        index : this.Elasticsearch.Index,
-        type : this.Elasticsearch.Type,
+      this.Header.Client.search({
+        index : this.Header.Index,
+        type : this.Header.Type,
         size : 0,
         body : {
           aggs : {

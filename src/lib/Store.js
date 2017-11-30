@@ -20,13 +20,23 @@ export default new Vuex.Store({
                     Type : ""
                 },
 
-                // Object containing the full ES request
-                Request : {},
+                // Specific properties
+                Properties : {
+                    from : 0,
+                    size : 100
+                },
 
-                // Specific request for queries (equivalent to "query" object in Request)
+                // Request
                 Query : {
-                    test : "blblbl"
-                }
+                    bool : {
+                        must : {
+                            prefix: {}
+                        },
+                        filter : {
+                            bool : {}
+                        }
+                    }
+                },
             },
 
             mutations : {
@@ -40,30 +50,56 @@ export default new Vuex.Store({
 
                 SetType (state, value) {
                     state.Header.Type = value;
+                },
+
+                SetFrom (state, value) {
+                    state.Properties.From = value;
+                },
+
+                SetSize (state, value) {
+                    state.Properties.Size = value;
+                },
+
+                SetQuery (state, value) {
+                    state.Query = value;
                 }
             },
 
             getters : {
                 GetHeader : state => {
                     return state.Header;
+                },
+
+                GetProperties : state => {
+                    return state.Properties;
+                },
+
+                GetQuery : state => {
+                    return state.Query;
                 }
             }
         },
 
 
         /*
-            Elasticsearch Request  Store
+            Elasticsearch Request Store
         */
         Request : {
             state : {
-                hits : {
-                    items : [],
-                    score : null
+                Hits : {
+                    Items : [],
+                    Score : null
                 },
-                filters : [],
-        
-                query : {},
+                Filters : []
+            },
+
+            getters : {
+                GetHits : state => {
+                    return state.Hits;
+                }
             }
+
+
         }
     },
 

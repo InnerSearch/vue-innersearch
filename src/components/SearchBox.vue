@@ -90,7 +90,15 @@
         },
 
         created : function() {
-            console.log("Debug Store : ", this.Elasticsearch);
+ /*            this.SetQuery({
+                must : {
+                    prefix: {
+                        [data.query]: data.val
+                    }
+                }
+            }); */
+            console.log("Debug Store : ", this.Request);
+
         }
     };
 </script>
