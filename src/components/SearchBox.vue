@@ -49,6 +49,8 @@
         data : function() {
             return {
                 entry : null, // input value
+                local : null,
+                local2 : null,
                 Generics : this.$parent
             };
         },
@@ -67,6 +69,10 @@
                   query : this.queries,
                   val : val
                 });
+
+/*                 console.log(this.local.getQuery());
+                console.log(this.local2.getQuery());
+                this.Execute(); */
             }
         },
 
@@ -90,15 +96,10 @@
         },
 
         created : function() {
- /*            this.SetQuery({
-                must : {
-                    prefix: {
-                        [data.query]: data.val
-                    }
-                }
-            }); */
-            console.log("Debug Store : ", this.Request);
-
+            this.local = this.Bodybuilder.query('match', 'label', 'value');
+            this.local2 = this.Bodybuilder.query('match', 'label2', 'value2');
+/*             this.Bodybuilder.query('match', 'lastname', 'q')
+            console.log("Debug Store : ", this.Request); */
         }
     };
 </script>

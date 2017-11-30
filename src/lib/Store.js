@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Bodybuilder from 'bodybuilder';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -20,23 +21,11 @@ export default new Vuex.Store({
                     Type : ""
                 },
 
-                // Specific properties
-                Properties : {
-                    from : 0,
-                    size : 100
-                },
-
                 // Request
-                Query : {
-                    bool : {
-                        must : {
-                            prefix: {}
-                        },
-                        filter : {
-                            bool : {}
-                        }
-                    }
-                },
+                Bodybuilder : Bodybuilder().from(0).size(10),
+
+                // Filters
+                Filters : []
             },
 
             mutations : {
@@ -51,18 +40,6 @@ export default new Vuex.Store({
                 SetType (state, value) {
                     state.Header.Type = value;
                 },
-
-                SetFrom (state, value) {
-                    state.Properties.From = value;
-                },
-
-                SetSize (state, value) {
-                    state.Properties.Size = value;
-                },
-
-                SetQuery (state, value) {
-                    state.Query = value;
-                }
             },
 
             getters : {
@@ -74,8 +51,8 @@ export default new Vuex.Store({
                     return state.Properties;
                 },
 
-                GetQuery : state => {
-                    return state.Query;
+                GetBodybuilder : state => {
+                    return state.Bodybuilder;
                 }
             }
         },
@@ -84,13 +61,12 @@ export default new Vuex.Store({
         /*
             Elasticsearch Request Store
         */
-        Request : {
+        Result : {
             state : {
                 Hits : {
                     Items : [],
                     Score : null
-                },
-                Filters : []
+                }
             },
 
             getters : {

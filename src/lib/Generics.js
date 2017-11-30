@@ -12,9 +12,7 @@ export default Vue.mixin({
             type : this.Header.Type
           },
           {
-            body : Object.assign(this.Properties, {
-              query : this.Query
-            })
+            body : this.Bodybuilder.build()
           }
         );
       },
@@ -24,14 +22,9 @@ export default Vue.mixin({
         return Store.getters["Elasticsearch/GetHeader"];
       },
 
-      // Request properties (from, size)
-      Properties : () => {
-        return Store.getters["Elasticsearch/GetProperties"];
-      },
-
       // Request query (alterable)
-      Query : () => {
-        return Store.getters["Elasticsearch/GetQuery"];
+      Bodybuilder : () => {
+        return Store.getters["Elasticsearch/GetBodybuilder"];
       }
     },
 
@@ -50,31 +43,36 @@ export default Vue.mixin({
         },
 
         /*
-          Store Elasticsearch Query Setters
+          Execute request
         */
-        SetFrom : (from) => {
-          Store.commit("Elasticsearch/SetFrom", from);
-        },
-        SetSize : (size) => {
-          Store.commit("Elasticsearch/SetSize", size);
+        Execute : function() {
+          // Debug
+          console.log(this.Request);
+          console.log(this.Bodybuilder.build());
+
+          this.Header.Client.search(this.Request).then(function (resp) {
+            Store.commit("Reset");
+            var hits = resp.hits.hits;
+            console.log("Debug Hits : ", resp);
+            if (hits.length === 0) {
+              Store.commit("Score", 0);
+            }
+            else {
+              var score = 0;
+              hits.forEach((obj) => {
+                score++;
+                Store.commit("Item", obj);
+              });
+              Store.commit("Score", resp.hits.total);
+            }
+          }, function (err) {
+            Store.commit("Score", 0);
+          });
         },
 
-        /*
-          Store Elasticsearch Query Setters
-        */
-        SetQuery : (query) => {
-          Store.commit("Elasticsearch/SetQuery", query);
-        },
 
 
-        
-        GetQuery : function(query) {
-            let vals = query.split(".");
-            return {
-                type : vals[0],
-                prop : vals[1]
-            };
-        },
+
 
         // Triggered when user uses SearchBox component
         SearchOnBox : function (data) {
