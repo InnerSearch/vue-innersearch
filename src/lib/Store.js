@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Bodybuilder from 'bodybuilder';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -22,7 +21,10 @@ export default new Vuex.Store({
                 },
 
                 // Request
-                Bodybuilder : Bodybuilder().from(0).size(10),
+                Body : undefined,
+
+                // Composants d'une requête:
+                Instructions : [],
 
                 // Filters
                 Filters : []
@@ -40,6 +42,14 @@ export default new Vuex.Store({
                 SetType (state, value) {
                     state.Header.Type = value;
                 },
+
+                SetBody (state, value) {
+                    state.Body = value;
+                },
+
+                AddInstruction (state, value) {
+                    state.Instructions.push(value);
+                }
             },
 
             getters : {
@@ -51,15 +61,19 @@ export default new Vuex.Store({
                     return state.Properties;
                 },
 
-                GetBodybuilder : state => {
-                    return state.Bodybuilder;
+                GetBody : state => {
+                    return state.Body;
+                },
+
+                GetInstructions : state => {
+                    return state.Instructions;
                 }
             }
         },
 
 
         /*
-            Elasticsearch Request Store
+            Results Store
         */
         Result : {
             state : {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import elasticsearch from "elasticsearch";
+import Bodybuilder from 'bodybuilder';
 import Store from './Store';
 
 export default Vue.mixin({
@@ -12,7 +13,7 @@ export default Vue.mixin({
             type : this.Header.Type
           },
           {
-            body : this.Bodybuilder.build()
+            body : this.Body
           }
         );
       },
@@ -22,9 +23,14 @@ export default Vue.mixin({
         return Store.getters["Elasticsearch/GetHeader"];
       },
 
-      // Request query (alterable)
-      Bodybuilder : () => {
-        return Store.getters["Elasticsearch/GetBodybuilder"];
+      // Request query (generated bodybuilder json request)
+      Body : () => {
+        return Store.getters["Elasticsearch/GetBody"];
+      },
+
+      // Instructions (contains bodybuilder functions)
+      Instructions : () => {
+        return Store.getters["Elasticsearch/GetInstructions"];
       }
     },
 
@@ -42,14 +48,42 @@ export default Vue.mixin({
           Store.commit("Elasticsearch/SetType", type);
         },
 
+
+        /*
+          Store Elasticsearch Body Setter
+        */
+        SetBody : (type) => {
+          Store.commit("Elasticsearch/SetBody", type);
+        },
+
+
+        /*
+          Store Elasticsearch Instructions Add
+        */
+        AddInstruction : (obj) => {
+          Store.commit("Elasticsearch/AddInstruction", obj);
+        },
+
+
         /*
           Execute request
         */
-        Execute : function() {
-          // Debug
-          console.log(this.Request);
-          console.log(this.Bodybuilder.build());
+        Fetch : function() {
+          // Bodybuilder object
+          let BD = Bodybuilder().from(0).size(10);
+          
+          // Execute all instructions to create request
+          this.Instructions.forEach(instr => {
+            BD[instr.fun](...instr.args)
+          });
+          
+          // Store the JSON request into the body
+          this.SetBody(BD.build());
 
+          // Debug
+          console.log("Request : ", this.Request);
+
+          // Fetch the hits
           this.Header.Client.search(this.Request).then(function (resp) {
             Store.commit("Reset");
             var hits = resp.hits.hits;
@@ -70,10 +104,7 @@ export default Vue.mixin({
           });
         },
 
-
-
-
-
+/* 
         // Triggered when user uses SearchBox component
         SearchOnBox : function (data) {
           var query = {
@@ -102,7 +133,7 @@ export default Vue.mixin({
           Store.commit("setQuery",query);
 
           this.search();
-        },
+        }, */
 
         search : function () {
           var query = Store.getters.getQuery();

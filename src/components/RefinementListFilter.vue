@@ -34,6 +34,7 @@
     data : function() {
       return {
         items : null,
+        local : null,
         checkedItems : [],
         Generics : this.$parent
       };
@@ -93,6 +94,15 @@
         console.log("searchCall");
         this.Generics.search();
       }
+    },
+
+    created : function() {
+/*       this.local = {
+          fun : "query",
+          args : ['prefix', this.queries, null]
+      };
+
+      this.AddInstruction(this.local); */
     }
   };
 

@@ -35,7 +35,7 @@
             // queries : contains the query request; each properties are separeted by a comma
             // values of Array : [String|Object]
             "queries" : {
-                type : Array,
+                type : [String, Array],
                 required: true
             },
 
@@ -49,9 +49,7 @@
         data : function() {
             return {
                 entry : null, // input value
-                local : null,
-                local2 : null,
-                Generics : this.$parent
+                local : null, // local request
             };
         },
 
@@ -63,16 +61,12 @@
 
         watch : {
             Entry : function(val) {
-                // Convert an array of properties to an ES request
-                // ElasticSearch request
-                this.Generics.SearchOnBox({
-                  query : this.queries,
-                  val : val
-                });
+                // Set local argument
+                this.local.args[2] = val;
 
-/*                 console.log(this.local.getQuery());
-                console.log(this.local2.getQuery());
-                this.Execute(); */
+                // Realtime only : fetch the results
+                if (this.realtime)
+                    this.Fetch();
             }
         },
 
@@ -96,10 +90,12 @@
         },
 
         created : function() {
-            this.local = this.Bodybuilder.query('match', 'label', 'value');
-            this.local2 = this.Bodybuilder.query('match', 'label2', 'value2');
-/*             this.Bodybuilder.query('match', 'lastname', 'q')
-            console.log("Debug Store : ", this.Request); */
+            this.local = {
+                fun : "query",
+                args : ['prefix', this.queries, null]
+            };
+
+            this.AddInstruction(this.local);
         }
     };
 </script>

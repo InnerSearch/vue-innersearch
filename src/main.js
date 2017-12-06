@@ -104,7 +104,7 @@ new Vue({
     <h1 class='is-title'>InnerSearch.js</h1>
     <hr class='is-line' />
     <div>
-      <searchbox :autofocus="true" :realtime="true" :queries="['firstname']" :placeholder="'Search by Label'"></searchbox>
+      <searchbox :autofocus="true" :realtime="true" :queries="'firstname'" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter :field="'state'" :size="20"></refinement-list-filter>
     </div>
     <hits>
