@@ -41,29 +41,17 @@
     },
 
     created: function () {
+      this.GetAggs(this.field);
       /*
-      * first request to fetch aggs buckets
-      * */
+     * first request to fetch aggs buckets
+     * */
       var vm = this; // to be able to access @this from the vue instance in the promise .then()
-      this.Header.Client.search({
-        index : this.Header.Index,
-        type : this.Header.Type,
-        size : 0,
-        body : {
-          aggs : {
-            [this.field] : {
-              terms : {
-                field : this.field,
-                size : this.size
-              }
-            }
-          }
-        }
-      }).then(function (resp) {
+      this.Header.Client.search(this.Request).then(function (resp) {
+        console.log(resp);
         /*
         * we save the buckets into vm.items
         * */
-        vm.items = resp.aggregations[vm.field].buckets;
+        vm.items = resp.aggregations["agg_terms_"+vm.field].buckets;
 
       },function () {
 
@@ -95,15 +83,15 @@
         this.Generics.search();
       }
     },
-
+/*
     created : function() {
 /*       this.local = {
           fun : "query",
           args : ['prefix', this.queries, null]
       };
 
-      this.AddInstruction(this.local); */
-    }
+      this.AddInstruction(this.local);
+    }*/
   };
 
 

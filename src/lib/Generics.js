@@ -71,14 +71,16 @@ export default Vue.mixin({
         Fetch : function() {
           // Bodybuilder object
           let BD = Bodybuilder().from(0).size(10);
-          
+
           // Execute all instructions to create request
           this.Instructions.forEach(instr => {
             BD[instr.fun](...instr.args)
           });
-          
+
           // Store the JSON request into the body
           this.SetBody(BD.build());
+
+          console.log(Store.getters.GetBody);
 
           // Debug
           console.log("Request : ", this.Request);
@@ -103,8 +105,25 @@ export default Vue.mixin({
             Store.commit("Score", 0);
           });
         },
+      /***
+       *
+       * @param field : field name of the aggs that we want to fetch
+       * @constructor
+       */
+      GetAggs : function (field) {
+        // Bodybuilder object
+        let BD = Bodybuilder().size(0);
 
-/* 
+
+        // Store the JSON request into the body
+        this.SetBody(
+          BD
+            .aggregation("terms",field)
+            .build());
+
+      },
+
+/*
         // Triggered when user uses SearchBox component
         SearchOnBox : function (data) {
           var query = {
