@@ -1,12 +1,11 @@
 <template>
     <div class="is-component is-searchbox">
         <div class="is-icon is-searchbox" ref='icon' v-on:click='FocusOn("input")'></div>
-        <input class='is-field is-searchbox id-searchbox' type='text' ref='input' v-model='entry' />
+        <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
     </div>
 </template>
 
 <script>
-    import Store from './../lib/Store';
     import Generics from './../lib/Generics';
     import debounce from 'debounce';
 

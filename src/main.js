@@ -31,7 +31,8 @@ import '@/style.css';
 import Searchbox from '@/components/SearchBox';
 import Hits from '@/components/Hits';
 import RefinementListFilter from '@/components/RefinementListFilter';
-import Generics from '@/lib/Generics'; // Put Mixin ES request in Store
+import SearchButton from '@/components/SearchButton';
+import Generics from '@/lib/Generics';
 
 
 /*
@@ -95,6 +96,7 @@ new Vue({
   components : {
     'refinement-list-filter' : RefinementListFilter,
     'searchbox' : Searchbox,
+    'search-button' : SearchButton,
     'hits' : Hits
   },
 
@@ -104,8 +106,9 @@ new Vue({
     <h1 class='is-title'>InnerSearch.js</h1>
     <hr class='is-line' />
     <div>
-      <searchbox :autofocus="true" :realtime="true" :queries="'firstname'" :placeholder="'Search by Label'"></searchbox>
+      <searchbox :autofocus="true" :realtime="false" :queries="'firstname'" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter :field="'state'" :size="20"></refinement-list-filter>
+      <search-button></search-button>
     </div>
     <hits>
         <template slot="hits" slot-scope="{ hits }">
