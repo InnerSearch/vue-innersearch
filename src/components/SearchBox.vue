@@ -59,6 +59,22 @@
                 local : null, // local request
             };
         },
+        
+        computed : {
+            Entry : function() {
+                return this.entry;
+            }
+        },
+
+        watch : {
+            Entry : function(val) {
+                // Set local argument
+                this.local.args[2] = val;
+
+                // Update the request
+                this.Mount();
+            }
+        },
 
         methods : {
             // Set the focus on "tag" DOM element when the function is called
@@ -66,11 +82,8 @@
                 this.$refs[tag].focus();
             },
 
-            SearchOn : function(val) {
-                // Set local argument
-                this.local.args[2] = val;
-
-                // Fetch the results
+            // Execute the mixins Fetch method to update hits
+            SearchOn : function() {
                 this.Fetch();
             }
         },
@@ -84,12 +97,12 @@
         },
 
         created : function() {
-            // Create a watcher on the input which calls the SearchOn function
-            var EntryWatcher = this.$watch(function() {
+            // Create a dynamic watcher on the input which call the mixins Fetch function
+            var DisableWatcherFetch = this.$watch(function() {
                 return this.entry;
             }, {
                 handler : function(val) {
-                    this.SearchOn.call(this, val);
+                    this.SearchOn.call(this);
                 },
                 deep : true
             });
@@ -98,7 +111,7 @@
             if (this.realtime)
                 this.SearchOn = debounce(this.SearchOn, this.timeout); // Apply debounce method with the timeout value on the current SeachOn function
             else
-                EntryWatcher(); // Disabled the watcher
+                DisableWatcherFetch(); // Disabled the watcher that disabled fetch event
 
             // Local request data initialization
             this.local = {

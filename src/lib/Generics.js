@@ -66,9 +66,9 @@ export default Vue.mixin({
 
 
         /*
-          Execute request
+          Mount full request
         */
-        Fetch : function() {
+        Mount : function() {
           // Bodybuilder object
           let BD = Bodybuilder().from(0).size(10);
 
@@ -80,11 +80,16 @@ export default Vue.mixin({
           // Store the JSON request into the body
           this.SetBody(BD.build());
 
-          console.log(Store.getters.GetBody);
-
           // Debug
-          console.log("Request : ", this.Request);
+          console.log("[Generics:Mount] Body : ", Store.getters.GetBody);
+          console.log("[Generics:Mount] Request : ", this.Request);
+        },
 
+
+        /*
+          Execute ES request
+        */
+        Fetch : function() {
           // Fetch the hits
           this.Header.Client.search(this.Request).then(function (resp) {
             Store.commit("Reset");
@@ -104,7 +109,12 @@ export default Vue.mixin({
           }, function (err) {
             Store.commit("Score", 0);
           });
+
+          // Debug
+          console.log("[Generics:Fetch] Work : ", "done");
         },
+
+        
       /***
        *
        * @param field : field name of the aggs that we want to fetch
