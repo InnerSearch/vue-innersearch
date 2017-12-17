@@ -32,12 +32,6 @@
                 default : 300
             },
 
-            // case-sensitive : if text is case sensitive
-            "case-sensitive" : {
-                type : Boolean,
-                default : false
-            },
-
             // queries : contains the query request; each properties are separeted by a comma
             // values of Array : [String|Object]
             "queries" : {
@@ -54,8 +48,9 @@
         
         data : function() {
             return {
+                mutableQueries : this.queries, // queries field editable value
                 entry : null, // input value
-                local : null, // local request
+                local : [], // local request
             };
         },
         
@@ -67,8 +62,10 @@
 
         watch : {
             Entry : function(val) {
-                // Set local argument
-                this.local.args[2] = val;
+                // Set local argument for each queries
+                this.local.forEach(obj => {
+                    obj.args[2] = val;
+                });
 
                 // Update the request
                 this.Mount();
@@ -112,12 +109,19 @@
             else
                 DisableWatcherFetch(); // Disabled the watcher that disabled fetch event
 
-            // Local request data initialization
-            this.local = {
-                fun : "query",
-                args : ['prefix', this.queries, null]
-            };
-            this.AddInstruction(this.local);
+            // Convert query string to query array
+            if (!Array.isArray(this.mutableQueries))
+                this.mutableQueries = [this.mutableQueries];
+
+            // Local request data initialization for each queries value
+            this.mutableQueries.forEach(attr => {
+                var instruction = {
+                    fun : "query",
+                    args : ['prefix', attr, null]
+                };
+                this.local.push(instruction);
+                this.AddInstruction(instruction);
+            });
         }
     };
 </script>

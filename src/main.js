@@ -118,7 +118,7 @@ new Vue({
             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
           </div>
           <div v-for="item in hits.items" :item="item">
-              <div><strong>Name (label) :</strong> {{ item._source.firstname }}</div>
+              <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }}</div>
             </div>
         </template>
     </hits>

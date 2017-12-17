@@ -12,7 +12,7 @@
         mixins : [Generics],
 
         props : {
-            // autofocus : if the input is focused when the user load the page
+            // text : set the text into the input button
             "text" : {
                 type : String,
                 default : "Search"

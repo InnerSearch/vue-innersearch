@@ -74,6 +74,7 @@ export default Vue.mixin({
 
           // Execute all instructions to create request
           this.Instructions.forEach(instr => {
+            console.log("[Generics:Mount] Instr Args : ", instr.args);
             BD[instr.fun](...instr.args)
           });
 
