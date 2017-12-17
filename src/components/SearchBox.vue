@@ -8,6 +8,7 @@
 <script>
     import Store from './../lib/Store';
     import Generics from './../lib/Generics';
+    import debounce from 'debounce';
 
     export default {
         name : 'searchbox',
@@ -24,6 +25,12 @@
             "realtime" : {
                 type : Boolean,
                 default : false
+            },
+
+            // timeout : if realtime is enabled, duration between two requests (in ms)
+            "timeout" : {
+                type : Number,
+                default : 300
             },
 
             // case-sensitive : if text is case sensitive
@@ -53,27 +60,18 @@
             };
         },
 
-        computed : {
-            Entry : function() {
-                return this.entry;
-            }
-        },
-
-        watch : {
-            Entry : function(val) {
-                // Set local argument
-                this.local.args[2] = val;
-
-                // Realtime only : fetch the results
-                if (this.realtime)
-                    this.Fetch();
-            }
-        },
-
         methods : {
             // Set the focus on "tag" DOM element when the function is called
             FocusOn : function(tag) {
                 this.$refs[tag].focus();
+            },
+
+            SearchOn : function(val) {
+                // Set local argument
+                this.local.args[2] = val;
+
+                // Fetch the results
+                this.Fetch();
             }
         },
 
@@ -81,20 +79,32 @@
             // Add autofocus property to html tag
             this.$refs.input.autofocus = this.autofocus || false;
 
-            // Realtime property TODO
-            /*if (this.realtime)
-                this.previewEl = this.$el.parentNode.insertBefore(document.createElement("div"), this.$el.nextSibling);*/
-
             // Add placeholder property to the input html tag
             this.$refs.input.setAttribute("placeholder", this.placeholder);
         },
 
         created : function() {
+            // Create a watcher on the input which calls the SearchOn function
+            var EntryWatcher = this.$watch(function() {
+                return this.entry;
+            }, {
+                handler : function(val) {
+                    this.SearchOn.call(this, val);
+                },
+                deep : true
+            });
+
+            // Behavior when realtime is enabled or not
+            if (this.realtime)
+                this.SearchOn = debounce(this.SearchOn, this.timeout); // Apply debounce method with the timeout value on the current SeachOn function
+            else
+                EntryWatcher(); // Disabled the watcher
+
+            // Local request data initialization
             this.local = {
                 fun : "query",
                 args : ['prefix', this.queries, null]
             };
-
             this.AddInstruction(this.local);
         }
     };
