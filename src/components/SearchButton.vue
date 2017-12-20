@@ -21,6 +21,10 @@
 
         methods : {
             ClickOn : function() {
+                // Clear debounce actions
+                //this.executeSearch.clear(); ON SEARCHBOX COMPONENT
+
+                // Execute request
                 this.Fetch();
             }
         }

@@ -49,6 +49,12 @@ export default new Vuex.Store({
 
                 AddInstruction (state, value) {
                     state.Instructions.push(value);
+                },
+
+                removeInstruction (state, value) {
+                    state.Instructions = state.Instructions.filter(function(object) {
+                        return object !== value;
+                    });
                 }
             },
 
@@ -116,28 +122,8 @@ export default new Vuex.Store({
 
         Reset (state) {
             state.hits.items = [];
-        },
-
-        setFilter (state, value) {
-            state.filters = value;
-        },
-
-        setQuery(state,value){
-          state.query = value;
         }
 
 
-    },
-
-    getters : {
-        getFilters : (state) => () => {
-            return state.filters;
-        },
-
-        getQuery : (state) => () => {
-          console.log(state.query);
-            state.query.body.query.bool.filter.bool.must = state.filters; // update filters
-        return state.query;
-        }
     }
 });

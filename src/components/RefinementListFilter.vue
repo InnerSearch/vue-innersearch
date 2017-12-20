@@ -6,93 +6,92 @@
         :name="item.key"
         :value="item.key"
         v-model="checkedItems"
-        @change="toggleRefinement()">
-    <label v-on:click='ClickOn(item.key)'>{{ item.key }} ( {{ item.doc_count}} ) </label>
+        @change="clickOnItem()">
+    <label v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count}} ) </label>
   </div>
 </div>
 
 </template>
 <script>
-  import Store from './../lib/Store';
-  import Generics from './../lib/Generics';
+	import generics from './../lib/Generics';
 
-  export default {
-    name : "refinement-list-filter",
-    mixins : [Generics],
+	export default {
+		name : "refinement-list-filter",
+		mixins : [generics],
 
-    props: {
-        field : {
-          type : String,
-          default : null
-        },
-        size : {
-          type : Number,
-          default : 20
-        }
-    },
+		props : {
+			field : {
+				type : String,
+				default : null
+			},
 
-    data : function() {
-      return {
-        items : null,
-        local : null,
-        checkedItems : [],
-        Generics : this.$parent
-      };
-    },
+			size : {
+				type : Number,
+				default : 20
+			}
+		},
 
-    created: function () {
-      this.GetAggs(this.field);
-      /*
-     * first request to fetch aggs buckets
-     * */
-      var vm = this; // to be able to access @this from the vue instance in the promise .then()
-      this.Header.Client.search(this.Request).then(function (resp) {
-        console.log(resp);
-        /*
-        * we save the buckets into vm.items
-        * */
-        vm.items = resp.aggregations["agg_terms_"+vm.field].buckets;
+		data : function() {
+			return {
+				items : null, // list of all items
+				checkedItems : [], // list of checked items
+				local : [] // local request
+			};
+		},
+	
+		methods : {
+			// Check or uncheck an item for the input corresponding to the name
+			clickOnLabel : function(name) {
+				// Find input check with the right name
+				let _tag = this.$refs.input.map(div => {
+					return div.getElementsByTagName("input")[0];
+				}).filter((input) => {
+					return input.getAttribute("name") === name;
+				});
 
-      },function () {
+				// Trigger click event on checkbox
+				if (_tag[0])
+					_tag[0].click();
+			},
 
-      });
-    },
-    methods : {
-      // Check or uncheck an item for the input corresponding to the name
-      ClickOn : function(name) {
-        // Find input check with the right name
-        let tag = this.$refs.input.map((div) => {
-          return div.getElementsByTagName("input")[0];
-        }).filter((input) => {
-          return input.getAttribute("name") === name;
-        });
+			// Triggered when user select or unselect an item
+			clickOnItem : function() {
+				// Reset all deep instructions of local request
+				this.local.forEach(instruction => {
+					this.removeInstruction(instruction);
+				});
+				this.local = [];
 
-        // Trigger click event on checkbox
-        if (tag[0])
-          tag[0].click();
-      },
+				// Read all checked items and create appropriate instruction for each of them
+				this.checkedItems.forEach(item => {
+					let _instruction = {
+						fun : 'filter',
+						args : ['term', this.field, item]
+					};
 
-      toggleRefinement(){
-        var obj = [];
-        var vm = this;
-        this.checkedItems.forEach(function (e){
-          obj.push({ term : { [vm.field] : e }});
-        });
-        Store.commit("setFilter",obj);
-        console.log("searchCall");
-        this.Generics.search();
-      }
-    },
-/*
-    created : function() {
-/*       this.local = {
-          fun : "query",
-          args : ['prefix', this.queries, null]
-      };
+					this.local.push(_instruction);
+					this.AddInstruction(_instruction);
+				});
 
-      this.AddInstruction(this.local);
-    }*/
-  };
+				// Update the request
+				this.Mount();
+				
+				// Execute request
+				this.Fetch();
 
+				// Debugg
+				console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.local);
+			}
+		},
 
+		created : function () {
+			// Add aggregation, no need to update it later		
+			let _aggsRequest = this.createRequestForAggs(this.field);
+
+			// Get respective items
+			this.Header.Client.search(_aggsRequest).then(response => {
+				this.items = response.aggregations["agg_terms_" + this.field].buckets;
+			});
+		},
+	};
 </script>

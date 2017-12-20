@@ -66,6 +66,14 @@ export default Vue.mixin({
 
 
         /*
+          Store Elasticsearch Instructions Remove
+        */
+        removeInstruction : (obj) => {
+          Store.commit("Elasticsearch/removeInstruction", obj);
+        },
+
+
+        /*
           Mount full request
         */
         Mount : function() {
@@ -91,6 +99,8 @@ export default Vue.mixin({
           Execute ES request
         */
         Fetch : function() {
+          console.log("[Generics:Fetch] Request : ", this.Request);
+
           // Fetch the hits
           this.Header.Client.search(this.Request).then(function (resp) {
             Store.commit("Reset");
@@ -121,70 +131,26 @@ export default Vue.mixin({
        * @param field : field name of the aggs that we want to fetch
        * @constructor
        */
-      GetAggs : function (field) {
+      createRequestForAggs : function (field) {
         // Bodybuilder object
-        let BD = Bodybuilder().size(0);
-
+        let _request = this.clone(this.Request);
 
         // Store the JSON request into the body
-        this.SetBody(
-          BD
-            .aggregation("terms",field)
-            .build());
+        _request.body = Bodybuilder()
+          .size(0)
+          .aggregation("terms",field)
+          .build();
 
+        return _request;
       },
 
-/*
-        // Triggered when user uses SearchBox component
-        SearchOnBox : function (data) {
-          var query = {
-            index : this.Header.Index,
-            type :this.Header.Type,
-            body : {
-              from : 0,
-              size : 100,
-              query : {
-                bool : {
-                  must : {
-                    prefix: {
-                      [data.query]: data.val
-                    }
-                  }
-                  ,
-                  filter : {
-                    bool : {
-                      must: Store.getters.getFilters()
-                    }
-                  }
-                }
-              }
-            }
-          };
-          Store.commit("setQuery",query);
+        clone : (object) => {
+          return JSON.parse(JSON.stringify(object));
+        },
 
-          this.search();
-        }, */
-
-        search : function () {
-          var query = Store.getters.getQuery();
-          this.Header.Client.search(query).then(function (resp) {
-            Store.commit("Reset");
-            var hits = resp.hits.hits;
-            console.log("Debug Hits : ", resp);
-            if (hits.length === 0) {
-              Store.commit("Score", 0);
-            }
-            else {
-              var score = 0;
-              hits.forEach((obj) => {
-                score++;
-                Store.commit("Item", obj);
-              });
-              Store.commit("Score", resp.hits.total);
-            }
-          }, function (err) {
-            Store.commit("Score", 0);
-          });
+        remove : (object) => {
+          delete object.fun;
+          delete object.args;
         }
     }
 });

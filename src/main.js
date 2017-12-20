@@ -106,8 +106,9 @@ new Vue({
     <h1 class='is-title'>InnerSearch.js</h1>
     <hr class='is-line' />
     <div>
-      <searchbox :autofocus="true" :realtime="false" :queries="'firstname'" :placeholder="'Search by Label'"></searchbox>
+      <searchbox :autofocus="true" :realtime="true" :field="['firstname']" :placeholder="'Search by Label'"></searchbox>
       <refinement-list-filter :field="'state'" :size="20"></refinement-list-filter>
+      <refinement-list-filter :field="'gender'" :size="20"></refinement-list-filter>
       <search-button></search-button>
     </div>
     <hits>
@@ -118,7 +119,7 @@ new Vue({
             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
           </div>
           <div v-for="item in hits.items" :item="item">
-              <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }}</div>
+              <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }})</div>
             </div>
         </template>
     </hits>
