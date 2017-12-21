@@ -38,7 +38,7 @@
 				local : [] // local request
 			};
 		},
-	
+
 		methods : {
 			// Check or uncheck an item for the input corresponding to the name
 			clickOnLabel : function(name) {
@@ -75,7 +75,7 @@
 
 				// Update the request
 				this.Mount();
-				
+
 				// Execute request
 				this.Fetch();
 
@@ -85,8 +85,8 @@
 		},
 
 		created : function () {
-			// Add aggregation, no need to update it later		
-			let _aggsRequest = this.createRequestForAggs(this.field);
+			// Add aggregation, no need to update it later
+			let _aggsRequest = this.createRequestForAggs(this.field,this.size);
 
 			// Get respective items
 			this.Header.Client.search(_aggsRequest).then(response => {

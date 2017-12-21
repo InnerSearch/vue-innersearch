@@ -29,7 +29,7 @@
             // timeout : if realtime is enabled, duration between two requests (in ms)
             "timeout" : {
                 type : Number,
-                default : 300
+                default : 20
             },
 
             // field : contains the fields on which ones request is applied
@@ -45,7 +45,7 @@
                 default : "Search"
             }
         },
-        
+
         data : function() {
             return {
                 mutableField : this.field, // mutable field allowing to update it
@@ -53,7 +53,7 @@
                 local : [], // local request
             };
         },
-        
+
         computed : {
             computedEntry : function() {
                 return this.entry;

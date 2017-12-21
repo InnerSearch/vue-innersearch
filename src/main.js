@@ -108,7 +108,7 @@ new Vue({
     <div>
       <searchbox :autofocus="true" :realtime="true" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
       <!--<searchbox :autofocus="true" :realtime="true" :field="['lastname']" :placeholder="'Search by lastname'"></searchbox>-->
-      <refinement-list-filter :field="'state'" :size="20"></refinement-list-filter>
+      <refinement-list-filter :field="'state'" :size="100000"></refinement-list-filter>
       <!--<refinement-list-filter :field="'gender'" :size="20"></refinement-list-filter>-->
       <search-button></search-button>
     </div>

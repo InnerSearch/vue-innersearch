@@ -125,20 +125,19 @@ export default Vue.mixin({
           console.log("[Generics:Fetch] Work : ", "done");
         },
 
-        
+
       /***
        *
        * @param field : field name of the aggs that we want to fetch
        * @constructor
        */
-      createRequestForAggs : function (field) {
+      createRequestForAggs : function (field,size) {
         // Bodybuilder object
         let _request = this.clone(this.Request);
 
         // Store the JSON request into the body
         _request.body = Bodybuilder()
-          .size(0)
-          .aggregation("terms",field)
+          .aggregation("terms",field,{size : size})
           .build();
 
         return _request;
