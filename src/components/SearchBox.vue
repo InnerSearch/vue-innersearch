@@ -116,8 +116,8 @@
             // Local request data initialization for each field value
             this.mutableField.forEach(attr => {
                 let _instruction = {
-                    fun : 'query',
-                    args : ['prefix', attr, null]
+                    fun : 'filter',
+                    args : ['prefix', attr, ""]
                 };
                 this.local.push(_instruction);
                 this.AddInstruction(_instruction);
