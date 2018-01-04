@@ -126,23 +126,19 @@ export default Vue.mixin({
         },
 
         
-      /***
-       *
-       * @param field : field name of the aggs that we want to fetch
-       * @constructor
-       */
-      createRequestForAggs : function (field) {
-        // Bodybuilder object
-        let _request = this.clone(this.Request);
+        // field name of the aggs that we want to fetch
+        createRequestForAggs : function (field) {
+          // Bodybuilder object
+          let _request = this.clone(this.Request);
 
-        // Store the JSON request into the body
-        _request.body = Bodybuilder()
-          .size(0)
-          .aggregation("terms",field)
-          .build();
+          // Store the JSON request into the body
+          _request.body = Bodybuilder()
+            .size(0)
+            .aggregation("terms",field)
+            .build();
 
-        return _request;
-      },
+          return _request;
+        },
 
         clone : (object) => {
           return JSON.parse(JSON.stringify(object));
