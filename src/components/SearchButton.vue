@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Generics from './../lib/Generics';
+    import Generics from './../lib/generics';
 
     export default {
         name : 'search-button',

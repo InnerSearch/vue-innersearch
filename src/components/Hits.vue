@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Store from './../lib/Store';
+    import Store from './../lib/store';
 
     export default {
         name : "hits",

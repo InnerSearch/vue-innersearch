@@ -27,8 +27,9 @@ const app = express()
 const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
-  quiet: true
+  publicPath : webpackConfig.output.publicPath,
+  index : 'index.html',
+  quiet : true
 })
 
 const hotMiddleware = require('webpack-hot-middleware')(compiler, {

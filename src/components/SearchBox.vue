@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import generics from './../lib/Generics';
+    import generics from './../lib/generics';
     import debounce from 'debounce';
 
     export default {

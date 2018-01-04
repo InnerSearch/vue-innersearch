@@ -2,7 +2,7 @@
  * search.js
  * A query function wrapped up
  */
-import esclient from "./ElasticSearch";
+import esclient from "./elasticSearch";
 // esclient : an instance of elasticsearch.Client, defined in ElasticSearch.js
 // key defined: host, index
 

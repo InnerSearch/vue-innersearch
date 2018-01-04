@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import elasticsearch from "elasticsearch";
+import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
-import Store from './Store';
+import Store from './store';
 
 export default Vue.mixin({
     computed : {
@@ -38,13 +38,13 @@ export default Vue.mixin({
         /*
           Store Elasticsearch Header Setters
         */
-        SetHost : (host) => {
+        setHost : (host) => {
           Store.commit("Elasticsearch/SetHost", new elasticsearch.Client({ host }));
         },
-        SetIndex : (index) => {
+        setIndex : (index) => {
           Store.commit("Elasticsearch/SetIndex", index);
         },
-        SetType : (type) => {
+        setType : (type) => {
           Store.commit("Elasticsearch/SetType", type);
         },
 

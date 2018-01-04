@@ -13,7 +13,7 @@
 
 </template>
 <script>
-	import generics from './../lib/Generics';
+	import generics from './../lib/generics';
 
 	export default {
 		name : "refinement-list-filter",
