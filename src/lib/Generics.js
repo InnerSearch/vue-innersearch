@@ -38,13 +38,13 @@ export default Vue.mixin({
         /*
           Store Elasticsearch Header Setters
         */
-        setHost : (host) => {
+        SetHost : (host) => {
           Store.commit("Elasticsearch/SetHost", new elasticsearch.Client({ host }));
         },
-        setIndex : (index) => {
+        SetIndex : (index) => {
           Store.commit("Elasticsearch/SetIndex", index);
         },
-        setType : (type) => {
+        SetType : (type) => {
           Store.commit("Elasticsearch/SetType", type);
         },
 
