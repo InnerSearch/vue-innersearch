@@ -1,5 +1,5 @@
 <template>
-    <div id="defaultForm">
+    <div id='defaultForm'>
     </div>
 </template>
 
@@ -22,9 +22,9 @@
 
             created : function () {
                 // ES server configuration
-                this.SetHost("http://es.yinyan.fr");
-                this.SetIndex("bank");
-                this.SetType("account");
+                this.SetHost('http://es.yinyan.fr');
+                this.SetIndex('bank');
+                this.SetType('account');
             },
 
             components : {
@@ -68,5 +68,5 @@
         });
     });
 
-    export default { };
+    export default {};
 </script>

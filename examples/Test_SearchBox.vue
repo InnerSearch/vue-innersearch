@@ -7,7 +7,8 @@
     import Vue from 'vue';
     import '../src/style.css';
     import Generics from '../src/lib/generics';
-    import Searchbox from '../src/components/searchBox';
+    import SearchBox from '../src/components/searchBox';
+    import SearchButton from '../src/components/searchButton';
     import Hits from '../src/components/hits';
 
     window.addEventListener('load', function () {
@@ -23,7 +24,8 @@
 
             components : {
                 // Components you need to use
-                'searchbox' : Searchbox,
+                'searchbox' : SearchBox,
+                'search-button' : SearchButton,
                 'hits' : Hits
             },
 
@@ -35,8 +37,9 @@
                 <hr class='is-line' />
 
                 <div>
-                    <searchbox :autofocus="true" :realtime="true" :timeout="500" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
-                </div>
+                    <searchbox :autofocus="true" :realtime="true" :timeout="250" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
+                    <search-button></search-button>
+               </div>
 
                 <hits>
                     <template slot="hits" slot-scope="{ hits }">

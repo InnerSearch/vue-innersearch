@@ -1,6 +1,6 @@
 <template>
-    <div class="is-component is-searchbox">
-        <div class="is-icon is-searchbox" ref='icon' v-on:click='focusOnField("input")'></div>
+    <div class='is-component is-searchbox'>
+        <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
         <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
     </div>
 </template>
@@ -15,48 +15,48 @@
 
         props : {
             // autofocus : if the input is focused when the user load the page
-            "autofocus" : {
+            'autofocus' : {
                 type : Boolean,
                 default : false
             },
 
             // realtime : if the Store object is updated for each change of the input
-            "realtime" : {
+            'realtime' : {
                 type : Boolean,
                 default : false
             },
 
             // timeout : if realtime is enabled, duration between two requests (in ms)
-            "timeout" : {
+            'timeout' : {
                 type : Number,
                 default : 300
             },
 
             // field : contains the fields on which ones request is applied
             // values of Array : [String]
-            "field" : {
+            'field' : {
                 type : [String, Array],
                 required: true
             },
 
             // placeholder : text which appears into the input
-            "placeholder" : {
+            'placeholder' : {
                 type : String,
-                default : "Search"
+                default : 'Search'
             }
         },
         
         data : function() {
             return {
                 mutableField : this.field, // mutable field allowing to update it
-                entry : null, // input value
+                entry : '', // input value
                 local : [], // local request
             };
         },
         
         computed : {
             computedEntry : function() {
-                return this.entry;
+                return this.entry.toLowerCase();
             }
         },
 
@@ -66,6 +66,8 @@
                 this.local.forEach(obj => {
                     obj.args[2] = val;
                 });
+
+                console.log(val);
 
                 // Update the request
                 this.Mount();
@@ -89,7 +91,7 @@
             this.$refs.input.autofocus = this.autofocus || false;
 
             // Add placeholder property to the input html tag
-            this.$refs.input.setAttribute("placeholder", this.placeholder);
+            this.$refs.input.setAttribute('placeholder', this.placeholder);
         },
 
         created : function() {
@@ -117,7 +119,7 @@
             this.mutableField.forEach(attr => {
                 let _instruction = {
                     fun : 'filter',
-                    args : ['prefix', attr, ""]
+                    args : ['prefix', attr, '']
                 };
                 this.local.push(_instruction);
                 this.AddInstruction(_instruction);
