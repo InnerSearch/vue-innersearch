@@ -38,7 +38,7 @@
 				local : [] // local request
 			};
 		},
-	
+
 		methods : {
 			// Check or uncheck an item for the input corresponding to the name
 			clickOnLabel : function(name) {
@@ -70,26 +70,26 @@
 					};
 
 					this.local.push(_instruction);
-					this.AddInstruction(_instruction);
+					this.addInstruction(_instruction);
 				});
 
 				// Update the request
-				this.Mount();
-				
+				this.mount();
+
 				// Execute request
-				this.Fetch();
+				this.fetch();
 
 				// Debugg
-				console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.local);
+				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.local);
 			}
 		},
 
 		created : function () {
-			// Add aggregation, no need to update it later		
+			// Add aggregation, no need to update it later
 			let _aggsRequest = this.createRequestForAggs(this.field);
 
 			// Get respective items
-			this.Header.Client.search(_aggsRequest).then(response => {
+			this.header.client.search(_aggsRequest).then(response => {
 				this.items = response.aggregations["agg_terms_" + this.field].buckets;
 			});
 		},

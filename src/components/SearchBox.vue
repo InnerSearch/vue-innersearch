@@ -45,7 +45,7 @@
                 default : 'Search'
             }
         },
-        
+
         data : function() {
             return {
                 mutableField : this.field, // mutable field allowing to update it
@@ -53,7 +53,7 @@
                 local : [], // local request
             };
         },
-        
+
         computed : {
             computedEntry : function() {
                 return this.entry.toLowerCase();
@@ -67,10 +67,10 @@
                     obj.args[2] = val;
                 });
 
-                console.log(val);
+                //console.log(val);
 
                 // Update the request
-                this.Mount();
+                this.mount();
             }
         },
 
@@ -82,7 +82,7 @@
 
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
-                this.Fetch();
+                this.fetch();
             }
         },
 
@@ -122,7 +122,7 @@
                     args : ['prefix', attr, '']
                 };
                 this.local.push(_instruction);
-                this.AddInstruction(_instruction);
+                this.addInstruction(_instruction);
             });
         }
     };

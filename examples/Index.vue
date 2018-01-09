@@ -22,9 +22,9 @@
 
             created : function () {
                 // ES server configuration
-                this.SetHost('http://es.yinyan.fr');
-                this.SetIndex('bank');
-                this.SetType('account');
+                this.setHost('http://es.yinyan.fr');
+                this.setIndex('bank');
+                this.setType('account');
             },
 
             components : {
@@ -62,7 +62,7 @@
                         </div>
                     </template>
                 </hits>
-                    
+
                 </section>
             `
         });

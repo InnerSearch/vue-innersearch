@@ -1,6 +1,6 @@
 <template>
     <div class="is-component is-search-button">
-        <input class="is-button is-search-button" type="button" :value='this.text' v-on:click='this.ClickOn' />
+        <input class="is-button is-search-button" type="button" :value='this.text' v-on:click='this.clickOn' />
     </div>
 </template>
 
@@ -20,12 +20,12 @@
         },
 
         methods : {
-            ClickOn : function() {
+            clickOn : function() {
                 // Clear debounce actions
                 //this.executeSearch.clear(); ON SEARCHBOX COMPONENT
 
                 // Execute request
-                this.Fetch();
+                this.fetch();
             }
         }
     };

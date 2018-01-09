@@ -6,28 +6,28 @@ import Store from './store';
 export default Vue.mixin({
 	computed : {
 		// Full Elasticsearch request
-		Request : function() {
+		request : function() {
 			return Object.assign({
-				index : this.Header.Index,
-				type : this.Header.Type
+				index : this.header.index,
+				type : this.header.type
 			}, {
-				body : this.Body
+				body : this.body
 			});
 		},
 
 		// Request header (index, type, client)
-		Header : () => {
-			return Store.getters["Elasticsearch/GetHeader"];
+		header : () => {
+			return Store.getters["Elasticsearch/getHeader"];
 		},
 
 		// Request query (generated bodybuilder json request)
-		Body : () => {
-			return Store.getters["Elasticsearch/GetBody"];
+		body : () => {
+			return Store.getters["Elasticsearch/getBody"];
 		},
 
 		// Instructions (contains bodybuilder functions)
-		Instructions : () => {
-			return Store.getters["Elasticsearch/GetInstructions"];
+		instructions : () => {
+			return Store.getters["Elasticsearch/getInstructions"];
 		}
 	},
 
@@ -35,30 +35,30 @@ export default Vue.mixin({
 		/*
 			Store Elasticsearch Header Setters
 		*/
-		SetHost : (host) => {
-			Store.commit("Elasticsearch/SetHost", new elasticsearch.Client({ host }));
+		setHost : (host) => {
+			Store.commit("Elasticsearch/setHost", new elasticsearch.Client({ host }));
 		},
-		SetIndex : (index) => {
-			Store.commit("Elasticsearch/SetIndex", index);
+		setIndex : (index) => {
+			Store.commit("Elasticsearch/setIndex", index);
 		},
-		SetType : (type) => {
-			Store.commit("Elasticsearch/SetType", type);
+		setType : (type) => {
+			Store.commit("Elasticsearch/setType", type);
 		},
 
 
 		/*
 			Store Elasticsearch Body Setter
 		*/
-		SetBody : (type) => {
-			Store.commit("Elasticsearch/SetBody", type);
+		setBody : (type) => {
+			Store.commit("Elasticsearch/setBody", type);
 		},
 
 
 		/*
 			Store Elasticsearch Instructions Add
 		*/
-		AddInstruction : (obj) => {
-			Store.commit("Elasticsearch/AddInstruction", obj);
+		addInstruction : (obj) => {
+			Store.commit("Elasticsearch/addInstruction", obj);
 		},
 
 
@@ -73,36 +73,36 @@ export default Vue.mixin({
 		/*
 			Mount full request
 		*/
-		Mount : function() {
+		mount : function() {
 			// Bodybuilder object
 			let BD = Bodybuilder().from(0).size(10);
 
 			// Execute all instructions to create request
-			this.Instructions.forEach(instr => {
-				console.log("[Generics:Mount] Instr Args : ", instr.args);
+			this.instructions.forEach(instr => {
+				//console.log("[Generics:Mount] Instr Args : ", instr.args);
 				BD[instr.fun](...instr.args);
 			});
 
 			// Store the JSON request into the body
-			this.SetBody(BD.build());
+			this.setBody(BD.build());
 
 			// Debug
-			console.log("[Generics:Mount] Body : ", Store.getters.GetBody);
-			console.log("[Generics:Mount] Request : ", this.Request);
+			//console.log("[Generics:Mount] Body : ", Store.getters.getBody);
+			//console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
 		/*
 			Execute ES request
 		*/
-		Fetch : function() {
-			console.log("[Generics:Fetch] Request : ", this.Request);
+		fetch : function() {
+			//console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Fetch the hits
-			this.Header.Client.search(this.Request).then(function (resp) {
+			this.header.client.search(this.request).then(function (resp) {
 				Store.commit("Reset");
 				var hits = resp.hits.hits;
-				console.log("Debug Hits : ", resp);
+				//console.log("Debug Hits : ", resp);
 				if (hits.length === 0) {
 					Store.commit("Score", 0);
 				}
@@ -119,14 +119,14 @@ export default Vue.mixin({
 			});
 
 			// Debug
-			console.log("[Generics:Fetch] Work : ", "done");
+			//console.log("[Generics:Fetch] Work : ", "done");
 		},
 
-        
+
 		// field name of the aggs that we want to fetch
 		createRequestForAggs : function (field) {
 			// Bodybuilder object
-			let _request = this.clone(this.Request);
+			let _request = this.clone(this.request);
 
 			// Store the JSON request into the body
 			_request.body = Bodybuilder()
@@ -148,6 +148,6 @@ export default Vue.mixin({
 	},
 
 	created : function() {
-		this.Mount(); // Not optimised
+		this.mount(); // Not optimised
 	}
 });

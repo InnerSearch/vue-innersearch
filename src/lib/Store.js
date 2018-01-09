@@ -5,7 +5,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     modules : {
         /*
-            Elasticsearch Header Store
+            Elasticsearch header Store
                 For API ES object
                 For Request
         */
@@ -14,65 +14,65 @@ export default new Vuex.Store({
 
             state : {
                 // ElasticSearch server informations
-                Header : {
-                    Client : {},
-                    Index : "",
-                    Type : ""
+                header : {
+                    client : {},
+                    index : "",
+                    type : ""
                 },
 
                 // Request
-                Body : undefined,
+                body : undefined,
 
                 // Composants d'une requête:
-                Instructions : [],
+                instructions : [],
 
                 // Filters
-                Filters : []
+                filters : []
             },
 
             mutations : {
-                SetHost (state, value) {
-                    state.Header.Client = value;
+                setHost (state, value) {
+                    state.header.client = value;
                 },
 
-                SetIndex (state, value) {
-                    state.Header.Index = value;
+                setIndex (state, value) {
+                    state.header.index = value;
                 },
 
-                SetType (state, value) {
-                    state.Header.Type = value;
+                setType (state, value) {
+                    state.header.type = value;
                 },
 
-                SetBody (state, value) {
-                    state.Body = value;
+                setBody (state, value) {
+                    state.body = value;
                 },
 
-                AddInstruction (state, value) {
-                    state.Instructions.push(value);
+                addInstruction (state, value) {
+                    state.instructions.push(value);
                 },
 
                 removeInstruction (state, value) {
-                    state.Instructions = state.Instructions.filter(function(object) {
+                    state.instructions = state.instructions.filter(function(object) {
                         return object !== value;
                     });
                 }
             },
 
             getters : {
-                GetHeader : state => {
-                    return state.Header;
+                getHeader : state => {
+                    return state.header;
                 },
 
-                GetProperties : state => {
-                    return state.Properties;
+                getProperties : state => {
+                    return state.properties;
                 },
 
-                GetBody : state => {
-                    return state.Body;
+                getBody : state => {
+                    return state.body;
                 },
 
-                GetInstructions : state => {
-                    return state.Instructions;
+                getInstructions : state => {
+                    return state.instructions;
                 }
             }
         },
@@ -81,17 +81,17 @@ export default new Vuex.Store({
         /*
             Results Store
         */
-        Result : {
+        result : {
             state : {
-                Hits : {
-                    Items : [],
-                    Score : null
+                hits : {
+                    items : [],
+                    score : null
                 }
             },
 
             getters : {
-                GetHits : state => {
-                    return state.Hits;
+                getHits : state => {
+                    return state.hits;
                 }
             }
 

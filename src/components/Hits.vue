@@ -12,7 +12,7 @@
         data : function() {
             return {
                 hits : Store.state.hits,
-                Generics : this.$parent,
+                generics : this.$parent,
             };
         }
     };

@@ -23,7 +23,7 @@ InnerSearch is a suite of UI components built in Vue. The aim is to rapidly crea
   - `autofocus` (_Boolean_, default : _false_) :  Cursor focusing on the input by default
   - `realtime` (_Boolean_, default : _false_) : Performing ES request on every input change 
   - `timeout` (_Number_, default : _300_) : Timeout between to ES request (available only if realtime is true)
-  - `queries` (_Array_) :  An array of elasticsearch fields to search within
+  - `field` (_Array_) :  An array of elasticsearch fields to search within
   - `placeholder` (_String_, default : _'Search'_):  Placeholder for the input box
 
 ### RefinementListFilter
@@ -41,3 +41,11 @@ Create a button that display the hits when the user clicks on.
 
 ### Hits
 - **Tag name :** `<hits></hits>`
+- **Overriding template:** You can override the display like this : 
+```html
+<hits>
+  <template slot="hits" slot-scope="{ hits }">
+  ...
+  </template>
+</hits>
+```
