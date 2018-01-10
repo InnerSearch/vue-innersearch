@@ -27,13 +27,16 @@ export default new Vuex.Store({
                 instructions : [],
 
                 // Filters
-                filters : []
+                filters : [],
+
             },
 
             mutations : {
                 setHost (state, value) {
                     state.header.client = value;
                 },
+
+
 
                 setIndex (state, value) {
                     state.header.index = value;
@@ -73,6 +76,9 @@ export default new Vuex.Store({
 
                 getInstructions : state => {
                     return state.instructions;
+                },
+                getAggs : state => {
+                  return state.aggs;
                 }
             }
         },
@@ -86,12 +92,15 @@ export default new Vuex.Store({
                 hits : {
                     items : [],
                     score : null
-                }
+                },
             },
 
             getters : {
                 getHits : state => {
                     return state.hits;
+                },
+                getAggs : state => {
+                  return state.aggs;
                 }
             }
 
@@ -107,6 +116,7 @@ export default new Vuex.Store({
             score : null
         },
         filters : [],
+        aggs : [],
 
         query : {},
     },
@@ -122,7 +132,11 @@ export default new Vuex.Store({
 
         Reset (state) {
             state.hits.items = [];
-        }
+        },
+        setAggs (state,obj){
+          console.log(obj);
+          state.aggs["agg_terms_"+obj.key] = obj.value;
+        },
 
 
     }

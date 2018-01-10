@@ -14,6 +14,7 @@
 </template>
 <script>
 	import generics from './../lib/generics';
+  import Store from './../lib/store';
 
 	export default {
 		name : "refinement-list-filter",
@@ -33,11 +34,16 @@
 
 		data : function() {
 			return {
-				items : null, // list of all items
 				checkedItems : [], // list of checked items
 				local : [] // local request
 			};
 		},
+
+    computed : {
+      items : function () {
+          return Store.getters.aggs["agg_terms_"+ this.field];
+      },
+    },
 
 		methods : {
 			// Check or uncheck an item for the input corresponding to the name
@@ -90,7 +96,17 @@
 
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
-				this.items = response.aggregations["agg_terms_" + this.field].buckets;
+			  let value = response.aggregations["agg_terms_" + this.field].buckets;
+        this.setAggs(this.field,value);
+
+        let _instruction = {
+          fun : 'aggregation',
+          args : ['terms', this.field]
+        };
+
+
+        this.local.push(_instruction);
+        this.addInstruction(_instruction);
 			});
 		},
 	};

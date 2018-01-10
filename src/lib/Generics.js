@@ -69,6 +69,10 @@ export default Vue.mixin({
 			Store.commit("Elasticsearch/removeInstruction", obj);
 		},
 
+    setAggs : (key,value) => {
+      Store.commit("setAggs", {key : key, value : value});
+    },
+
 
 		/*
 			Mount full request
@@ -79,7 +83,7 @@ export default Vue.mixin({
 
 			// Execute all instructions to create request
 			this.instructions.forEach(instr => {
-				//console.log("[Generics:Mount] Instr Args : ", instr.args);
+				//console.log(instr.fun+"."+"("+instr.args+")");
 				BD[instr.fun](...instr.args);
 			});
 
@@ -96,13 +100,16 @@ export default Vue.mixin({
 			Execute ES request
 		*/
 		fetch : function() {
-			//console.log("[Generics:Fetch] Request : ", this.request);
+			console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Fetch the hits
 			this.header.client.search(this.request).then(function (resp) {
 				Store.commit("Reset");
 				var hits = resp.hits.hits;
-				//console.log("Debug Hits : ", resp);
+				console.log("Debug Hits : ", resp.aggregations);
+				for(var prop in resp.aggregations){
+          Store.commit("setAggs", {key : prop, value : resp.aggregations[prop]});
+        }
 				if (hits.length === 0) {
 					Store.commit("Score", 0);
 				}
