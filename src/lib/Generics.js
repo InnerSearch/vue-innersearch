@@ -28,6 +28,10 @@ export default Vue.mixin({
 		// Instructions (contains bodybuilder functions)
 		instructions : () => {
 			return Store.getters["Elasticsearch/getInstructions"];
+		},
+
+		aggregations : () => {
+			return Store.getters["Elasticsearch/getAggregations"];
 		}
 	},
 
@@ -61,7 +65,6 @@ export default Vue.mixin({
 			Store.commit("Elasticsearch/addInstruction", obj);
 		},
 
-
 		/*
 			Store Elasticsearch Instructions Remove
 		*/
@@ -69,9 +72,12 @@ export default Vue.mixin({
 			Store.commit("Elasticsearch/removeInstruction", obj);
 		},
 
-    setAggs : (key,value) => {
-      Store.commit("setAggs", {key : key, value : value});
-    },
+		/*
+			Store Elasticsearch Aggregations Settings
+		*/
+		setAggregations : (name, value) => {
+			Store.commit("Elasticsearch/setAggregations", { name, value });
+		},
 
 
 		/*
@@ -103,13 +109,18 @@ export default Vue.mixin({
 			console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Fetch the hits
-			this.header.client.search(this.request).then(function (resp) {
+			this.header.client.search(this.request).then((resp) => {
 				Store.commit("Reset");
 				var hits = resp.hits.hits;
-				console.log("Debug Hits : ", resp.aggregations);
-				for(var prop in resp.aggregations){
-          Store.commit("setAggs", {key : prop, value : resp.aggregations[prop]});
-        }
+				console.log("[Generics:Fetch] Response : ", resp);
+				console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
+
+				if (resp.aggregations !== undefined) {
+					for(var property in resp.aggregations) {
+						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets);
+					}
+				}
+			
 				if (hits.length === 0) {
 					Store.commit("Score", 0);
 				}
@@ -138,7 +149,7 @@ export default Vue.mixin({
 			// Store the JSON request into the body
 			_request.body = Bodybuilder()
 				.size(0)
-				.aggregation("terms",field)
+				.aggregation("terms", field)
 				.build();
 
 			return _request;

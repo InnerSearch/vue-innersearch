@@ -26,8 +26,10 @@ export default new Vuex.Store({
                 // Composants d'une requête:
                 instructions : [],
 
-                // Filters
-                filters : [],
+                // Aggragations
+                aggregations : {
+                    'gender' : [] // TO FIX
+                },
 
             },
 
@@ -35,8 +37,6 @@ export default new Vuex.Store({
                 setHost (state, value) {
                     state.header.client = value;
                 },
-
-
 
                 setIndex (state, value) {
                     state.header.index = value;
@@ -58,6 +58,10 @@ export default new Vuex.Store({
                     state.instructions = state.instructions.filter(function(object) {
                         return object !== value;
                     });
+                },
+
+                setAggregations (state, { name, value }) {
+                    state.aggregations[name] = value;
                 }
             },
 
@@ -77,8 +81,9 @@ export default new Vuex.Store({
                 getInstructions : state => {
                     return state.instructions;
                 },
-                getAggs : state => {
-                  return state.aggs;
+
+                getAggregations : state => {
+                  return state.aggregations;
                 }
             }
         },
@@ -98,9 +103,6 @@ export default new Vuex.Store({
             getters : {
                 getHits : state => {
                     return state.hits;
-                },
-                getAggs : state => {
-                  return state.aggs;
                 }
             }
 
@@ -116,7 +118,7 @@ export default new Vuex.Store({
             score : null
         },
         filters : [],
-        aggs : [],
+        aggs : {}, // [{ key : 69 }, { key : 69 }],
 
         query : {},
     },
@@ -133,11 +135,33 @@ export default new Vuex.Store({
         Reset (state) {
             state.hits.items = [];
         },
-        setAggs (state,obj){
-          console.log(obj);
-          state.aggs["agg_terms_"+obj.key] = obj.value;
+
+        createAgg (state, name) {
+            state.aggs[name] = [69, 69];
         },
 
+        setAggs (state, obj) {
+          //console.log("[Store:setAggs] Aggregations object :", obj);
+          //console.log("[Store:setAggs] Aggregations key :", obj.key);
+          state.aggs[obj.key] = obj.value;
+          console.log("[Store:setAggs] items :", state.aggs);
+        },
 
-    }
+/*         setAggsDebug(state, value) {
+            state.aggs[0].key += value;
+            //state.aggs[0] += value;
+        } */
+    },
+
+    getters : {
+        getAggs : state => {
+        return state.aggs;
+        }
+    },
+
+/*     actions : {
+        setAggss ({ commit }) {
+            commit('setAggs')
+        }
+    } */
 });

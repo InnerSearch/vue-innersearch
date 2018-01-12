@@ -1,20 +1,20 @@
 <template>
-<div class="is-component is-refinement-list">
-  <div v-for="item in items" class="is-item is-refinement-list" ref="input">
-    <input
-        type="checkbox"
-        :name="item.key"
-        :value="item.key"
-        v-model="checkedItems"
-        @change="clickOnItem()">
-    <label v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} ) </label>
-  </div>
-</div>
-
+	<div class="is-component is-refinement-list">
+		<div v-for="item in items" class="is-item is-refinement-list" ref="input">
+			<input
+				type="checkbox"
+				:name="item.key"
+				:value="item.key"
+				v-model="checkedItems"
+				@change="clickOnItem()">
+			<label v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+		</div>
+	</div>
 </template>
+
 <script>
 	import generics from './../lib/generics';
-  import Store from './../lib/store';
+	import Store from './../lib/store';
 
 	export default {
 		name : "refinement-list-filter",
@@ -39,13 +39,17 @@
 			};
 		},
 
-    computed : {
-      items : function () {
-          return Store.getters.aggs["agg_terms_"+ this.field];
-      },
-    },
+		computed : {
+			items : function() {
+				return this.aggregations[this.field];
+			}
+		},
 
 		methods : {
+			updateLabels : function(value) {
+				this.setAggregations(this.field, value);
+			},
+
 			// Check or uncheck an item for the input corresponding to the name
 			clickOnLabel : function(name) {
 				// Find input check with the right name
@@ -87,6 +91,7 @@
 
 				// Debugg
 				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.local);
+				console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
 			}
 		},
 
@@ -96,18 +101,20 @@
 
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
-			  let value = response.aggregations["agg_terms_" + this.field].buckets;
-        this.setAggs(this.field,value);
+				let value = response.aggregations['agg_terms_' + this.field].buckets;
+				console.log('[RefinementListFilter:created] Value of aggregations :', value);
 
-        let _instruction = {
-          fun : 'aggregation',
-          args : ['terms', this.field]
-        };
+				// Create aggregations items
+				this.updateLabels(value);
 
+				let _instruction = {
+					fun : 'aggregation',
+					args : ['terms', this.field]
+				};
 
-        this.local.push(_instruction);
-        this.addInstruction(_instruction);
+				this.local.push(_instruction);
+				this.addInstruction(_instruction);
 			});
-		},
+		}
 	};
 </script>
