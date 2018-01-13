@@ -30,6 +30,7 @@ export default Vue.mixin({
 			return Store.getters["Elasticsearch/getInstructions"];
 		},
 
+		// Aggregations (contains all components aggregations objects)
 		aggregations : () => {
 			return Store.getters["Elasticsearch/getAggregations"];
 		}
@@ -71,6 +72,7 @@ export default Vue.mixin({
 		removeInstruction : (obj) => {
 			Store.commit("Elasticsearch/removeInstruction", obj);
 		},
+
 
 		/*
 			Store Elasticsearch Aggregations Settings

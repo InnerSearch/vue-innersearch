@@ -27,9 +27,7 @@ export default new Vuex.Store({
                 instructions : [],
 
                 // Aggragations
-                aggregations : {
-                    'gender' : [] // TO FIX
-                },
+                aggregations : {},
 
             },
 
@@ -61,7 +59,7 @@ export default new Vuex.Store({
                 },
 
                 setAggregations (state, { name, value }) {
-                    state.aggregations[name] = value;
+                    Vue.set(state.aggregations, name, value);
                 }
             },
 
