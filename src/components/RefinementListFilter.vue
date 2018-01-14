@@ -41,7 +41,7 @@
 
 		computed : {
 			items : function() {
-				return this.aggregations[this.field];
+				return this.getAggregations[this.field];
 			}
 		},
 
@@ -68,6 +68,7 @@
 			clickOnItem : function() {
 				// Reset all deep instructions of local request
 				this.local.forEach(instruction => {
+				  console.log(instruction);
 					this.removeInstruction(instruction);
 				});
 				this.local = [];
@@ -82,6 +83,14 @@
 					this.local.push(_instruction);
 					this.addInstruction(_instruction);
 				});
+
+        let _instruction = {
+          fun : 'aggregation',
+          args : ['terms', this.field]
+        };
+
+        this.local.push(_instruction);
+        this.addInstruction(_instruction);
 
 				// Update the request
 				this.mount();

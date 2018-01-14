@@ -31,7 +31,7 @@ export default Vue.mixin({
 		},
 
 		// Aggregations (contains all components aggregations objects)
-		aggregations : () => {
+		getAggregations : () => {
 			return Store.getters["Elasticsearch/getAggregations"];
 		}
 	},
@@ -117,12 +117,15 @@ export default Vue.mixin({
 				console.log("[Generics:Fetch] Response : ", resp);
 				console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
+        /***
+         * Update aggregations after each ES request
+         */
 				if (resp.aggregations !== undefined) {
 					for(var property in resp.aggregations) {
 						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets);
 					}
 				}
-			
+
 				if (hits.length === 0) {
 					Store.commit("Score", 0);
 				}
