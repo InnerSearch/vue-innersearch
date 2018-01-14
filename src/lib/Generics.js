@@ -31,7 +31,7 @@ export default Vue.mixin({
 		},
 
 		// Aggregations (contains all components aggregations objects)
-		getAggregations : () => {
+		aggregations : () => {
 			return Store.getters["Elasticsearch/getAggregations"];
 		}
 	},
@@ -83,6 +83,22 @@ export default Vue.mixin({
 
 
 		/*
+			Mount global function
+		*/
+		mountInstructions : function(instructions) {
+			// Bodybuilder object
+			let BD = Bodybuilder();
+
+			// Execute all instructions to create request
+			instructions.forEach(instr => {
+				BD[instr.fun](...instr.args);
+			});
+
+			// Return the built request
+			return BD.build();
+		},
+
+		/*
 			Mount full request
 		*/
 		mount : function() {
@@ -91,7 +107,6 @@ export default Vue.mixin({
 
 			// Execute all instructions to create request
 			this.instructions.forEach(instr => {
-				//console.log(instr.fun+"."+"("+instr.args+")");
 				BD[instr.fun](...instr.args);
 			});
 
@@ -148,6 +163,7 @@ export default Vue.mixin({
 
 		// field name of the aggs that we want to fetch
 		createRequestForAggs : function (field) {
+
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 

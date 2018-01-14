@@ -29,25 +29,46 @@
 			size : {
 				type : Number,
 				default : 20
+			},
+
+			orderKey : {
+				type : String,
+				default : '_term'
+			},
+
+			orderDirection : {
+				type : String,
+				default : 'asc'
 			}
 		},
 
 		data : function() {
 			return {
 				checkedItems : [], // list of checked items
-				local : [] // local request
+				localAggregations : [], // lcoal aggregation instructions
+				localInstructions : [] // local request
 			};
 		},
 
 		computed : {
 			items : function() {
-				return this.getAggregations[this.field];
+				return this.aggregations[this.field];
 			}
 		},
 
 		methods : {
 			updateLabels : function(value) {
 				this.setAggregations(this.field, value);
+			},
+
+			addAggregationInstructions : function() {
+				let _instruction = {
+					fun : 'aggregation',
+					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } }]
+				};
+
+				this.localAggregations.push(_instruction);
+				this.addInstruction(_instruction);
 			},
 
 			// Check or uncheck an item for the input corresponding to the name
@@ -67,11 +88,11 @@
 			// Triggered when user select or unselect an item
 			clickOnItem : function() {
 				// Reset all deep instructions of local request
-				this.local.forEach(instruction => {
-				  console.log(instruction);
+				this.localInstructions.forEach(instruction => {
+					console.log(instruction);
 					this.removeInstruction(instruction);
 				});
-				this.local = [];
+				this.localInstructions = [];
 
 				// Read all checked items and create appropriate instruction for each of them
 				this.checkedItems.forEach(item => {
@@ -80,17 +101,9 @@
 						args : ['term', this.field, item]
 					};
 
-					this.local.push(_instruction);
+					this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
 				});
-
-        let _instruction = {
-          fun : 'aggregation',
-          args : ['terms', this.field]
-        };
-
-        this.local.push(_instruction);
-        this.addInstruction(_instruction);
 
 				// Update the request
 				this.mount();
@@ -99,14 +112,19 @@
 				this.fetch();
 
 				// Debugg
-				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.local);
-				console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
+				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
+				//console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
 			}
 		},
 
 		created : function () {
 			// Add aggregation, no need to update it later
-			let _aggsRequest = this.createRequestForAggs(this.field);
+			let _aggsRequest = this.createRequestForAggs(this.field);   // TO FIX ; find an other way to create a new request
+
+			console.log(_aggsRequest)
+
+			// Search respective aggregations
+			this.addAggregationInstructions();
 
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
@@ -115,14 +133,6 @@
 
 				// Create aggregations items
 				this.updateLabels(value);
-
-				let _instruction = {
-					fun : 'aggregation',
-					args : ['terms', this.field]
-				};
-
-				this.local.push(_instruction);
-				this.addInstruction(_instruction);
 			});
 		}
 	};
