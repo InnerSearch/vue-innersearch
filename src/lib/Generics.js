@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
-import Store from './store';
+import Store from './Store';
 
 export default Vue.mixin({
 	computed : {
