@@ -6,10 +6,10 @@
 <script>
     import Vue from 'vue';
     import '../src/style.css';
-    import Generics from '../src/lib/generics';
-    import SearchBox from '../src/components/searchBox';
-    import SearchButton from '../src/components/searchButton';
-    import Hits from '../src/components/hits';
+    import Generics from '../src/lib/Generics';
+    import SearchBox from '../src/components/SearchBox';
+    import SearchButton from '../src/components/SearchButton';
+    import Hits from '../src/components/Hits';
 
     window.addEventListener('load', function () {
         new Vue({

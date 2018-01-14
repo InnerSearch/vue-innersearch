@@ -10,11 +10,11 @@
 
     import Vue from 'vue';
     import '../src/style.css';
-    import Generics from '../src/lib/generics';
-    import Searchbox from '../src/components/searchBox';
-    import Hits from '../src/components/hits';
-    import RefinementListFilter from '../src/components/refinementListFilter';
-    import SearchButton from '../src/components/searchButton';
+    import Generics from '../src/lib/Generics';
+    import Searchbox from '../src/components/SearchBox';
+    import Hits from '../src/components/Hits';
+    import RefinementListFilter from '../src/components/RefinementListFilter';
+    import SearchButton from '../src/components/SearchButton';
 
     window.addEventListener('load', function () {
         new Vue({
