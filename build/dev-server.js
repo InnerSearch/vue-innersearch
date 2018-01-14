@@ -28,7 +28,7 @@ const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath : webpackConfig.output.publicPath,
-  index : 'index.html',
+  //index : 'index.html',
   quiet : true
 })
 
