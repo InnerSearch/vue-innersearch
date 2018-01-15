@@ -1,6 +1,6 @@
 const _URL = 'http://localhost:4000/#/test_refinementListFilter',
-  _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
-  _HITS = '.is-score.is-hits';
+      _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
+      _HITS = '.is-score.is-hits';
 
 describe('Test RefinementListFilter', () => {
   beforeEach(function() {
