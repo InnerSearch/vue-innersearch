@@ -64,7 +64,7 @@
 			addAggregationInstructions : function() {
 				let _instruction = {
 					fun : 'aggregation',
-					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } }]
+					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } , size : this.size}]
 				};
 
 				this.localAggregations.push(_instruction);
@@ -119,7 +119,7 @@
 
 		created : function () {
 			// Add aggregation, no need to update it later
-			let _aggsRequest = this.createRequestForAggs(this.field);   // TO FIX ; find an other way to create a new request
+			let _aggsRequest = this.createRequestForAggs(this.field,this.size);   // TO FIX ; find an other way to create a new request
 
 			console.log(_aggsRequest)
 
