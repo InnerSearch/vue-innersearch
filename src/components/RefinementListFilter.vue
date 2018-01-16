@@ -7,7 +7,7 @@
 				:value="item.key"
 				v-model="checkedItems"
 				@change="clickOnItem()">
-			<label v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+			<label :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
 		</div>
 	</div>
 </template>

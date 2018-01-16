@@ -33,7 +33,7 @@ describe('Test RefinementListFilter', () => {
       cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
     });
     it('should be filtering as expected' , function () {
-      cy.get(_REFINEMENT_LIST_FILTER + ' label:first').contains(valCheck.name+' ( '+valCheck.count+' )');
+      cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains(valCheck.name+' ( '+valCheck.count+' )');
     });
     it('Hits results for filtering by md state', function() {
       cy.get(_ITEMS).each((item, index) => {
