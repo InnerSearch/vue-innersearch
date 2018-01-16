@@ -81,6 +81,7 @@ export default new Vuex.Store({
 
                     // Save the new agg object
                     Vue.set(state.aggregations, name, _aggs);
+                    //state.aggregations = {...state.aggregations , [name] : _aggs};
                 }
             },
 
