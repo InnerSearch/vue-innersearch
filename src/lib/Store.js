@@ -59,7 +59,8 @@ export default new Vuex.Store({
                 },
 
                 setAggregations (state, { name, value }) {
-                    Vue.set(state.aggregations, name, value);
+                    //state.aggregations = {...state.aggregations , [name] : value};
+                    Vue.set(state.aggregations, name, value); //OU on utilise cette méthode
                 }
             },
 
