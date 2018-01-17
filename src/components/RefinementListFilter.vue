@@ -47,18 +47,22 @@
 				type : Boolean,
 				default : false
 			},
-      displayCount : {
-			  type : Boolean,
-        default : true,
-      },
-      title : {
-			  type : String,
-        default : ''
-      },
-      operator : {
-			  type : String,
-        default : 'AND',
-      }
+
+			displayCount : {
+				type : Boolean,
+				default : true,
+			},
+			
+			title : {
+				type : String,
+				default : ''
+			},
+
+			operator : {
+				type : String,
+				default : 'AND',
+			}
+
 		},
 
 		data : function() {

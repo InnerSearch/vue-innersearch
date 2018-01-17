@@ -115,7 +115,7 @@ export default Vue.mixin({
 
 			// Debug
 			//console.log("[Generics:Mount] Body : ", Store.getters.getBody);
-			//console.log("[Generics:Mount] Request : ", this.request);
+			console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
