@@ -39,6 +39,18 @@
                 required: true
             },
 
+            // operator : logical operator applied when the is several field
+            'operator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // pattern : regexp pattern
+            'pattern' : {
+                type : String,
+                default : '.*{v}.*'
+            },
+
             // placeholder : text which appears into the input
             'placeholder' : {
                 type : String,
@@ -50,6 +62,7 @@
             return {
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
+                fun : undefined, // function applied
                 localInstructions : [], // local request
             };
         },
@@ -62,12 +75,38 @@
 
         watch : {
             computedEntry : function(val) {
-                // Set local argument for each field
-                this.localInstructions.forEach(obj => {
-                    obj.args[2] = val;
-                });
+                // Case where val is not empty : we add instructions
+                if (val.length > 0) {
+                    // Local request data initialization for each field value
+                    if (this.localInstructions.length === 0) {
+                        this.mutableField.forEach(attr => {
+                            let _instruction = {
+                                fun : this.fun,
+                                args : ['regexp', attr, this.pattern.replace('{v}', val)]
+                            };
 
-                //console.log(val);
+                            this.localInstructions.push(_instruction);
+                            this.addInstruction(_instruction);
+                        });
+                    }
+
+                    // Set local argument for each field
+                    else {
+                        this.localInstructions.forEach(obj => {
+                            obj.args[2] = this.pattern.replace('{v}', val);
+                        });
+                    }
+                }
+            
+                // Case where val is empty : we remove all instructions about this component to match with everything (by default thanks to ES behavior)
+                else {
+                    // Reset all deep instructions of local request
+                    this.localInstructions.forEach(instruction => {
+                        this.removeInstruction(instruction);
+                    });
+
+                    this.localInstructions = [];
+                }
 
                 // Update the request
                 this.mount();
@@ -115,15 +154,8 @@
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];
 
-            // Local request data initialization for each field value
-            this.mutableField.forEach(attr => {
-                let _instruction = {
-                    fun : 'filter',
-                    args : ['prefix', attr, '']
-                };
-                this.localInstructions.push(_instruction);
-                this.addInstruction(_instruction);
-            });
+            // Function calculation depending on operator property
+            this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
         }
     };
 </script>
