@@ -15,7 +15,7 @@
       el: '#defaultForm',
 
       created : function () {
-        // ES server configuration
+        // ES server configuration 
         this.setHost("http://es.yinyan.fr");
         this.setIndex("bank");
         this.setType("account");
