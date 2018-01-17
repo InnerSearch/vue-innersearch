@@ -58,12 +58,13 @@ export default new Vuex.Store({
                     });
                 },
 
-                setAggregations (state, { name, value, isDynamic }) {
+                setAggregations (state, { name, value, isDynamic, orderKey, orderDirection }) {
+                  console.log(orderDirection,orderKey);
                     if (isDynamic) {
                         Vue.set(state.aggregations, name, value);
                     }
                     else {
-                        let _aggs = state.aggregations[name];
+                      let _aggs = state.aggregations[name];
 
                         // Initialization : the agg object doesn't still exist
                         if (_aggs === undefined)
@@ -80,6 +81,23 @@ export default new Vuex.Store({
                                     agg.doc_count = 0;
                                 else
                                     agg.doc_count = _found.doc_count;
+                            });
+                            console.log(_aggs);
+                            // Sorting aggs in terms of orderKey and orderDirection
+                            _aggs.sort((e,e2) => {
+                              if(orderKey=="asc"){
+                                if(orderDirection=="_term"){
+                                  return e.key - e2.key;
+                                }else {
+                                  return e.doc_count - e2.doc_count;
+                                }
+                              }else {
+                                if(orderDirection=="_term"){
+                                  return e2.key - e.key;
+                                } else {
+                                  return e2.doc_count - e.doc_count;
+                                }
+                              }
                             });
                         }
 

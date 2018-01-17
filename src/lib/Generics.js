@@ -77,8 +77,8 @@ export default Vue.mixin({
 		/*
 			Store Elasticsearch Aggregations Settings
 		*/
-		setAggregations : (name, value, isDynamic) => {
-			Store.commit("Elasticsearch/setAggregations", { name, value, isDynamic });
+		setAggregations : (name, value, isDynamic,orderKey, orderDirection) => {
+			Store.commit("Elasticsearch/setAggregations", { name, value, isDynamic, orderKey, orderDirection });
 		},
 
 
@@ -115,7 +115,7 @@ export default Vue.mixin({
 
 			// Debug
 			//console.log("[Generics:Mount] Body : ", Store.getters.getBody);
-			console.log("[Generics:Mount] Request : ", this.request);
+			//console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
@@ -137,7 +137,7 @@ export default Vue.mixin({
          */
 				if (resp.aggregations !== undefined) {
 					for(var property in resp.aggregations) {
-						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,false); // TODO fix le isDynamic
+						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,false); // TODO fix le isDynamic, le orderKey et orderDirection
 					}
 				}
 
