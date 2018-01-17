@@ -33,9 +33,9 @@ describe('Test SearchBox with basic submit button', () => {
 		cy.focused().should('have.class', 'is-searchbox').and('have.class', 'is-field');
 	});
 
-	it('Empty field returns 1000 hits' , function() {
+	it('Empty field returns 1002 hits' , function() {
 		cy.get(_BUTTON).click();
-		cy.get(_HITS).contains('1000 results found');
+		cy.get(_HITS).contains('1002 results found');
 	});
 
 	it('Hits results for : s', function() {
