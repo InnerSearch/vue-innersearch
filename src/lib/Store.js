@@ -58,30 +58,36 @@ export default new Vuex.Store({
                     });
                 },
 
-                setAggregations (state, { name, value }) {
-                    let _aggs = state.aggregations[name];
-
-                    // Initialization : the agg object doesn't still exist
-                    if (_aggs === undefined)
-                        _aggs = value;
-
-                    // Update : the agg object still exists, we just update it
-                    else {
-                        _aggs.forEach(agg => {
-                            let _found = value.filter(obj => {
-                                return obj.key === agg.key;
-                            })[0];
-
-                            if (_found === undefined)
-                                agg.doc_count = 0;
-                            else
-                                agg.doc_count = _found.doc_count;
-                        });
+                setAggregations (state, { name, value, isDynamic }) {
+                    console.log(isDynamic)
+                    if (isDynamic) {
+                        Vue.set(state.aggregations, name, value);
                     }
+                    else {
+                        let _aggs = state.aggregations[name];
 
-                    // Save the new agg object
-                    Vue.set(state.aggregations, name, _aggs);
-                    //state.aggregations = {...state.aggregations , [name] : _aggs};
+                        // Initialization : the agg object doesn't still exist
+                        if (_aggs === undefined)
+                            _aggs = value;
+
+                        // Update : the agg object still exists, we just update it
+                        else {
+                            _aggs.forEach(agg => {
+                                let _found = value.filter(obj => {
+                                    return obj.key === agg.key;
+                                })[0];
+
+                                if (_found === undefined)
+                                    agg.doc_count = 0;
+                                else
+                                    agg.doc_count = _found.doc_count;
+                            });
+                        }
+
+                        // Save the new agg object
+                        Vue.set(state.aggregations, name, _aggs);
+                        //state.aggregations = {...state.aggregations , [name] : _aggs};
+                    }
                 }
             },
 
@@ -178,6 +184,10 @@ export default new Vuex.Store({
         return state.aggs;
         }
     },
+
+    created : function() {
+
+    }
 
 /*     actions : {
         setAggss ({ commit }) {

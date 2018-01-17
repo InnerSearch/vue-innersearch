@@ -50,7 +50,7 @@
             return {
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
-                local : [], // local request
+                localInstructions : [], // local request
             };
         },
 
@@ -63,7 +63,7 @@
         watch : {
             computedEntry : function(val) {
                 // Set local argument for each field
-                this.local.forEach(obj => {
+                this.localInstructions.forEach(obj => {
                     obj.args[2] = val;
                 });
 
@@ -121,7 +121,7 @@
                     fun : 'filter',
                     args : ['prefix', attr, '']
                 };
-                this.local.push(_instruction);
+                this.localInstructions.push(_instruction);
                 this.addInstruction(_instruction);
             });
         }

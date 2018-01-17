@@ -39,6 +39,11 @@
 			orderDirection : {
 				type : String,
 				default : 'asc'
+			},
+
+			dynamic : {
+				type : Boolean,
+				default : false
 			}
 		},
 
@@ -58,14 +63,16 @@
 
 		methods : {
 			updateLabels : function(value) {
-				this.setAggregations(this.field, value);
+				console.log("UPDATE : ", this.dynamic)
+				this.setAggregations(this.field, value, this.dynamic);
 			},
 
 			addAggregationInstructions : function() {
 				let _instruction = {
 					fun : 'aggregation',
-					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } , size : this.size}]
+					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } , size : this.size }]
 				};
+
 
 				this.localAggregations.push(_instruction);
 				this.addInstruction(_instruction);

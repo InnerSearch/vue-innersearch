@@ -77,8 +77,8 @@ export default Vue.mixin({
 		/*
 			Store Elasticsearch Aggregations Settings
 		*/
-		setAggregations : (name, value) => {
-			Store.commit("Elasticsearch/setAggregations", { name, value });
+		setAggregations : (name, value, isDynamic) => {
+			Store.commit("Elasticsearch/setAggregations", { name, value, isDynamic });
 		},
 
 
@@ -184,9 +184,5 @@ export default Vue.mixin({
 			delete object.fun;
 			delete object.args;
 		}
-	},
-
-	created : function() {
-		this.mount(); // Not optimised
 	}
 });
