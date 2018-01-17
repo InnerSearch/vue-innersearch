@@ -137,7 +137,7 @@ export default Vue.mixin({
          */
 				if (resp.aggregations !== undefined) {
 					for(var property in resp.aggregations) {
-						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,true); // TODO fix le isDynamic
+						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,false); // TODO fix le isDynamic
 					}
 				}
 

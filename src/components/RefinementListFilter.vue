@@ -1,5 +1,6 @@
 <template>
 	<div class="is-component is-refinement-list">
+    <h3>{{title}}</h3>
 		<div v-for="item in items" class="is-item is-refinement-list" ref="input">
 			<input
 				type="checkbox"
@@ -7,7 +8,8 @@
 				:value="item.key"
 				v-model="checkedItems"
 				@change="clickOnItem()">
-			<label :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+			<label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+			<label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
 		</div>
 	</div>
 </template>
@@ -44,7 +46,19 @@
 			dynamic : {
 				type : Boolean,
 				default : false
-			}
+			},
+      displayCount : {
+			  type : Boolean,
+        default : true,
+      },
+      title : {
+			  type : String,
+        default : ''
+      },
+      operator : {
+			  type : String,
+        default : 'AND',
+      }
 		},
 
 		data : function() {
@@ -101,10 +115,13 @@
 
 				// Read all checked items and create appropriate instruction for each of them
 				this.checkedItems.forEach(item => {
+
 					let _instruction = {
-						fun : 'filter',
+						//fun : 'filter',
+						fun : this.operator.toLocaleLowerCase()+'Filter',
 						args : ['term', this.field, item]
 					};
+					console.log(_instruction);
 
 					this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
