@@ -1,7 +1,9 @@
 const _URL = 'http://localhost:4000/#/test_refinementListFilter',
+      _URL2 = 'http://localhost:4000/#/test_refinementListFilter2',
       _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
       _HITS = '.is-score.is-hits',
       _ITEMS = 'div.hit',
+      _TITLE = '.is-refinement-menu-title',
 
       _FIRSTNAME = '.firstname',
       _LASTNAME = '.lastname',
@@ -24,6 +26,9 @@ describe('Test RefinementListFilter', () => {
       expect($el.get(0)).to.have.prop("checked",true);
     })
   });
+  it('should display the correct title' , function () {
+    cy.get(_TITLE).contains("State : ");
+  });
   context('Filtered research', function () {
     const valCheck = {
       name : 'md',
@@ -42,6 +47,13 @@ describe('Test RefinementListFilter', () => {
         cy.wrap(item).find(_LASTNAME).contains(_currentHit.lastname);
         cy.wrap(item).find(_STATE).contains(_currentHit.state);
         cy.wrap(item).find(_GENDER).contains(_currentHit.gender);
+      });
+    });
+    it('should display aggregations ordered by _count ascending', function () {
+      cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').invoke('text').then((text1) => {
+        cy.get(_REFINEMENT_LIST_FILTER + ' label:last').invoke('text').should((text2) => {
+          expect(text1).to.equal(text2);
+        });
       });
     });
   });

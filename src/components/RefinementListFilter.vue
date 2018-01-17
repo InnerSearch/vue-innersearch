@@ -1,6 +1,6 @@
 <template>
 	<div class="is-component is-refinement-list">
-    <h3>{{title}}</h3>
+    <h3 class="is-refinement-menu-title">{{title}}</h3>
 		<div v-for="item in items" class="is-item is-refinement-list" ref="input">
 			<input
 				type="checkbox"
@@ -77,7 +77,7 @@
 
 		methods : {
 			updateLabels : function(value) {
-				this.setAggregations(this.field, value, this.dynamic);
+				this.setAggregations(this.field, value, this.dynamic,this.orderKey,this.orderDirection);
 			},
 
 			addAggregationInstructions : function() {
@@ -121,7 +121,6 @@
 						fun : this.operator.toLocaleLowerCase()+'Filter',
 						args : ['term', this.field, item]
 					};
-					console.log(_instruction);
 
 					this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
