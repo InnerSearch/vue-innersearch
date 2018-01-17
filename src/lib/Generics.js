@@ -123,21 +123,21 @@ export default Vue.mixin({
 			Execute ES request
 		*/
 		fetch : function() {
-			console.log("[Generics:Fetch] Request : ", this.request);
+			//console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Fetch the hits
 			this.header.client.search(this.request).then((resp) => {
 				Store.commit("Reset");
 				var hits = resp.hits.hits;
-				console.log("[Generics:Fetch] Response : ", resp);
-				console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
+				//console.log("[Generics:Fetch] Response : ", resp);
+				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
         /***
          * Update aggregations after each ES request
          */
 				if (resp.aggregations !== undefined) {
 					for(var property in resp.aggregations) {
-						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets);
+						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,true); // TODO fix le isDynamic
 					}
 				}
 
@@ -162,7 +162,7 @@ export default Vue.mixin({
 
 
 		// field name of the aggs that we want to fetch
-		createRequestForAggs : function (field,size) {
+		createRequestForAggs : function (field,size,orderKey,orderDirection) {
 
 			// Bodybuilder object
 			let _request = this.clone(this.request);
@@ -170,7 +170,7 @@ export default Vue.mixin({
 			// Store the JSON request into the body
 			_request.body = Bodybuilder()
 				.size(200)
-				.aggregation("terms", field,{ size : size })
+				.aggregation("terms", field,{ order : { [orderKey] : orderDirection } , size : size })
 				.build();
 
 			return _request;

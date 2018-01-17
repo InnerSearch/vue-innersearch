@@ -63,7 +63,6 @@
 
 		methods : {
 			updateLabels : function(value) {
-				console.log("UPDATE : ", this.dynamic)
 				this.setAggregations(this.field, value, this.dynamic);
 			},
 
@@ -96,7 +95,6 @@
 			clickOnItem : function() {
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
-					console.log(instruction);
 					this.removeInstruction(instruction);
 				});
 				this.localInstructions = [];
@@ -126,9 +124,9 @@
 
 		created : function () {
 			// Add aggregation, no need to update it later
-			let _aggsRequest = this.createRequestForAggs(this.field,this.size);   // TO FIX ; find an other way to create a new request
+			let _aggsRequest = this.createRequestForAggs(this.field,this.size,this.orderKey,this.orderDirection);   // TODO ; find an other way to create a new request
 
-			console.log(_aggsRequest)
+			//console.log(_aggsRequest)
 
 			// Search respective aggregations
 			this.addAggregationInstructions();
@@ -136,7 +134,7 @@
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
 				let value = response.aggregations['agg_terms_' + this.field].buckets;
-				console.log('[RefinementListFilter:created] Value of aggregations :', value);
+				//console.log('[RefinementListFilter:created] Value of aggregations :', value);
 
 				// Create aggregations items
 				this.updateLabels(value);

@@ -45,7 +45,7 @@
                 <div>
                     <searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
                     <searchbox :autofocus="true" :realtime="true" :field="['lastname']" :placeholder="'Search by lastname'"></searchbox>
-                    <refinement-list-filter :field="'state'" :size="100" :dynamic="true"></refinement-list-filter>
+                    <refinement-list-filter :field="'state'" :size="100" :dynamic="true" orderKey="_count" orderDirection="asc"></refinement-list-filter>
                     <refinement-list-filter :field="'gender'" :size="100"></refinement-list-filter>
                     <search-button></search-button>
                 </div>

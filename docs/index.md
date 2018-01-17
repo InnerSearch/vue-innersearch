@@ -13,25 +13,19 @@ InnerSearch is a suite of UI components built in Vue. The aim is to rapidly crea
 ## 4 Components list
 - [SearchBox](###SearchBox)
 - [RefinementListFilter](###RefinementListFilter)
-- [SearchButton](###SearchButton)
+- [SearchButton](/components/seachbox.md)
 - [Hits](###Hits)
 
-### SearchBox
 
-- **Tag name :** `<searchbox></searchbox>`
-- **Properties :**
-  - `autofocus` (_Boolean_, default : _false_) :  Cursor focusing on the input by default
-  - `realtime` (_Boolean_, default : _false_) : Performing ES request on every input change 
-  - `timeout` (_Number_, default : _300_) : Timeout between to ES request (available only if realtime is true)
-  - `field` (_Array_) :  An array of elasticsearch fields to search within
-  - `placeholder` (_String_, default : _'Search'_):  Placeholder for the input box
 
 ### RefinementListFilter
 - **Tag name :** `<refinement-list-filter></refinement-list-filter>`
 - **Properties :**
-  - `field` (_string_) : Name of the aggregation
-  - `size` (_number_): Amount of bulks 
-
+  - `field` (_String_) : Name of the aggregation
+  - `size` (_Number_): Amount of bulks
+  - `orderKey` (_String_) : Possible value (`_term`  |`_count` ) to order by count number or by name term
+  - `orderDirection` (_String_) : Possible value (`asc` | `desc ` )
+  - `dymanic` (_Boolean_) : Updating aggregations dynamicly 
 ### SearchButton
 - **Tag name :** `<search-button></search-button>`
 - **Property :**

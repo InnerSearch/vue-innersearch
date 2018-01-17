@@ -59,7 +59,6 @@ export default new Vuex.Store({
                 },
 
                 setAggregations (state, { name, value, isDynamic }) {
-                    console.log(isDynamic)
                     if (isDynamic) {
                         Vue.set(state.aggregations, name, value);
                     }
@@ -170,7 +169,7 @@ export default new Vuex.Store({
           //console.log("[Store:setAggs] Aggregations object :", obj);
           //console.log("[Store:setAggs] Aggregations key :", obj.key);
           state.aggs[obj.key] = obj.value;
-          console.log("[Store:setAggs] items :", state.aggs);
+          //console.log("[Store:setAggs] items :", state.aggs);
         },
 
 /*         setAggsDebug(state, value) {
