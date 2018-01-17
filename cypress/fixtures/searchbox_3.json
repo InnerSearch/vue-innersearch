@@ -1,0 +1,35 @@
+{
+   "took":0,
+   "timed_out":false,
+   "_shards":{
+      "total":5,
+      "successful":5,
+      "skipped":0,
+      "failed":0
+   },
+   "hits":{
+      "total":1,
+      "max_score":0,
+      "hits":[
+         {
+            "_index":"bank",
+            "_type":"account",
+            "_id":"793",
+            "_score":0,
+            "_source":{
+               "account_number":793,
+               "balance":16911,
+               "firstname":"Alford",
+               "lastname":"Compton",
+               "age":36,
+               "gender":"M",
+               "address":"186 Veronica Place",
+               "employer":"Zyple",
+               "email":"alfordcompton@zyple.com",
+               "city":"Sugartown",
+               "state":"AK"
+            }
+         }
+      ]
+   }
+}
