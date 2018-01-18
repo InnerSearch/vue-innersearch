@@ -135,10 +135,9 @@ export default Vue.mixin({
         /***
          * Update aggregations after each ES request
          */
+        var event = new CustomEvent('updateAggs', { 'detail' : resp.aggregations });
 				if (resp.aggregations !== undefined) {
-					for(var property in resp.aggregations) {
-						this.setAggregations(property.replace('agg_terms_', ''), resp.aggregations[property].buckets,false); // TODO fix le isDynamic, le orderKey et orderDirection
-					}
+          document.dispatchEvent(event);
 				}
 
 				if (hits.length === 0) {

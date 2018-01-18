@@ -154,6 +154,17 @@
 
 				// Create aggregations items
 				this.updateLabels(value);
+
+				var $vm = this;
+        /***
+         * This @event is triggered in Generics.js fetch method
+         */
+        document.addEventListener('updateAggs', function (e) {
+          let aggs = e.detail;
+          console.log($vm.field,$vm.orderKey,$vm.orderDirection,);
+          $vm.setAggregations($vm.field, aggs['agg_terms_'+$vm.field].buckets,$vm.dynamic,$vm.orderKey,$vm.orderDirection);
+        });
+
 			});
 		}
 	};

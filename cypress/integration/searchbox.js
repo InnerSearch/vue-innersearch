@@ -36,7 +36,7 @@ describe('Test SearchBox with basic submit button', () => {
 	it('Empty field returns 1002 hits' , function() {
 		cy.get(_BUTTON).click();
 		cy.get(_HITS).contains('1002 results found');
-	});o
+	});
 
 	it('Hits results for : s', function() {
 		cy.get(_SEARCHBOX).type('s');

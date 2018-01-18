@@ -36,6 +36,7 @@ describe('Test RefinementListFilter', () => {
     };
     beforeEach(function () {
       cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
+      cy.wait(250);
     });
     it('should be filtering as expected' , function () {
       cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains(valCheck.name+' ( '+valCheck.count+' )');
