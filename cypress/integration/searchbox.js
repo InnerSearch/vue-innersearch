@@ -40,7 +40,7 @@ describe('Test SearchBox with basic submit button', () => {
 
 	it('Hits results for : s', function() {
 		cy.get(_SEARCHBOX).type('s');
-		cy.wait(150).get(_HITS).contains('73 results found');
+		cy.wait(150).get(_HITS).contains('287 results found');
 		LoopForHits(searchbox_sample_1);
 	});
 
