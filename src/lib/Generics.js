@@ -33,7 +33,18 @@ export default Vue.mixin({
 		// Aggregations (contains all components aggregations objects)
 		aggregations : () => {
 			return Store.getters["Elasticsearch/getAggregations"];
-		}
+		},
+
+
+		// Output items
+		items : () => {
+			return Store.getters["Hits/getItems"];
+		},
+
+		// Items count
+		score : () => {
+			return Store.getters["Hits/getScore"];
+		},
 	},
 
 	methods : {
@@ -54,23 +65,23 @@ export default Vue.mixin({
 		/*
 			Store Elasticsearch Body Setter
 		*/
-		setBody : (type) => {
-			Store.commit("Elasticsearch/setBody", type);
+		setBody : (body) => {
+			Store.commit("Elasticsearch/setBody", body);
 		},
 
 
 		/*
 			Store Elasticsearch Instructions Add
 		*/
-		addInstruction : (obj) => {
-			Store.commit("Elasticsearch/addInstruction", obj);
+		addInstruction : (instruction) => {
+			Store.commit("Elasticsearch/addInstruction", instruction);
 		},
 
 		/*
 			Store Elasticsearch Instructions Remove
 		*/
-		removeInstruction : (obj) => {
-			Store.commit("Elasticsearch/removeInstruction", obj);
+		removeInstruction : (instruction) => {
+			Store.commit("Elasticsearch/removeInstruction", instruction);
 		},
 
 
@@ -86,8 +97,8 @@ export default Vue.mixin({
 			Add a debounce event to ES store
 			That permits to clear (reset) all listed hanged debounces when an user is triggered fetch()
 		*/
-		addDebounce : (obj) => {
-			Store.commit("Elasticsearch/addDebounce", obj);
+		addDebounce : (debounce) => {
+			Store.commit("Elasticsearch/addDebounce", debounce);
 		},
 
 
@@ -97,6 +108,32 @@ export default Vue.mixin({
 		*/
 		resetDebounce : () => {
 			Store.commit("Elasticsearch/resetDebounce");
+		},
+
+
+
+		
+		/*
+			Add item into the Store
+		*/
+		addItem : (item) => {
+			Store.commit("Hits/addItem", item);
+		},
+
+
+		/*
+			Empty the store items list
+		*/
+		clearItems : () => {
+			Store.commit("Hits/clearItems");
+		},
+
+
+		/*
+			Set the score of items
+		*/
+		setScore : (score) => {
+			Store.commit("Hits/setScore", score);
 		},
 
 
@@ -148,7 +185,10 @@ export default Vue.mixin({
 
 			// Fetch the hits
 			this.header.client.search(this.request).then((resp) => {
-				Store.commit("Reset");
+
+				// Remove all hits
+				this.clearItems();
+
 				var hits = resp.hits.hits;
 				console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
@@ -161,17 +201,16 @@ export default Vue.mixin({
 					document.dispatchEvent(event);
 
 				if (hits.length === 0)
-					Store.commit("Score", 0);
+					this.setScore(0);
 				else {
-					var score = 0;
-					hits.forEach((obj) => {
-					score++;
-					Store.commit("Item", obj);
+					hits.forEach((hit) => {
+						this.addItem(hit);
 					});
-					Store.commit("Score", resp.hits.total);
+
+					this.setScore(resp.hits.total)
 				}
 			}, function (err) {
-				Store.commit("Score", 0);
+				this.setScore(0);
 			});
 
 			// Debug

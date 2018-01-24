@@ -46,7 +46,7 @@
                     <searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
                     <searchbox :autofocus="true" :realtime="true" :field="['firstname', 'lastname']" :placeholder="'Search by firstname and lastname'"></searchbox>
                     <refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
-                    <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="false"></refinement-list-filter>
+                    <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true"></refinement-list-filter>
                     <search-button></search-button>
                 </div>
 

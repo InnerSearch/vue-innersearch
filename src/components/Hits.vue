@@ -1,19 +1,23 @@
 <template>
-    <section v-if="hits.score != null" class="is-component is-hits">
+    <section v-if="hits.score != undefined" class="is-component is-hits">
         <slot name="hits" v-bind:hits="hits"></slot>
     </section>
 </template>
 
 <script>
-    import Store from './../lib/Store';
+    import generics from './../lib/Generics';
 
     export default {
         name : "hits",
-        data : function() {
-            return {
-                hits : Store.state.hits,
-                generics : this.$parent,
-            };
+        mixins : [generics],
+
+        computed : {
+            hits : function() {
+                return {
+                    items : this.items,
+                    score : this.score
+                };
+            }
         }
     };
 </script>

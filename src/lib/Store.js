@@ -147,82 +147,42 @@ export default new Vuex.Store({
 
 
         /*
-            Results Store
+            Hits Store
         */
-        result : {
+        Hits : {
+            namespaced : true,
+
             state : {
-                hits : {
-                    items : [],
-                    score : null
+                // Hits list
+                items : [],
+
+                // Hits count
+                score : undefined
+            },
+
+            mutations : {
+                addItem (state, value) {
+                    state.items.push(value);
+                },
+        
+                clearItems (state) {
+                    state.items = [];
+                },
+
+                setScore (state, value) {
+                    state.score = value;
                 },
             },
 
             getters : {
-                getHits : state => {
-                    return state.hits;
+                getItems : state => {
+                    return state.items;
+                },
+
+                getScore : state => {
+                    return state.score;
                 }
             }
-
-
         }
-    },
-
-
-
-    state : {
-        hits : {
-            items : [],
-            score : null
-        },
-        filters : [],
-        aggs : {},
-
-        query : {},
-    },
-
-    mutations : {
-        Score (state, value) {
-            state.hits.score = value;
-        },
-
-        Item (state, value) {
-            state.hits.items.push(value);
-        },
-
-        Reset (state) {
-            state.hits.items = [];
-        },
-
-        createAgg (state, name) {
-            state.aggs[name] = [69, 69];
-        },
-
-        setAggs (state, obj) {
-          //console.log("[Store:setAggs] Aggregations object :", obj);
-          //console.log("[Store:setAggs] Aggregations key :", obj.key);
-          state.aggs[obj.key] = obj.value;
-          //console.log("[Store:setAggs] items :", state.aggs);
-        },
-
-/*         setAggsDebug(state, value) {
-            state.aggs[0].key += value;
-            //state.aggs[0] += value;
-        } */
-    },
-
-    getters : {
-        getAggs : state => {
-        return state.aggs;
-        }
-    },
-
-    created : function() {
-
     }
-
-/*     actions : {
-        setAggss ({ commit }) {
-            commit('setAggs')
-        }
-    } */
 });
