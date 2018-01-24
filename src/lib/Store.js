@@ -23,11 +23,14 @@ export default new Vuex.Store({
                 // Request
                 body : undefined,
 
-                // Composants d'une requête:
+                // Request instructions
                 instructions : [],
 
-                // Aggragations
+                // Aggregations
                 aggregations : {},
+
+                // Hanged debounce list
+                debounce : []
 
             },
 
@@ -106,6 +109,16 @@ export default new Vuex.Store({
                         Vue.set(state.aggregations, name, _aggs);
                         //state.aggregations = {...state.aggregations , [name] : _aggs};
                     }
+                },
+
+                addDebounce(state, value) {
+                    state.debounce.push(value);
+                },
+
+                resetDebounce(state) {
+                    state.debounce.forEach(debounce => {
+                        debounce.clear();
+                    });
                 }
             },
 
@@ -162,7 +175,7 @@ export default new Vuex.Store({
             score : null
         },
         filters : [],
-        aggs : {}, // [{ key : 69 }, { key : 69 }],
+        aggs : {},
 
         query : {},
     },

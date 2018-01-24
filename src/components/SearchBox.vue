@@ -135,7 +135,7 @@
 
         created : function() {
             // Create a dynamic watcher on the input which call the mixins Fetch function
-            var disableWatcherFetch = this.$watch(function() {
+            let _disableWatcherFetch = this.$watch(function() {
                 return this.entry;
             }, {
                 handler : function(val) {
@@ -145,10 +145,13 @@
             });
 
             // Behavior when realtime is enabled or not
-            if (this.realtime)
-                this.executeSearch = debounce(this.executeSearch, this.timeout); // Apply debounce method with the timeout value on the current SeachOn function
+            if (this.realtime) {
+                let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
+                this.addDebounce(_debounce); // Add debounce event to listed debounce into the Store
+                this.executeSearch = _debounce; // Apply debounce
+            }
             else
-                disableWatcherFetch(); // Disabled the watcher that disabled fetch event
+                _disableWatcherFetch(); // Disable the watcher that disable fetch event
 
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))

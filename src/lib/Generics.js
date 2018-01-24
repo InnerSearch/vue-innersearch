@@ -83,6 +83,24 @@ export default Vue.mixin({
 
 
 		/*
+			Add a debounce event to ES store
+			That permits to clear (reset) all listed hanged debounces when an user is triggered fetch()
+		*/
+		addDebounce : (obj) => {
+			Store.commit("Elasticsearch/addDebounce", obj);
+		},
+
+
+		/*
+			Reset all the listed debounces
+			Called by fetch()
+		*/
+		resetDebounce : () => {
+			Store.commit("Elasticsearch/resetDebounce");
+		},
+
+
+		/*
 			Mount global function
 		*/
 		mountInstructions : function(instructions) {
@@ -125,24 +143,25 @@ export default Vue.mixin({
 		fetch : function() {
 			//console.log("[Generics:Fetch] Request : ", this.request);
 
+			// Reset debounce events
+			this.resetDebounce();
+
 			// Fetch the hits
 			this.header.client.search(this.request).then((resp) => {
 				Store.commit("Reset");
 				var hits = resp.hits.hits;
-				//console.log("[Generics:Fetch] Response : ", resp);
+				console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
-        /***
-         * Update aggregations after each ES request
-         */
-        var event = new CustomEvent('updateAggs', { 'detail' : resp.aggregations });
-				if (resp.aggregations !== undefined) {
-          document.dispatchEvent(event);
-				}
+				/***
+				 * Update aggregations after each ES request
+				 */
+				var event = new CustomEvent('updateAggs', { 'detail' : resp.aggregations });
+				if (resp.aggregations !== undefined)
+					document.dispatchEvent(event);
 
-				if (hits.length === 0) {
+				if (hits.length === 0)
 					Store.commit("Score", 0);
-				}
 				else {
 					var score = 0;
 					hits.forEach((obj) => {

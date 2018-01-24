@@ -53,9 +53,9 @@
                 <hits>
                     <template slot="hits" slot-scope="{ hits }">
                         <div class="is-score is-hits">
-                        <strong v-if="hits.score === 0">No result found</strong>
-                        <strong v-else-if="hits.score === 1">1 result found</strong>
-                        <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+                            <strong v-if="hits.score === 0">No result found</strong>
+                            <strong v-else-if="hits.score === 1">1 result found</strong>
+                            <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
                         </div>
                         <div v-for="item in hits.items" :item="item">
                             <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }})</div>
