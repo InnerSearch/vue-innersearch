@@ -45,6 +45,7 @@
 
 .is-line {
     width : 90%;
+    margin: auto;
 }
 
 
@@ -74,7 +75,7 @@
 
 
 /*
-    SearchBox
+    Refinement list
 */
 
 .is-component.is-refinement-list {

@@ -15,6 +15,7 @@
     import Hits from '../src/components/Hits';
     import RefinementListFilter from '../src/components/RefinementListFilter';
     import SearchButton from '../src/components/SearchButton';
+    import Paginate from '../src/components/Paginate';
 
     window.addEventListener('load', function () {
         new Vue({
@@ -32,7 +33,8 @@
                 'refinement-list-filter' : RefinementListFilter,
                 'searchbox' : Searchbox,
                 'search-button' : SearchButton,
-                'hits' : Hits
+                'hits' : Hits,
+                'paginate' : Paginate
             },
 
             template : `
@@ -51,6 +53,7 @@
                     <search-button></search-button>
                 </div>
 
+
                 <hits>
                     <template slot="hits" slot-scope="{ hits }">
                         <div class="is-score is-hits">
@@ -64,6 +67,7 @@
                     </template>
                 </hits>
 
+                <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
                 </section>
             `
         });
