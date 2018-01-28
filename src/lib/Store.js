@@ -89,20 +89,21 @@ export default new Vuex.Store({
                             //console.log(_aggs);
                             // Sorting aggs in terms of orderKey and orderDirection
                             _aggs.sort((e,e2) => {
-                              if(orderKey=="asc"){
-                                if(orderDirection=="_term"){
+                              if(orderDirection==="asc"){
+                                if(orderKey==="_term"){
                                   return e.key - e2.key;
                                 }else {
                                   return e.doc_count - e2.doc_count;
                                 }
                               }else {
-                                if(orderDirection=="_term"){
+                                if(orderKey==="_term"){
                                   return e2.key - e.key;
                                 } else {
                                   return e2.doc_count - e.doc_count;
                                 }
                               }
                             });
+                            console.log(_aggs);
                         }
 
                         // Save the new agg object
@@ -164,7 +165,7 @@ export default new Vuex.Store({
                 addItem (state, value) {
                     state.items.push(value);
                 },
-        
+
                 clearItems (state) {
                     state.items = [];
                 },

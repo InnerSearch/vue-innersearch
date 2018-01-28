@@ -1,11 +1,11 @@
-<template>
+npm<template>
 	<section v-if="hits.score != undefined" class="is-component is-line">
 		<slot name="buttons">
-		<input class="is-button is-previous-button" type="button" :value='this.previousText' v-on:click='this.clickOnPrevious' />
+		<input class="is-button is-previous-button" type="button" :value='previousText' v-on:click='clickOnPrevious' />
 
-		<input class="is-button is-next-button" type="button" :value='this.nextText' v-on:click='this.clickOnNext'/>
+		<input class="is-button is-next-button" type="button" :value='nextText' v-on:click='clickOnNext'/>
 
-		<input class="is-field is-current-page" type="text" :value="this.page" ref="current" disabled="true" />
+		<input class="is-field is-current-page" type="text" :value="nbPage" ref="current" disabled="true" />
 		</slot>
 	</section>
 </template>
@@ -49,28 +49,31 @@
 				};
 			}
 		},
+    data : function () {
+		  return {
+		    nbPage : this.page,
+      }
+    },
 
 		methods : {
 			clickOnNext : function() {
-				if(this.hits.score >= this.size * (this.page+1)) {
-					this.page++;
-					this.$refs.current.value = this.page;
+				if(this.hits.score >= this.size * (this.nbPage+1)) {
+					this.nbPage++;
 
 					this.mount();
-					this.body.from = this.size * this.page;
+					this.body.from = this.size * this.nbPage;
 					this.body.size = this.size;
 					this.fetch();
-					
+
 				}
 			},
 
 			clickOnPrevious : function() {
-				if(this.page > 0) {
-					this.page--;
-					this.$refs.current.value = this.page;
+				if(this.nbPage > 0) {
+					this.nbPage--;
 
 					this.mount();
-					this.body.from = this.size * this.page;
+					this.body.from = this.size * this.nbPage;
 					this.body.size = this.size;
 					this.fetch();
 				}
@@ -79,7 +82,7 @@
 
 		created : function() {
 			this.mount();
-			this.body.from = this.page;
+			this.body.from = this.nbPage;
 			this.body.size = this.size;
 		}
 	};
