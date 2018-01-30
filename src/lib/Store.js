@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
+
 export default new Vuex.Store({
     modules : {
         /*
@@ -30,8 +31,17 @@ export default new Vuex.Store({
                 aggregations : {},
 
                 // Hanged debounce list
-                debounce : []
+                debounce : [],
 
+                // Components identification for interactions
+                components : {
+                    CID : 0, // Static component counter
+                    bus : new Vue(), // communication bus
+                    list : {
+                        refinementListFilter : [],
+                        paginate : []
+                    }
+                }
             },
 
             mutations : {
@@ -120,6 +130,11 @@ export default new Vuex.Store({
                     state.debounce.forEach(debounce => {
                         debounce.clear();
                     });
+                },
+
+                addComponent(state, value) {
+                    let ID = value + '_C' + state.components.CID++;
+                    state.components.list[value].push(ID);
                 }
             },
 
@@ -141,7 +156,19 @@ export default new Vuex.Store({
                 },
 
                 getAggregations : state => {
-                  return state.aggregations;
+                    return state.aggregations;
+                },
+
+                getCid : state => {
+                    return state.components.CID;
+                },
+
+                getBus : state => {
+                    return state.components.bus;
+                },
+
+                getComponents : state => {
+                    return state.components.list;
                 }
             }
         },

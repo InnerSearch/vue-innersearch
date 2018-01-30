@@ -1,12 +1,10 @@
-npm<template>
-	<section v-if="hits.score != undefined" class="is-component is-line">
-		<slot name="buttons">
-		<input class="is-button is-previous-button" type="button" :value='previousText' v-on:click='clickOnPrevious' />
+<template>
+	<section v-if='hits.score != undefined' class='is-component is-line'>
+		<input class='is-button is-previous-button' type='button' :value='previousText' v-on:click='clickOnPrevious' />
 
-		<input class="is-button is-next-button" type="button" :value='nextText' v-on:click='clickOnNext'/>
+		<input class='is-button is-next-button' type='button' :value='nextText' v-on:click='clickOnNext'/>
 
-		<input class="is-field is-current-page" type="text" :value="nbPage" ref="current" disabled="true" />
-		</slot>
+		<input class='is-field is-current-page' type='text' :value='(nbPage + 1) + "/" + maxPage' ref='current' disabled='true' />
 	</section>
 </template>
 
@@ -16,7 +14,7 @@ npm<template>
 	import Bodybuilder from 'bodybuilder';
 
 	export default {
-		name : "paginate",
+		name : 'paginate',
 		mixins : [generics],
 		props : {
 
@@ -27,12 +25,12 @@ npm<template>
 
 			previousText : {
 				type : String,
-				default : "Previous"
+				default : 'Previous'
 			},
 
 			nextText : {
 				type : String,
-				default : "Next"
+				default : 'Next'
 			},
 
 			page : {
@@ -47,40 +45,72 @@ npm<template>
 					items : this.items,
 					score : this.score
 				};
+			},
+
+			maxPage : function() {
+				return Math.ceil(this.hits.score / this.size);
 			}
 		},
-    data : function () {
-		  return {
-		    nbPage : this.page,
-      }
-    },
+
+		data : function() {
+			return {
+				CID : undefined,
+				nbPage : this.page
+			}
+    	},
 
 		methods : {
-			clickOnNext : function() {
-				if(this.hits.score >= this.size * (this.nbPage+1)) {
-					this.nbPage++;
+			resetPagination : function() {
+ 				this.nbPage = this.page;
+				this.body.from = this.nbPage;
+				this.body.size = this.size;
+			},
 
-					this.mount();
-					this.body.from = this.size * this.nbPage;
-					this.body.size = this.size;
-					this.fetch();
+			updatePagination : function() {
+				this.mount();
+				this.body.from = this.size * this.nbPage;
+				this.body.size = this.size;
+			},
 
-				}
+			fetchPagination : function() {
+				// Disabled pagination reset for this fetch() call, and then reactive the listener
+				this.bus.$off(this.CID);
+				this.fetch();
+				this.bus.$on(this.CID, this.resetPagination);
 			},
 
 			clickOnPrevious : function() {
-				if(this.nbPage > 0) {
+				if (this.nbPage > 0) {
 					this.nbPage--;
 
-					this.mount();
-					this.body.from = this.size * this.nbPage;
-					this.body.size = this.size;
-					this.fetch();
+					// Update pagination
+					this.updatePagination();
+
+					// Execute ES request
+					this.fetchPagination();
+				}
+			},
+
+			clickOnNext : function() {
+				if (this.hits.score > this.size * (this.nbPage + 1)) {
+					this.nbPage++;
+
+					// Update pagination
+					this.updatePagination();
+
+					// Execute ES request
+					this.fetchPagination();
 				}
 			}
 		},
 
 		created : function() {
+			// Interactive component declaration
+			this.CID = this.addComponent('paginate');
+
+			// Listening on self-component emissions
+			this.bus.$on(this.CID, this.resetPagination);
+
 			this.mount();
 			this.body.from = this.nbPage;
 			this.body.size = this.size;

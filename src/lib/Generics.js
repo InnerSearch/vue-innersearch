@@ -35,6 +35,16 @@ export default Vue.mixin({
 			return Store.getters["Elasticsearch/getAggregations"];
 		},
 
+		// Communication bus
+		bus : () => {
+			return Store.getters["Elasticsearch/getBus"];
+		},
+
+		// Interactive components (for $emit events)
+		components : (name) => {
+			return Store.getters["Elasticsearch/getComponents"]
+		},
+
 
 		// Output items
 		items : () => {
@@ -111,6 +121,15 @@ export default Vue.mixin({
 		},
 
 
+		/*
+			Add an interactive component to the store
+			Returns the component ID (CID)
+		*/
+		addComponent : function(name) {
+			let CID = Store.getters["Elasticsearch/getCid"];
+			Store.commit('Elasticsearch/addComponent', name);
+			return name + '_C' + CID;
+		},
 
 		
 		/*
@@ -213,8 +232,11 @@ export default Vue.mixin({
 				this.setScore(0);
 			});
 
-			// Debug
-			//console.log("[Generics:Fetch] Work : ", "done");
+
+			// Events emission for appropriate components
+			this.components.paginate.forEach(component => {
+				this.bus.$emit(component);
+			});
 		},
 
 
