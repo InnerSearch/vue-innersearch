@@ -16,6 +16,7 @@
     import RefinementListFilter from '../src/components/RefinementListFilter';
     import SearchButton from '../src/components/SearchButton';
     import Paginate from '../src/components/Paginate';
+    import PaginateAlt from "../src/components/PaginateAlt.vue";
 
     window.addEventListener('load', function () {
         new Vue({
@@ -34,7 +35,8 @@
                 'searchbox' : Searchbox,
                 'search-button' : SearchButton,
                 'hits' : Hits,
-                'paginate' : Paginate
+                'paginate' : Paginate,
+                'paginate-alt': PaginateAlt
             },
 
             template : `
@@ -66,6 +68,7 @@
                     </hits>
 
                     <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+                    <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
                 </section>
             `
         });
