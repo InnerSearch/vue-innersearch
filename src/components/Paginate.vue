@@ -4,7 +4,7 @@
 
 		<input class='is-button is-next-button' type='button' :value='nextText' v-on:click='clickOnNext'/>
 
-		<input class='is-field is-current-page' type='text' :value='(nbPage + 1) + "/" + maxPage' ref='current' disabled='true' />
+		<input class='is-field is-current-page' type='text' :value='(maxPage <= 0 ? 0 : nbPage + 1) + "/" + maxPage' ref='current' disabled='true' />
 	</section>
 </template>
 
