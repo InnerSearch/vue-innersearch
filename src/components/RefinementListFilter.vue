@@ -31,6 +31,10 @@
 			size : {
 				type : Number,
 				default : 20
+        /***
+         * buckets counts are approximate
+         * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
+         */
 			},
 
 			orderKey : {

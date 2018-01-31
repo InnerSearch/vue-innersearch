@@ -9,6 +9,7 @@
   import Generics from '../src/lib/Generics';
   import RefinementListFilter from '../src/components/RefinementListFilter.vue';
   import Hits from '../src/components/Hits';
+  import PaginateAlt from "../src/components/PaginateAlt.vue";
 
   window.addEventListener('load', function () {
     new Vue({
@@ -24,7 +25,8 @@
       components : {
         // Components you need to use
         'RefinementListFilter' : RefinementListFilter,
-        'hits' : Hits
+        'hits' : Hits,
+        'paginateAlt' : PaginateAlt,
       },
 
       template : `
@@ -35,7 +37,7 @@
                 <hr class='is-line' />
 
                 <div>
-                  <refinement-list-filter :field="'state'" :size="10" title="State : " operator="OR" :displayCount="true" orderDirection="desc" orderKey="_count" :dynamic="false" ></refinement-list-filter>
+                  <refinement-list-filter :field="'state'" :size="15" title="State : " operator="OR" :displayCount="true" orderDirection="desc" orderKey="_count" :dynamic="false" ></refinement-list-filter>
                </div>
 
                 <hits>
@@ -50,6 +52,8 @@
                         </div>
                     </template>
                 </hits>
+
+                <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
 
                 </section>
             `

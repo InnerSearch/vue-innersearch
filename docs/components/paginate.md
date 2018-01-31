@@ -9,6 +9,11 @@
 
 - **Examples :**
 
+- **Description :**
+A component to navigate between results pages.
+
+
+
 ```html
 <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
 ```

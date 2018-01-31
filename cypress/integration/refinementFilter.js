@@ -60,3 +60,29 @@ describe('Test RefinementListFilter', () => {
   });
 
 });
+
+describe('Test RefinementListFilter2', () => {
+  beforeEach(function() {
+    cy.visit(_URL2);
+    cy.server();
+  });
+
+  it('should display at least 23 aggs state', function () {
+    cy.get('.is-item .is-refinement-list').should('have.length.lte',23);
+  });
+
+  it('should display 57 hits when filtering Texas (tx) or Idaho (id) states' , function () {
+    const valCheck = {
+      name : 'tx',
+      name2 : 'id'
+    };
+
+    cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
+    cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name2);
+    cy.wait(250);
+
+    cy.wait(150).get(_HITS).contains('57 results found');
+
+
+  });
+});
