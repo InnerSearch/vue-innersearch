@@ -17,3 +17,7 @@
 
 <searchbox :field="['firstname', 'lastname']" :pattern="'{v}.*'" :operator="'AND'" :placeholder="'Search by firstname and lastname (prefix)'"></searchbox>
 ```
+
+```html
+<paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+```
