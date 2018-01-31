@@ -15,6 +15,7 @@ InnerSearch is a suite of UI components built in Vue. The aim is to rapidly crea
 - [RefinementListFilter](components/refinementListFilter.md)
 - [SearchButton](components/searchButton.md)
 - [Hits](components/hits.md)
+- [Paginate](components/paginate.md)
 
 
 
