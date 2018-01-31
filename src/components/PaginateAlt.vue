@@ -22,10 +22,32 @@
         <ul 
             class="pagination-list"
         >
+            <li>
+                <a 
+                    v-if="nbPage == 0"
+                    class="pagination-link is-current" 
+                >
+                    1
+                </a>
+                <a 
+                    v-else
+                    class="pagination-link" 
+                    @click="jumpToPage(0)"
+                >
+                    1
+                </a>
+            </li>
+
+            <li
+                v-if="nbPage>6"
+            >
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
         
             <li
                 v-for="(e, i) in maxPage"
                 :key="i"
+                v-if="e>1 && e<maxPage"
             >
                 <a 
                     v-if="e == nbPage+1"
@@ -34,11 +56,33 @@
                     {{e}}
                 </a>
                 <a 
-                    v-else
+                    v-else-if="(e > nbPage-5 && e < nbPage+6)"
                     class="pagination-link" 
                     @click="jumpToPage(e)"
                 >
                     {{e}}
+                </a>
+            </li>
+
+            <li
+                v-if="nbPage < maxPage-5"
+            >
+                <span class="pagination-ellipsis">&hellip;</span>
+            </li>
+
+            <li>
+                <a 
+                    v-if="nbPage == maxPage-1"
+                    class="pagination-link is-current" 
+                >
+                    {{maxPage}}
+                </a>
+                <a 
+                    v-else
+                    class="pagination-link" 
+                    @click="jumpToPage(maxPage)"
+                >
+                    {{maxPage}}
                 </a>
             </li>
         </ul>
