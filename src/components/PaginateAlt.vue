@@ -32,7 +32,7 @@
                 <a 
                     v-else
                     class="pagination-link" 
-                    @click="jumpToPage(0)"
+                    @click="jumpToPage(1)"
                 >
                     1
                 </a>
@@ -145,7 +145,8 @@
 		data : function() {
 			return {
 				CID : undefined,
-				nbPage : this.page
+                nbPage : this.page,
+                nbPage1: this.page+1
 			}
     	},
 
