@@ -9,3 +9,8 @@
   - `displayCount` (_Boolean_) : Display or not numbers of aggregations
   - `title` (_String_) : Title of the menu. Shown as a header and within selected filters
   - `operator` (_'AND'|'OR'_) : If you filter on a and b with OR, results with either the value a or b will match. If you select a and b, results will show which have both a and b.
+  
+  
+```html
+<refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+```
