@@ -70,7 +70,9 @@
                 <span class="pagination-ellipsis">&hellip;</span>
             </li>
 
-            <li>
+            <li
+                v-if="maxPage>1"
+            >
                 <a 
                     v-if="nbPage == maxPage-1"
                     class="pagination-link is-current" 
