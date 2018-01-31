@@ -11,6 +11,7 @@
   - `placeholder` (_String_, default : _'Search'_):  Placeholder for the input box
   
 - **Examples :**
+
 ```html
 <searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
