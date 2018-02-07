@@ -44,6 +44,8 @@
 
                 <div>
                     <searchbox :autofocus="true" :realtime="true" :field="['PROMOTEUR', 'DESCRIPTION']" :placeholder="'Search by keywords'"></searchbox>
+                    <refinement-list-filter :field="'SITE'" :size="10" :title="'Website : '" :dynamic="true" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
+                    <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Website : '" :dynamic="false" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
                 </div>
 
                 <hits>

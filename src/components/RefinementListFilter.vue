@@ -1,7 +1,7 @@
 <template>
 	<div class="is-component is-refinement-list">
     <h3 class="is-refinement-menu-title">{{title}}</h3>
-		<div v-for="item in items" class="is-item is-refinement-list" ref="input">
+		<div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
 			<input
 				type="checkbox"
 				:name="item.key"
