@@ -14,8 +14,14 @@
         props : {
             // hightlight : 
             // not a property : add a slot to <suggestionbox> looks like : <span slot="highlight" slot-scope="{ matched }"><strong><u>{{ matched }}</u></strong></slot>
-        
+
             // see how to implemant clean requests
+
+            // timeout : duration between two requests (in ms)
+            'timeout' : {
+                type : Number,
+                default : 300
+            }
         },
 
         data : function() {

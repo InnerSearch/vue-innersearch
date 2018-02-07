@@ -168,7 +168,8 @@
 */
 
 .is-component.is-suggestion-box {
-    width : 100%;
+    width : 90%;
+    margin : 0 auto;
     border : 2px solid #C4C4C4;
     padding : 10px;
 }
