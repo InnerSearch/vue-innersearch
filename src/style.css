@@ -156,3 +156,19 @@
 .is-item.is-hits ul {
     margin : 0;
 }
+
+
+/*
+    Pagination
+*/
+
+
+/*
+    Suggestion Box
+*/
+
+.is-component.is-suggestion-box {
+    width : 100%;
+    border : 2px solid #C4C4C4;
+    padding : 10px;
+}

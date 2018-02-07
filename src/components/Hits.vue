@@ -6,7 +6,7 @@
                 <strong v-else-if="hits.score === 1">1 result found</strong>
                 <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
             </div>
-            <div v-for="item in hits.items" :item="item">
+            <div v-for="(item, index) in hits.items" :key="index" :item="item">
                 <div>[Hit]</div>
             </div>
         </slot>

@@ -2,12 +2,15 @@
     <div class='is-component is-searchbox'>
         <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
         <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
+
+        <suggestionbox v-if="suggestionbox"></suggestionbox>
     </div>
 </template>
 
 <script>
     import generics from './../lib/Generics';
     import debounce from 'debounce';
+    import SuggestionBox from "./SuggestionBox.vue";
 
     export default {
         name : 'searchbox',
@@ -55,6 +58,12 @@
             'placeholder' : {
                 type : String,
                 default : 'Search'
+            },
+
+            // suggestionbox : link the searchbox with a sub suggestionbox component
+            'suggestionbox' : {
+                type : Boolean,
+                default : false
             }
         },
 
@@ -131,6 +140,10 @@
 
             // Add placeholder property to the input html tag
             this.$refs.input.setAttribute('placeholder', this.placeholder);
+
+            // WILL COMMUNICATE WITH : $slot.getChild.CID
+            // $emit
+            console.log("SearchBox : ", this);
         },
 
         created : function() {
@@ -159,6 +172,10 @@
 
             // Function calculation depending on operator property
             this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+        },
+
+        components : {
+            'suggestionbox' : SuggestionBox
         }
     };
 </script>
