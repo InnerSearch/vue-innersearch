@@ -38,7 +38,6 @@ export default new Vuex.Store({
                     CID : 0, // Static component counter
                     bus : new Vue(), // communication bus
                     list : {
-                        searchbox : [],
                         refinementListFilter : [],
                         paginate : []
                     }
