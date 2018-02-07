@@ -1,0 +1,20 @@
+{
+  "gitbook": "3.x.x",
+  "root":"docs",
+  "structure": {
+    "readme": "introduction.md",
+    "summary": "README.md",
+    "glossary":"glossary.md"
+  },
+  "plugins": ["mermaid-2", "prism", "-highlight", "-search", "versions"],
+  "pluginsConfig": {
+    "versions": {
+      "type": "tags"
+    },
+    "prism": {
+      "lang": [
+        "flow","typescript"
+      ]
+    }
+  }
+}
