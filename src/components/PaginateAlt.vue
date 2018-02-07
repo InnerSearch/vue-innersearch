@@ -89,13 +89,6 @@
             </li>
         </ul>
     </nav>
-  <!-- <section v-if='hits.score != undefined' class='is-component is-line'>
-		<input class='is-button is-previous-button' type='button' :value='previousText' v-on:click='clickOnPrevious' />
-
-		<input class='is-button is-next-button' type='button' :value='nextText' v-on:click='clickOnNext'/>
-
-		<input class='is-field is-current-page' type='text' :value='(maxPage <= 0 ? 0 : nbPage + 1) + "/" + maxPage' ref='current' disabled='true' />
-	</section> -->
 </template>
 
 <script>
