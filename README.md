@@ -10,7 +10,7 @@ InnerSearch is a suite of UI components for Vue.js
 
 The aim is to rapidly create beautiful specified search applications using declarative components without being an ElasticSearch expert.
 
-See full [Documentation](https://yinyanfr.github.io/InnerSearch.js/)
+See full [Documentation](https://yinyanfr.gitbooks.io/innersearch-doc/content/)
 
 ## Quick Start
 ```bash
