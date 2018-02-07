@@ -1,16 +1,24 @@
 <template>
 	<div class="is-component is-refinement-list">
-    <h3 class="is-refinement-menu-title">{{title}}</h3>
-		<div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
-			<input
-				type="checkbox"
-				:name="item.key"
-				:value="item.key"
-				v-model="checkedItems"
-				@change="clickOnItem()">
-			<label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-			<label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-		</div>
+    <slot name="title">
+      <h3 class="is-refinement-menu-title">{{title}}</h3>
+    </slot>
+      <div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
+        <input
+          type="checkbox"
+          :name="item.key"
+          :value="item.key"
+          v-model="checkedItems"
+          @change="clickOnItem()">
+        <slot name="label" v-bind:item="item"
+        v-bind:displayCount="displayCount"
+        v-bind:clickOnItem="clickOnItem"
+        v-bind:clickOnLabel="clickOnLabel">
+          <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+          <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+        </slot>
+      </div>
+    <slot name="footer"></slot>
 	</div>
 </template>
 
@@ -111,6 +119,7 @@
 
 			// Triggered when user select or unselect an item
 			clickOnItem : function() {
+			  console.log(this.checkedItems);
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
 					this.removeInstruction(instruction);

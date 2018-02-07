@@ -62,6 +62,10 @@ describe('Test RefinementListFilter', () => {
 });
 
 describe('Test RefinementListFilter2', () => {
+  const valCheck = {
+    name : 'tx',
+    name2 : 'id'
+  };
   beforeEach(function() {
     cy.visit(_URL2);
     cy.server();
@@ -72,10 +76,7 @@ describe('Test RefinementListFilter2', () => {
   });
 
   it('should display 57 hits when filtering Texas (tx) or Idaho (id) states' , function () {
-    const valCheck = {
-      name : 'tx',
-      name2 : 'id'
-    };
+
 
     cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
     cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name2);
@@ -84,5 +85,12 @@ describe('Test RefinementListFilter2', () => {
     cy.wait(150).get(_HITS).contains('57 results found');
 
 
+  });
+  it('title slot should replace the default title', function (){
+    cy.get(_REFINEMENT_LIST_FILTER + ' > h2').contains('US State : ');
+  });
+
+  it('label slot should replace the default display using template', function () {
+    cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains('tx : 30');
   });
 });

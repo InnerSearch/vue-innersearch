@@ -35,7 +35,12 @@
                 <hr class='is-line' />
 
                 <div>
-                  <refinement-list-filter :field="'state'" :size="100" title="State : " operator="AND" :displayCount="true" orderKey="_count" orderDirection="asc" :dynamic="true" ></refinement-list-filter>
+                  <refinement-list-filter :field="'state'" :size="100" title="State : " operator="AND" :displayCount="true" orderKey="_count" orderDirection="asc" :dynamic="true" >
+                  <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,item }">
+                      <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                      <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+                  </template>
+                  </refinement-list-filter>
                </div>
 
                 <hits>
