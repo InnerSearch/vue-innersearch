@@ -1,8 +1,9 @@
 <template>
-    <div class='is-component is-searchbox'>
-        <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
-        <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
-
+    <div>
+        <div class='is-component is-searchbox'>
+            <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
+            <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
+        </div>
         <suggestionbox v-if="suggestionbox"></suggestionbox>
     </div>
 </template>
@@ -131,6 +132,11 @@
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
                 this.fetch();
+            },
+
+            // Emit a request to child suggestionbox component
+            emitToSuggestionbox : function() {
+                console.log("Emit...");
             }
         },
 
@@ -147,7 +153,7 @@
         },
 
         created : function() {
-            // Create a dynamic watcher on the input which call the mixins Fetch function
+            // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
                 return this.entry;
             }, {
@@ -156,6 +162,17 @@
                 },
                 deep : true
             });
+
+            // Create a dynamic watcher on the input wich emits to the child suggestionbox component
+            let _disableWatcherSuggestion = this.$watch(function() {
+                return this.entry;
+            }, {
+                handler : function(val) {
+                    this.emitToSuggestionbox.call(this);
+                },
+                deep : true
+            });
+
 
             // Behavior when realtime is enabled or not
             if (this.realtime) {
@@ -166,9 +183,18 @@
             else
                 _disableWatcherFetch(); // Disable the watcher that disable fetch event
 
+            // Behavior when suggestionbox is enabled or not
+            if (this.suggestionbox) {
+
+            }
+            else
+                _disableWatcherSuggestion();
+
+
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];
+
 
             // Function calculation depending on operator property
             this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
