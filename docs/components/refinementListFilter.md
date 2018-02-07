@@ -16,3 +16,18 @@ A component to add facet refinements in the form of a list of checkboxes.
 ```html
 <refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
 ```
+
+You can also customize the title and the aggregations display using : 
+```<template slot="slotName"></template>```
+
+```html
+<refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR">
+  <template slot="title">
+    <h2>US State : </h2>
+  </template>
+  <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,item }">
+    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} : {{ item.doc_count }} </label>
+    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+  </template>
+</refinement-list-filter>
+```
