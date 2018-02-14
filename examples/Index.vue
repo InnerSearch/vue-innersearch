@@ -1,46 +1,31 @@
 <template>
-    <div id='defaultForm'>
-    </div>
+  <div id='defaultForm'>
+  </div>
 </template>
 
 <script>
-    /*
-        Simple way to use InnerSearch
-    */
+  /*
+      Simple way to use InnerSearch
+  */
 
-    import Vue from 'vue';
-    import '../src/style.css';
-    import Generics from '../src/lib/Generics';
-    import Searchbox from '../src/components/SearchBox';
-    import Hits from '../src/components/Hits';
-    import RefinementListFilter from '../src/components/RefinementListFilter';
-    import SearchButton from '../src/components/SearchButton';
-    import Paginate from '../src/components/Paginate';
-    import PaginateAlt from "../src/components/PaginateAlt.vue";
+  import Vue from 'vue';
+  import InnerSearch from "../../InnerSearch.js";
+  import '../src/style.css';
 
-    window.addEventListener('load', function () {
-        new Vue({
-            el: '#defaultForm',
-            mixins : [Generics],
+  Vue.use(InnerSearch);
 
-            created : function () {
-                // ES server configuration
-                this.setHost('http://es.yinyan.fr');
-                this.setIndex('bank');
-                this.setType('account');
-            },
+  window.addEventListener('load', function () {
+    new Vue({
+      el: '#defaultForm',
 
-            components : {
-                // Components you need to use
-                'refinement-list-filter' : RefinementListFilter,
-                'searchbox' : Searchbox,
-                'search-button' : SearchButton,
-                'hits' : Hits,
-                'paginate' : Paginate,
-                'paginate-alt': PaginateAlt
-            },
+      created : function () {
+        // ES server configuration
+        this.setHost('http://es.yinyan.fr');
+        this.setIndex('bank');
+        this.setType('account');
+      },
 
-            template : `
+      template : `
                 <section>
                     <h1 class='is-title'>InnerSearch.js</h1>
 
@@ -71,8 +56,8 @@
                     <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
                 </section>
             `
-        });
     });
+  });
 
-    export default {};
+  export default {};
 </script>
