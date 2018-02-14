@@ -14,6 +14,7 @@
   window.addEventListener('load', function () {
     new Vue({
       el: '#defaultForm',
+      mixins : [Generics],
 
       created : function () {
         // ES server configuration

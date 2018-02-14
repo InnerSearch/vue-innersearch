@@ -9,35 +9,20 @@
     */
 
     import Vue from 'vue';
+    import InnerSearch from "../../InnerSearch.js";
     import '../src/style.css';
-    import Generics from '../src/lib/Generics';
-    import Searchbox from '../src/components/SearchBox';
-    import Hits from '../src/components/Hits';
-    import RefinementListFilter from '../src/components/RefinementListFilter';
-    import SearchButton from '../src/components/SearchButton';
-    import Paginate from '../src/components/Paginate';
-    import PaginateAlt from "../src/components/PaginateAlt.vue";
+    
+    Vue.use(InnerSearch);
 
     window.addEventListener('load', function () {
         new Vue({
             el: '#defaultForm',
-            mixins : [Generics],
 
             created : function () {
                 // ES server configuration
                 this.setHost('http://es.yinyan.fr');
                 this.setIndex('bank');
                 this.setType('account');
-            },
-
-            components : {
-                // Components you need to use
-                'refinement-list-filter' : RefinementListFilter,
-                'searchbox' : Searchbox,
-                'search-button' : SearchButton,
-                'hits' : Hits,
-                'paginate' : Paginate,
-                'paginate-alt': PaginateAlt
             },
 
             template : `

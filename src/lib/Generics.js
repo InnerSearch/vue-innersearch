@@ -4,7 +4,7 @@ import Bodybuilder from 'bodybuilder';
 import Store from './Store';
 
 //FIXME global vue mixin
-export default Vue.mixin({
+export default {
 	computed : {
 		// Full Elasticsearch request
 		request : function() {
@@ -265,4 +265,4 @@ export default Vue.mixin({
 			delete object.args;
 		}
 	}
-});
+};
