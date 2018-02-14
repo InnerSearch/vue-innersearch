@@ -5,28 +5,22 @@
 
 <script>
   import Vue from 'vue';
+  import InnerSearch from "../../InnerSearch.js";
   import '../src/style.css';
-  import Generics from '../src/lib/Generics';
-  import RefinementListFilter from '../src/components/RefinementListFilter.vue';
-  import Hits from '../src/components/Hits';
+
+  Vue.use(InnerSearch);
 
   window.addEventListener('load', function () {
     new Vue({
       el: '#defaultForm',
-      mixins : [Generics],
 
       created : function () {
         // ES server configuration
-        this.setHost("http://es.yinyan.fr");
-        this.setIndex("bank");
-        this.setType("account");
+        this.setHost('http://es.yinyan.fr');
+        this.setIndex('bank');
+        this.setType('account');
       },
 
-      components : {
-        // Components you need to use
-        'RefinementListFilter' : RefinementListFilter,
-        'hits' : Hits
-      },
 
       template : `
                 <section>

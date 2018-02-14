@@ -3,31 +3,22 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import '../src/style.css';
-    import Generics from '../src/lib/Generics';
-    import SearchBox from '../src/components/SearchBox';
-    import SearchButton from '../src/components/SearchButton';
-    import Hits from '../src/components/Hits';
+  import Vue from 'vue';
+  import InnerSearch from "../../InnerSearch.js";
+  import '../src/style.css';
 
-    window.addEventListener('load', function () {
-        new Vue({
-            el: '#defaultForm',
-            mixins : [Generics],
+  Vue.use(InnerSearch);
 
-            created : function () {
-                // ES server configuration
-                this.setHost("http://es.yinyan.fr");
-                this.setIndex("bank");
-                this.setType("account");
-            },
+  window.addEventListener('load', function () {
+    new Vue({
+      el: '#defaultForm',
 
-            components : {
-                // Components you need to use
-                'searchbox' : SearchBox,
-                'search-button' : SearchButton,
-                'hits' : Hits
-            },
+      created : function () {
+        // ES server configuration
+        this.setHost('http://es.yinyan.fr');
+        this.setIndex('bank');
+        this.setType('account');
+      },
 
             template : `
                 <section>
