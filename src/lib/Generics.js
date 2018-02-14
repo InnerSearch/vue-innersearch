@@ -3,6 +3,7 @@ import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
 import Store from './Store';
 
+//FIXME global vue mixin
 export default Vue.mixin({
 	computed : {
 		// Full Elasticsearch request
