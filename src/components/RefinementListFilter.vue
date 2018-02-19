@@ -1,24 +1,26 @@
 <template>
 	<div class="is-component is-refinement-list">
-    <slot name="title">
-      <h3 class="is-refinement-menu-title">{{title}}</h3>
-    </slot>
-      <div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
-        <input
-          type="checkbox"
-          :name="item.key"
-          :value="item.key"
-          v-model="checkedItems"
-          @change="clickOnItem()">
-        <slot name="label" v-bind:item="item"
-        v-bind:displayCount="displayCount"
-        v-bind:clickOnItem="clickOnItem"
-        v-bind:clickOnLabel="clickOnLabel">
-          <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-          <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-        </slot>
-      </div>
-    <slot name="footer"></slot>
+		<slot name="title">
+			<h3 class="is-refinement-menu-title">{{title}}</h3>
+		</slot>
+		
+		<div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
+			<input
+				type="checkbox"
+				:name="item.key"
+				:value="item.key"
+				v-model="checkedItems"
+				@change="clickOnItem()">
+			<slot name="label" v-bind:item="item"
+				v-bind:displayCount="displayCount"
+				v-bind:clickOnItem="clickOnItem"
+				v-bind:clickOnLabel="clickOnLabel">
+				<label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+				<label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+			</slot>
+		</div>
+
+    	<slot name="footer"></slot>
 	</div>
 </template>
 
@@ -38,11 +40,10 @@
 
 			size : {
 				type : Number,
-				default : 20
-        /***
-         * buckets counts are approximate
-         * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
-         */
+				default : 10000
+				/* buckets counts are approximate
+				   https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
+				*/
 			},
 
 			orderKey : {
@@ -59,18 +60,21 @@
 				type : Boolean,
 				default : false
 			},
-      displayCount : {
-			  type : Boolean,
-        default : true,
-      },
-      title : {
-			  type : String,
-        default : ''
-      },
-      operator : {
-			  type : String,
-        default : 'AND',
-      }
+
+			displayCount : {
+				type : Boolean,
+				default : true
+			},
+
+			title : {
+				type : String,
+				default : ''
+			},
+
+			operator : {
+				type : String,
+				default : 'AND'
+			}
 		},
 
 		data : function() {
@@ -89,7 +93,7 @@
 
 		methods : {
 			updateLabels : function(value) {
-				this.setAggregations(this.field, value, this.dynamic,this.orderKey,this.orderDirection);
+				this.setAggregations(this.field, value, this.dynamic, this.orderKey, this.orderDirection);
 			},
 
 			addAggregationInstructions : function() {
@@ -119,7 +123,7 @@
 
 			// Triggered when user select or unselect an item
 			clickOnItem : function() {
-			  console.log(this.checkedItems);
+				
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
 					this.removeInstruction(instruction);
@@ -127,17 +131,36 @@
 				this.localInstructions = [];
 
 				// Read all checked items and create appropriate instruction for each of them
-				this.checkedItems.forEach(item => {
-
+				// OR operator case
+				if (this.operator.toLowerCase() === 'or') {
 					let _instruction = {
-						//fun : 'filter',
-						fun : this.operator.toLocaleLowerCase()+'Filter',
-						args : ['term', this.field, item]
+						fun : 'filter',
+						args : ['bool', arg => {
+							this.checkedItems.forEach(item => {
+								arg.orFilter('term', this.field, item);
+							});
+							return arg;
+						}]
 					};
+
+					console.log(_instruction);
 
 					this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
-				});
+				}
+
+				// AND operator case
+				else {
+					this.checkedItems.forEach(item => {
+						let _instruction = {
+							fun : 'andFilter',
+							args : ['term', this.field, item]
+						};
+
+						this.localInstructions.push(_instruction);
+						this.addInstruction(_instruction);
+					});
+				}
 
 				// Update the request
 				this.mount();
@@ -153,9 +176,7 @@
 
 		created : function () {
 			// Add aggregation, no need to update it later
-			let _aggsRequest = this.createRequestForAggs(this.field,this.size,this.orderKey,this.orderDirection);   // TODO ; find an other way to create a new request
-
-			//console.log(_aggsRequest)
+			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);   // TODO ; find an other way to create a new request
 
 			// Search respective aggregations
 			this.addAggregationInstructions();
@@ -163,19 +184,15 @@
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
 				let value = response.aggregations['agg_terms_' + this.field].buckets;
-				//console.log('[RefinementListFilter:created] Value of aggregations :', value);
 
 				// Create aggregations items
 				this.updateLabels(value);
 
-        /***
-         * This @event is triggered in Generics.js fetch method
-         */
-        document.addEventListener('updateAggs', e => {
-          let aggs = e.detail;
-          this.setAggregations(this.field, aggs['agg_terms_'+this.field].buckets,this.dynamic,this.orderKey,this.orderDirection);
-        });
-
+				// triggered in Generics.js fetch method
+				document.addEventListener('updateAggs', e => {
+					let aggs = e.detail;
+					this.setAggregations(this.field, aggs['agg_terms_'+this.field].buckets,this.dynamic,this.orderKey,this.orderDirection);
+				});
 			});
 		}
 	};

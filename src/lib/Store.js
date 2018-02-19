@@ -96,9 +96,12 @@ export default new Vuex.Store({
                                 else
                                     agg.doc_count = _found.doc_count;
                             });
+
+                            // Wtf are you doing here ???
+
                             //console.log(_aggs);
                             // Sorting aggs in terms of orderKey and orderDirection
-                            _aggs.sort((e,e2) => {
+/*                             _aggs.sort((e,e2) => {
                               if(orderDirection==="asc"){
                                 if(orderKey==="_term"){
                                   return e.key - e2.key;
@@ -113,7 +116,7 @@ export default new Vuex.Store({
                                 }
                               }
                             });
-                            console.log(_aggs);
+                            console.log(_aggs); */
                         }
 
                         // Save the new agg object

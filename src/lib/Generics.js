@@ -99,7 +99,7 @@ export default {
 		/*
 			Store Elasticsearch Aggregations Settings
 		*/
-		setAggregations : (name, value, isDynamic,orderKey, orderDirection) => {
+		setAggregations : (name, value, isDynamic, orderKey, orderDirection) => {
 			Store.commit("Elasticsearch/setAggregations", { name, value, isDynamic, orderKey, orderDirection });
 		},
 
@@ -189,8 +189,7 @@ export default {
 			this.setBody(BD.build());
 
 			// Debug
-			//console.log("[Generics:Mount] Body : ", Store.getters.getBody);
-			//console.log("[Generics:Mount] Request : ", this.request);
+			console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
@@ -242,15 +241,19 @@ export default {
 
 
 		// field name of the aggs that we want to fetch
-		createRequestForAggs : function (field,size,orderKey,orderDirection) {
+		createRequestForAggs : function (field, size, orderKey, orderDirection) {
 
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 
 			// Store the JSON request into the body
 			_request.body = Bodybuilder()
-				.size(200)
-				.aggregation("terms", field,{ order : { [orderKey] : orderDirection } , size : size })
+				.aggregation("terms", field, {
+					order : {
+						[orderKey] : orderDirection
+					},
+					size : size
+				})
 				.build();
 
 			return _request;
@@ -261,8 +264,8 @@ export default {
 		},
 
 		remove : (object) => {
-			delete object.fun;
-			delete object.args;
+			object.fun = null;
+			object.args = null;
 		}
 	}
 };

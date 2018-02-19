@@ -1,31 +1,31 @@
 <template>
-  <div id='defaultForm'>
-  </div>
+    <div id='defaultForm'>
+    </div>
 </template>
 
 <script>
-  /*
-      Simple way to use InnerSearch
-  */
+    /*
+        Simple way to use InnerSearch
+    */
 
-  import Vue from 'vue';
-  import InnerSearch from "../../InnerSearch.js";
-  import '../src/style.css';
+    import Vue from 'vue';
+    import InnerSearch from "../../InnerSearch.js";
+    import '../src/style.css';
 
-  Vue.use(InnerSearch);
+    Vue.use(InnerSearch);
 
-  window.addEventListener('load', function () {
-    new Vue({
-      el: '#defaultForm',
+    window.addEventListener('load', function () {
+        new Vue({
+            el: '#defaultForm',
 
-      created : function () {
-        // ES server configuration
-        this.setHost('http://es.yinyan.fr');
-        this.setIndex('bank');
-        this.setType('account');
-      },
+            created : function () {
+                // ES server configuration
+                this.setHost('http://es.yinyan.fr');
+                this.setIndex('bank');
+                this.setType('account');
+            },
 
-      template : `
+            template : `
                 <section>
                     <h1 class='is-title'>InnerSearch.js</h1>
 
@@ -34,8 +34,9 @@
                     <div>
                         <searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
                         <searchbox :field="['firstname', 'lastname']" :pattern="'{v}.*'" :operator="'AND'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true"></searchbox>
-                        <refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
-                        <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true"></refinement-list-filter>
+                        <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+                        <!--<refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+                        <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true"></refinement-list-filter>-->
                         <search-button></search-button>
                     </div>
 
@@ -56,8 +57,8 @@
                     <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
                 </section>
             `
+        });
     });
-  });
 
-  export default {};
+    export default {};
 </script>
