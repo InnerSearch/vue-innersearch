@@ -4,7 +4,13 @@
             <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
             <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
         </div>
-        <suggestionbox v-if="suggestionbox"></suggestionbox>
+        <suggestionbox v-if="suggestionbox" :entry="entry" @selectItem='setEntry'>
+            <template slot="suggestions" slot-scope="{ suggestion }">
+                <slot name="suggestions" v-bind:suggestion="suggestion">
+                    [SuggestionItem]
+                </slot>
+            </template>
+        </suggestionbox>
     </div>
 </template>
 
@@ -135,8 +141,8 @@
             },
 
             // Emit a request to child suggestionbox component
-            emitToSuggestionbox : function() {
-                console.log("Emit...");
+            setEntry : function(item) {
+                this.entry = item.key;
             }
         },
 
@@ -146,10 +152,6 @@
 
             // Add placeholder property to the input html tag
             this.$refs.input.setAttribute('placeholder', this.placeholder);
-
-            // WILL COMMUNICATE WITH : $slot.getChild.CID
-            // $emit
-            console.log("SearchBox : ", this);
         },
 
         created : function() {
@@ -163,17 +165,6 @@
                 deep : true
             });
 
-            // Create a dynamic watcher on the input wich emits to the child suggestionbox component
-            let _disableWatcherSuggestion = this.$watch(function() {
-                return this.entry;
-            }, {
-                handler : function(val) {
-                    this.emitToSuggestionbox.call(this);
-                },
-                deep : true
-            });
-
-
             // Behavior when realtime is enabled or not
             if (this.realtime) {
                 let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
@@ -182,14 +173,6 @@
             }
             else
                 _disableWatcherFetch(); // Disable the watcher that disable fetch event
-
-            // Behavior when suggestionbox is enabled or not
-            if (this.suggestionbox) {
-
-            }
-            else
-                _disableWatcherSuggestion();
-
 
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))

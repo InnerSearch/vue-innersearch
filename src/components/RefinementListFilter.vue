@@ -143,8 +143,6 @@
 						}]
 					};
 
-					console.log(_instruction);
-
 					this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
 				}

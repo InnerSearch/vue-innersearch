@@ -189,7 +189,7 @@ export default {
 			this.setBody(BD.build());
 
 			// Debug
-			console.log("[Generics:Mount] Request : ", this.request);
+			//console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
@@ -209,7 +209,7 @@ export default {
 				this.clearItems();
 
 				var hits = resp.hits.hits;
-				console.log("[Generics:Fetch] Response : ", resp);
+				//console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
 				/***
@@ -240,14 +240,34 @@ export default {
 		},
 
 
-		// field name of the aggs that we want to fetch
-		createRequestForAggs : function (field, size, orderKey, orderDirection) {
-
+		/*
+			Create independent request for autocomplete component
+			Fetch the hits which match with the value
+		*/
+		createRequestForAutocomplete : function(fields, size) {
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 
 			// Store the JSON request into the body
 			_request.body = Bodybuilder()
+				.size(size)
+				.build();
+
+			return _request;
+		},
+
+
+		/*
+			Create independent request for RefinementListFilter component
+			Get the value of each aggs to init items count
+		*/
+		createRequestForAggs : function (field, size, orderKey, orderDirection) {
+			// Bodybuilder object
+			let _request = this.clone(this.request);
+
+			// Store the JSON request into the body
+			_request.body = Bodybuilder()
+				.size(0)
 				.aggregation("terms", field, {
 					order : {
 						[orderKey] : orderDirection
