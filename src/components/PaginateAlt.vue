@@ -94,7 +94,8 @@
 <script>
     import Store from './../lib/Store'
 	import generics from './../lib/Generics'
-	import Bodybuilder from 'bodybuilder'
+    import Bodybuilder from 'bodybuilder'
+    import ComponentType from './../lib/enum/Component.js';
 
     import "bulma/css/bulma.css"
 
@@ -205,14 +206,14 @@
 
 		created : function() {
 			// Interactive component declaration
-			this.CID = this.addComponent('paginate');
+            this.CID = this.addComponent("paginate");
 
 			// Listening on self-component emissions
 			this.bus.$on(this.CID, this.resetPagination);
 
 			this.mount();
 			this.body.from = this.nbPage;
-			this.body.size = this.size;
+            this.body.size = this.size;
         }
 	};
 </script>
