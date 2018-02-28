@@ -4,9 +4,9 @@
             <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
             <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
         </div>
-        <suggestionbox v-if="suggestionbox" :entry="entry" @selectItem='setEntry'>
-            <template slot="suggestions" slot-scope="{ suggestion }">
-                <slot name="suggestions" v-bind:suggestion="suggestion">
+        <suggestionbox v-if='suggestionbox' v-show='activeSuggestion' :entry='entry' @selectItem='setEntry' @changeState='setState'>
+            <template slot='suggestions' slot-scope='{ suggestion }'>
+                <slot name='suggestions' v-bind:suggestion='suggestion'>
                     [SuggestionItem]
                 </slot>
             </template>
@@ -80,6 +80,8 @@
                 entry : '', // input value
                 fun : undefined, // function applied
                 localInstructions : [], // local request
+
+                activeSuggestion : false // show or not the suggestion component
             };
         },
 
@@ -140,9 +142,15 @@
                 this.fetch();
             },
 
-            // Emit a request to child suggestionbox component
+            // Triggered by an emission from child suggestionbox component
             setEntry : function(item) {
-                this.entry = item.key;
+                this.entry = item;
+                this.focusOnField("input");
+            },
+
+            setState : function(state) {
+                console.log("setState", state)
+                this.activeSuggestion = state;
             }
         },
 

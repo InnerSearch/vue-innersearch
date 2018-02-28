@@ -16,25 +16,28 @@
         mixins : [Generics],
 
         props : {
+            // get back the input parent value
             'entry' : {
                 type : String
             },
-
-            // hightlight : 
-            // not a property : add a slot to <suggestionbox> looks like : <span slot="highlight" slot-scope="{ matched }"><strong><u>{{ matched }}</u></strong></slot>
-
-            // see how to implemant clean requests
-
 
             // timeout : duration between two requests (in ms)
             'timeout' : {
                 type : Number,
                 default : 300
+            },
+
+            // pattern : formate the output
+            'pattern' : {
+                type : String,
+                default : null
+                // default : '<strong>{v}</strong>'
             }
         },
 
         data : function() {
             return {
+                itemWasClicked : false,
                 suggestions : []
             };
         },
@@ -42,33 +45,51 @@
         computed : {
             computedEntry : function() {
                 return this.entry.toLowerCase();
-            }
+            },
         },
 
         watch : {
-            computedEntry : function(val) {
-                // Do job
+            computedEntry : function(value) {
+                this.updateSuggestion(value);
             }
          },
 
         methods : {
-            updateSuggestion : () => {
-                
+            show : function() {
+                this.$emit('changeState', true);
+            },
+
+            hide : function() {
+                this.$emit('changeState', false);
+            },
+
+            updateSuggestion : function(value) {
+                console.log(value);
+
+                // Check if value is not empty,  if it is, the component is hidden
+                if (value.trim().length > 0) {
+
+                    // Check if the component should be hidden or not (not triggered when an item is selected)
+                    if (!this.itemWasClicked)
+                        this.show();
+                    else
+                        this.itemWasClicked = !this.itemWasClicked;
+
+                }
+                else
+                    this.hide();
             },
 
             clickOnItem : function(item) {
                 this.$emit('selectItem', item);
+                this.itemWasClicked = true; // avoid conflit when the clicked item changes the input that triggers once again updateSuggestion()
+                this.hide();
             }
         },
         
         created : function() {
-            this.suggestions.push({
-                key : "choix 1",
-                value : "truc bidulemiche"
-            }, {
-                key : "choix 2",
-                value : "truc bidulemiche"
-            });
+            this.suggestions.push("choix 1");
+            this.suggestions.push("choix 2");
         }
     };
 </script>
