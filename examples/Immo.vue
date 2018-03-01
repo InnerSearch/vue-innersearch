@@ -9,12 +9,10 @@
     */
 
     import Vue from 'vue';
+    import InnerSearch from "../../InnerSearch.js";
     import '../src/style.css';
-    import Generics from '../src/lib/Generics';
-    import Searchbox from '../src/components/SearchBox';
-    import Hits from '../src/components/Hits';
-    import RefinementListFilter from '../src/components/RefinementListFilter';
-    import SearchButton from '../src/components/SearchButton';
+
+    Vue.use(InnerSearch);
 
     window.addEventListener('load', function () {
         new Vue({
@@ -27,14 +25,6 @@
                 this.setType('programs');
             },
 
-            components : {
-                // Components you need to use
-                'refinement-list-filter' : RefinementListFilter,
-                'searchbox' : Searchbox,
-                'search-button' : SearchButton,
-                'hits' : Hits
-            },
-
             template : `
                 <section>
 
@@ -43,9 +33,13 @@
                 <hr class='is-line' />
 
                 <div>
-                    <searchbox :autofocus="true" :realtime="true" :field="['PROMOTEUR', 'DESCRIPTION']" :placeholder="'Search by keywords'"></searchbox>
+                    <searchbox :autofocus="true" :realtime="true" :field="'DESCRIPTION'" :pattern="'.*{v}.*'" :placeholder="'Search by keywords'" :suggestionbox="true">
+                        <template slot="suggestions" slot-scope="{ suggestion }">
+                            <div>{{ suggestion.DESCRIPTION.substr(0, 100) }}...</div>
+                        </template>
+                    </searchbox>
                     <refinement-list-filter :field="'SITE'" :size="10" :title="'Website : '" :dynamic="true" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
-                    <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Website : '" :dynamic="false" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
+                    <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '" :dynamic="false" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
                 </div>
 
                 <hits>
@@ -56,8 +50,10 @@
                             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
                         </div>
                         <div v-for="item in hits.items" :item="item">
-                            <div>
+                            <div style="margin : 10px;">
+                                <p><strong>NOM :</strong> {{ item._source.NOM }}</p>
                                 <p><strong>URL :</strong> {{ item._source.URL }}</p>
+                                <p><strong>PROMOTEUR :</strong> {{ item._source.PROMOTEUR }}</p>
                                 <p>{{ item._source.DESCRIPTION }}</p>
                             </div>
                         </div>

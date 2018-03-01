@@ -40,8 +40,8 @@
             // htmlPattern : formate the output
             'htmlPattern' : {
                 type : String,
-                default : null
-                // default : '<strong>{v}</strong>'
+                //default : null
+                default : '<strong>{v}</strong>'
                 // default : '<strong>{r}</strong>'
                 // default : ['<strong>{v}</strong>', '<u>{r}</u>']
             },
@@ -57,7 +57,8 @@
             return {
                 suggestions : [],
                 itemWasClicked : false,
-                mutableField : this.field
+                mutableField : this.field,
+                mutablePatternHtml : this.htmlPattern
             };
         },
 
@@ -90,11 +91,17 @@
                 if (value.trim().length > 0) {
 
                     // Update suggestions
-                    let _suggsRequest = this.createRequestForAutocomplete(value, this.field, this.pattern, this.size);
+                    let _suggsRequest = this.createRequestForAutocomplete(value, this.mutableField, this.pattern, this.size);
                     this.header.client.search(_suggsRequest).then(response => {
-                        response.hits.hits.forEach(hit => {
+
+                        console.log("Response", response.hits.hits);
+                        this.suggestions = response.hits.hits;
+
+/*                         response.hits.hits.forEach(hit => {
+
                             this.suggestions.push(hit._source);
-                        });
+
+                        }); */
                     });
 
                     // Check if the component should be hidden or not (not triggered when an item is selected)
@@ -108,8 +115,34 @@
                     this.hide();
             },
 
+            AddPatternStyle : function(hit, value) {
+                this.mutableField.forEach(field => {
+                    let _fieldValue = hit[field];
+                    this.mutablePatternHtml.forEach(pattern => {
+                        let _regex = new RegExp(this.pattern.replace(/{v}/, "(" + value + ")"), 'ig');
+                        let _match;
+                        while ((_match = _regex.exec(_fieldValue)) !== null) {
+                            let _in = pattern.replace(/{v}/, _match[1]);
+                            let _out = _fieldValue.split(_match[1]);
+                            let _outText = '';
+                            _out.forEach(out => {
+                                if (out.length > 0)
+                                    _outText += pattern.replace(/{u}/, out)
+                            });
+
+                            //console.log(_in, _outText);
+                            // split by something
+                        }
+                            
+
+                        //console.log(this.pattern.replace(/{v}/, "(" + value + ")"));
+                        //console.log(pattern.replace(/{v}/, value), _fieldValue);
+                    });
+                });
+            },
+
             clickOnItem : function(item) {
-                this.$emit('selectItem', item);
+                this.$emit('selectItem', item._source);
                 this.itemWasClicked = true; // avoid conflit when the clicked item changes the input that triggers once again updateSuggestion()
                 this.hide();
             }
@@ -119,6 +152,9 @@
             // Convert field to array if it's not the case
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];
+
+            if (!Array.isArray(this.mutablePatternHtml) && this.mutablePatternHtml !== null)
+                this.mutablePatternHtml = [this.mutablePatternHtml];
         }
     };
 </script>

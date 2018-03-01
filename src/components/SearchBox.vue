@@ -101,29 +101,16 @@
 
                 // Case where val is not empty : we add instructions
                 if (val.length > 0) {
-                    // Local request data initialization for each field value
-
-
-                    // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase
+                    // Local request data initialization for each field value    
                     let _instruction = {
-                        fun : 'query',
-                        args : ['multi_match', {
-                            "query" : val,
-                            //"type" : "phrase_prefix",
-                            "fields" : this.mutableField
-                        }]
-                    }
-
-                    
-/*                     let _instruction = {
                         fun : 'filter',
                         args : ['bool', arg => {
                             this.mutableField.forEach(attr => {
-                                arg[this.fun]('match', attr, val);
+                                arg[this.fun]('match_phrase_prefix', attr, val);
                             });
                             return arg;
                         }]
-                    }; */
+                    };
 
                     this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
@@ -158,7 +145,6 @@
             },
 
             setState : function(state) {
-                console.log("setState", state)
                 this.activeSuggestion = state;
             }
         },

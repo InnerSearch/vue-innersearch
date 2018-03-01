@@ -257,6 +257,17 @@ export default {
 			// Convert the object to json
 			_request.body = _body.build();
 
+/* 			_request.body["highlight"] = {
+				"fields" : {
+					"firstname" : {
+						"type" : "string",
+						"index_analyzer": "index_ngram_analyzer",
+						"search_analyzer": "search_term_analyzer",
+						"term_vector":"with_positions_offsets" 
+					}
+				}
+			}; */
+
 			return _request;
 		},
 

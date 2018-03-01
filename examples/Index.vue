@@ -32,10 +32,19 @@
                     <hr class='is-line' />
 
                     <div>
-                        <!--<searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>-->
-                        <searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
+                        <searchbox :autofocus="true" :realtime="true" :timeout="100" :field="['firstname']" :pattern="'{v}.*'" :placeholder="'Search by firstname'" :suggestionbox="true">
                             <template slot="suggestions" slot-scope="{ suggestion }">
-                                <div>{{ suggestion.firstname }} {{ suggestion.lastname }}</div>
+                                <div style="display : inline-block; width : 60%;" v-html="">
+                                    {{ suggestion._source.firstname }} {{ suggestion._source.lastname }}
+                                </div>
+                                <div style="display : inline-block; width : 39%; text-align : right; opacity : 0.35;">
+                                    <strong>{{ suggestion._source.gender }}</strong>
+                                </div>
+                            </template>
+                        </searchbox>
+                        <searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname'" :suggestionbox="true">
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                <div>{{ suggestion._source.firstname }} {{ suggestion._source.lastname }}</div>
                             </template>
                         </searchbox>
                         <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
@@ -57,7 +66,7 @@
                         </template>
                     </hits>
 
-                    <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+                    <!--<paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>-->
                     <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
                 </section>
             `
