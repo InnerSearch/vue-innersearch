@@ -4,7 +4,7 @@
             <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
             <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
         </div>
-        <suggestionbox v-if='suggestionbox' v-show='activeSuggestion' :entry='entry' @selectItem='setEntry' @changeState='setState'>
+        <suggestionbox v-if='suggestionbox' v-show='activeSuggestion' :entry='entry' :field='field' :pattern='pattern' @selectItem='setEntry' @changeState='setState'>
             <template slot='suggestions' slot-scope='{ suggestion }'>
                 <slot name='suggestions' v-bind:suggestion='suggestion'>
                     [SuggestionItem]
@@ -93,37 +93,40 @@
 
         watch : {
             computedEntry : function(val) {
+				// Reset all deep instructions of local request
+				this.localInstructions.forEach(instruction => {
+					this.removeInstruction(instruction);
+				});
+				this.localInstructions = [];
+
                 // Case where val is not empty : we add instructions
                 if (val.length > 0) {
                     // Local request data initialization for each field value
-                    if (this.localInstructions.length === 0) {
-                        this.mutableField.forEach(attr => {
-                            let _instruction = {
-                                fun : this.fun,
-                                args : ['regexp', attr, this.pattern.replace('{v}', val)]
-                            };
 
-                            this.localInstructions.push(_instruction);
-                            this.addInstruction(_instruction);
-                        });
+
+                    // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase
+                    let _instruction = {
+                        fun : 'query',
+                        args : ['multi_match', {
+                            "query" : val,
+                            //"type" : "phrase_prefix",
+                            "fields" : this.mutableField
+                        }]
                     }
 
-                    // Set local argument for each field
-                    else {
-                        this.localInstructions.forEach(obj => {
-                            obj.args[2] = this.pattern.replace('{v}', val);
-                        });
-                    }
-                }
-            
-                // Case where val is empty : we remove all instructions about this component to match with everything (by default thanks to ES behavior)
-                else {
-                    // Reset all deep instructions of local request
-                    this.localInstructions.forEach(instruction => {
-                        this.removeInstruction(instruction);
-                    });
+                    
+/*                     let _instruction = {
+                        fun : 'filter',
+                        args : ['bool', arg => {
+                            this.mutableField.forEach(attr => {
+                                arg[this.fun]('match', attr, val);
+                            });
+                            return arg;
+                        }]
+                    }; */
 
-                    this.localInstructions = [];
+                    this.localInstructions.push(_instruction);
+					this.addInstruction(_instruction);
                 }
 
                 // Update the request
@@ -144,7 +147,13 @@
 
             // Triggered by an emission from child suggestionbox component
             setEntry : function(item) {
-                this.entry = item;
+
+                // Get the correct output (equals to elements corresponding to field property)
+                let _entry = "";
+                this.mutableField.forEach(field => {
+                    _entry += " " + item[field];
+                })
+                this.entry = _entry.substr(1);
                 this.focusOnField("input");
             },
 

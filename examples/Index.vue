@@ -33,9 +33,9 @@
 
                     <div>
                         <!--<searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>-->
-                        <searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'{v}.*'" :operator="'AND'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
+                        <searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
                             <template slot="suggestions" slot-scope="{ suggestion }">
-                                <div>{{ suggestion }}</div>
+                                <div>{{ suggestion.firstname }} {{ suggestion.lastname }}</div>
                             </template>
                         </searchbox>
                         <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>

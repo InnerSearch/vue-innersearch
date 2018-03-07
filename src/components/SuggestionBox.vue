@@ -16,8 +16,18 @@
         mixins : [Generics],
 
         props : {
-            // get back the input parent value
+            // get back the input value from the parent component
             'entry' : {
+                type : String
+            },
+
+            // get back the fields from the parent component
+            'field' : {
+                type : [String, Array]
+            },
+
+            // get back the pattern from the parent component
+            'pattern' : {
                 type : String
             },
 
@@ -27,18 +37,27 @@
                 default : 300
             },
 
-            // pattern : formate the output
-            'pattern' : {
+            // htmlPattern : formate the output
+            'htmlPattern' : {
                 type : String,
                 default : null
                 // default : '<strong>{v}</strong>'
+                // default : '<strong>{r}</strong>'
+                // default : ['<strong>{v}</strong>', '<u>{r}</u>']
+            },
+
+            // size : count of elements to show in the box
+            'size' : {
+                type : Number,
+                default : 10
             }
         },
 
         data : function() {
             return {
+                suggestions : [],
                 itemWasClicked : false,
-                suggestions : []
+                mutableField : this.field
             };
         },
 
@@ -64,10 +83,19 @@
             },
 
             updateSuggestion : function(value) {
-                console.log(value);
+                // Reset suggestions
+                this.suggestions = [];
 
                 // Check if value is not empty,  if it is, the component is hidden
                 if (value.trim().length > 0) {
+
+                    // Update suggestions
+                    let _suggsRequest = this.createRequestForAutocomplete(value, this.field, this.pattern, this.size);
+                    this.header.client.search(_suggsRequest).then(response => {
+                        response.hits.hits.forEach(hit => {
+                            this.suggestions.push(hit._source);
+                        });
+                    });
 
                     // Check if the component should be hidden or not (not triggered when an item is selected)
                     if (!this.itemWasClicked)
@@ -88,8 +116,9 @@
         },
         
         created : function() {
-            this.suggestions.push("choix 1");
-            this.suggestions.push("choix 2");
+            // Convert field to array if it's not the case
+            if (!Array.isArray(this.mutableField))
+                this.mutableField = [this.mutableField];
         }
     };
 </script>

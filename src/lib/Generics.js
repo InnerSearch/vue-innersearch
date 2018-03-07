@@ -2,6 +2,7 @@ import Vue from 'vue';
 import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
 import Store from './Store';
+import ComponentType from './enum/Component.js';
 
 //FIXME global vue mixin
 export default {
@@ -189,7 +190,7 @@ export default {
 			this.setBody(BD.build());
 
 			// Debug
-			//console.log("[Generics:Mount] Request : ", this.request);
+			console.log("[Generics:Mount] Request : ", this.request);
 		},
 
 
@@ -244,14 +245,17 @@ export default {
 			Create independent request for autocomplete component
 			Fetch the hits which match with the value
 		*/
-		createRequestForAutocomplete : function(fields, size) {
+		createRequestForAutocomplete : function(value, fields, pattern, size) {
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 
-			// Store the JSON request into the body
-			_request.body = Bodybuilder()
-				.size(size)
-				.build();
+			// Feed the request
+			let _body = Bodybuilder().size(size);
+			for (let i = 0; i < fields.length; i++)
+				_body.orFilter('regexp', fields[i], pattern.replace('{v}', value));
+
+			// Convert the object to json
+			_request.body = _body.build();
 
 			return _request;
 		},
