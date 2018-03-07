@@ -105,25 +105,26 @@
 
 
                     // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase
-                    let _instruction = {
+                  /*
+                  let _instruction = {
                         fun : 'query',
                         args : ['multi_match', {
                             "query" : val,
                             //"type" : "phrase_prefix",
                             "fields" : this.mutableField
                         }]
-                    }
+                    }*/
 
-                    
-/*                     let _instruction = {
+
+                    let _instruction = {
                         fun : 'filter',
                         args : ['bool', arg => {
                             this.mutableField.forEach(attr => {
-                                arg[this.fun]('match', attr, val);
+                                arg[this.fun]('prefix', attr, val);
                             });
                             return arg;
                         }]
-                    }; */
+                    };
 
                     this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
