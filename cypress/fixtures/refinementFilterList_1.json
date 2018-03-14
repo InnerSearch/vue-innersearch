@@ -8,197 +8,197 @@
     "failed":0
   },
   "hits":{
-    "total":28,
+    "total":30,
     "max_score":0.0,
     "hits":[
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"126",
+        "_id":"108",
         "_score":0.0,
         "_source":{
-          "account_number":126,
-          "balance":3607,
-          "firstname":"Effie",
-          "lastname":"Gates",
-          "age":39,
+          "account_number":108,
+          "balance":19015,
+          "firstname":"Christensen",
+          "lastname":"Weaver",
+          "age":21,
+          "gender":"M",
+          "address":"398 Dearborn Court",
+          "employer":"Quilk",
+          "email":"christensenweaver@quilk.com",
+          "city":"Belvoir",
+          "state":"TX"
+        }
+      },
+      {
+        "_index":"bank",
+        "_type":"account",
+        "_id":"383",
+        "_score":0.0,
+        "_source":{
+          "account_number":383,
+          "balance":48889,
+          "firstname":"Knox",
+          "lastname":"Larson",
+          "age":28,
           "gender":"F",
-          "address":"620 National Drive",
-          "employer":"Digitalus",
-          "email":"effiegates@digitalus.com",
-          "city":"Blodgett",
-          "state":"MD"
+          "address":"962 Bartlett Place",
+          "employer":"Bostonic",
+          "email":"knoxlarson@bostonic.com",
+          "city":"Smeltertown",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"253",
+        "_id":"89",
         "_score":0.0,
         "_source":{
-          "account_number":253,
-          "balance":20240,
-          "firstname":"Melissa",
-          "lastname":"Gould",
-          "age":31,
+          "account_number":89,
+          "balance":13263,
+          "firstname":"Mcdowell",
+          "lastname":"Bradley",
+          "age":28,
           "gender":"M",
-          "address":"440 Fuller Place",
-          "employer":"Buzzopia",
-          "email":"melissagould@buzzopia.com",
-          "city":"Lumberton",
-          "state":"MD"
+          "address":"960 Howard Alley",
+          "employer":"Grok",
+          "email":"mcdowellbradley@grok.com",
+          "city":"Toftrees",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"575",
+        "_id":"349",
         "_score":0.0,
         "_source":{
-          "account_number":575,
-          "balance":12588,
-          "firstname":"Buchanan",
-          "lastname":"Pope",
-          "age":39,
-          "gender":"M",
-          "address":"581 Sumner Place",
-          "employer":"Stucco",
-          "email":"buchananpope@stucco.com",
-          "city":"Ellerslie",
-          "state":"MD"
-        }
-      },
-      {
-        "_index":"bank",
-        "_type":"account",
-        "_id":"338",
-        "_score":0.0,
-        "_source":{
-          "account_number":338,
-          "balance":6969,
-          "firstname":"Pierce",
-          "lastname":"Lawrence",
-          "age":35,
-          "gender":"M",
-          "address":"318 Gallatin Place",
-          "employer":"Lunchpad",
-          "email":"piercelawrence@lunchpad.com",
-          "city":"Iola",
-          "state":"MD"
-        }
-      },
-      {
-        "_index":"bank",
-        "_type":"account",
-        "_id":"617",
-        "_score":0.0,
-        "_source":{
-          "account_number":617,
-          "balance":35445,
-          "firstname":"Kitty",
-          "lastname":"Cooley",
+          "account_number":349,
+          "balance":24180,
+          "firstname":"Allison",
+          "lastname":"Fitzpatrick",
           "age":22,
-          "gender":"M",
-          "address":"788 Seagate Avenue",
-          "employer":"Ultrimax",
-          "email":"kittycooley@ultrimax.com",
-          "city":"Clarktown",
-          "state":"MD"
+          "gender":"F",
+          "address":"913 Arlington Avenue",
+          "employer":"Veraq",
+          "email":"allisonfitzpatrick@veraq.com",
+          "city":"Marbury",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"977",
+        "_id":"933",
         "_score":0.0,
         "_source":{
-          "account_number":977,
-          "balance":6744,
-          "firstname":"Rodgers",
-          "lastname":"Mccray",
+          "account_number":933,
+          "balance":18071,
+          "firstname":"Tabitha",
+          "lastname":"Cole",
           "age":21,
           "gender":"F",
-          "address":"612 Duryea Place",
-          "employer":"Papricut",
-          "email":"rodgersmccray@papricut.com",
-          "city":"Marenisco",
-          "state":"MD"
+          "address":"916 Rogers Avenue",
+          "employer":"Eclipto",
+          "email":"tabithacole@eclipto.com",
+          "city":"Lawrence",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"644",
+        "_id":"378",
         "_score":0.0,
         "_source":{
-          "account_number":644,
-          "balance":44021,
-          "firstname":"Etta",
-          "lastname":"Miller",
-          "age":21,
+          "account_number":378,
+          "balance":27100,
+          "firstname":"Watson",
+          "lastname":"Simpson",
+          "age":36,
           "gender":"F",
-          "address":"376 Lawton Street",
-          "employer":"Bluegrain",
-          "email":"ettamiller@bluegrain.com",
-          "city":"Baker",
-          "state":"MD"
+          "address":"644 Thomas Street",
+          "employer":"Wrapture",
+          "email":"watsonsimpson@wrapture.com",
+          "city":"Keller",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"930",
+        "_id":"514",
         "_score":0.0,
         "_source":{
-          "account_number":930,
-          "balance":47257,
-          "firstname":"Kinney",
-          "lastname":"Lawson",
-          "age":39,
+          "account_number":514,
+          "balance":30125,
+          "firstname":"Solomon",
+          "lastname":"Bush",
+          "age":34,
           "gender":"M",
-          "address":"501 Raleigh Place",
-          "employer":"Neptide",
-          "email":"kinneylawson@neptide.com",
-          "city":"Deltaville",
-          "state":"MD"
+          "address":"409 Harkness Avenue",
+          "employer":"Snacktion",
+          "email":"solomonbush@snacktion.com",
+          "city":"Grayhawk",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"157",
+        "_id":"605",
         "_score":0.0,
         "_source":{
-          "account_number":157,
-          "balance":39868,
-          "firstname":"Claudia",
-          "lastname":"Terry",
-          "age":20,
+          "account_number":605,
+          "balance":38427,
+          "firstname":"Mcclain",
+          "lastname":"Manning",
+          "age":24,
+          "gender":"M",
+          "address":"832 Leonard Street",
+          "employer":"Qiao",
+          "email":"mcclainmanning@qiao.com",
+          "city":"Calvary",
+          "state":"TX"
+        }
+      },
+      {
+        "_index":"bank",
+        "_type":"account",
+        "_id":"214",
+        "_score":0.0,
+        "_source":{
+          "account_number":214,
+          "balance":24418,
+          "firstname":"Luann",
+          "lastname":"Faulkner",
+          "age":37,
           "gender":"F",
-          "address":"132 Gunnison Court",
-          "employer":"Lumbrex",
-          "email":"claudiaterry@lumbrex.com",
-          "city":"Castleton",
-          "state":"MD"
+          "address":"697 Hazel Court",
+          "employer":"Zolar",
+          "email":"luannfaulkner@zolar.com",
+          "city":"Ticonderoga",
+          "state":"TX"
         }
       },
       {
         "_index":"bank",
         "_type":"account",
-        "_id":"913",
+        "_id":"396",
         "_score":0.0,
         "_source":{
-          "account_number":913,
-          "balance":47657,
-          "firstname":"Margery",
-          "lastname":"Monroe",
-          "age":25,
-          "gender":"M",
-          "address":"941 Fanchon Place",
-          "employer":"Exerta",
-          "email":"margerymonroe@exerta.com",
-          "city":"Bannock",
-          "state":"MD"
+          "account_number":396,
+          "balance":14613,
+          "firstname":"Marsha",
+          "lastname":"Elliott",
+          "age":38,
+          "gender":"F",
+          "address":"297 Liberty Avenue",
+          "employer":"Orbiflex",
+          "email":"marshaelliott@orbiflex.com",
+          "city":"Windsor",
+          "state":"TX"
         }
       }
     ]
@@ -209,8 +209,8 @@
       "sum_other_doc_count":0,
       "buckets":[
         {
-          "key":"md",
-          "doc_count":28
+          "key":"tx",
+          "doc_count":30
         }
       ]
     }

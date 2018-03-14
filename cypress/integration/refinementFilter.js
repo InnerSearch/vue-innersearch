@@ -31,8 +31,8 @@ describe('Test RefinementListFilter', () => {
   });
   context('Filtered research', function () {
     const valCheck = {
-      name : 'md',
-      count : 28
+      name : 'tx',
+      count : 30
     };
     beforeEach(function () {
       cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);

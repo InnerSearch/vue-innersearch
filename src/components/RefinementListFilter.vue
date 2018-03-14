@@ -3,7 +3,7 @@
 		<slot name="title">
 			<h3 class="is-refinement-menu-title">{{title}}</h3>
 		</slot>
-		
+
 		<div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
 			<input
 				type="checkbox"
@@ -123,7 +123,7 @@
 
 			// Triggered when user select or unselect an item
 			clickOnItem : function() {
-				
+
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
 					this.removeInstruction(instruction);
@@ -188,8 +188,10 @@
 
 				// triggered in Generics.js fetch method
 				document.addEventListener('updateAggs', e => {
-					let aggs = e.detail;
-					this.setAggregations(this.field, aggs['agg_terms_'+this.field].buckets,this.dynamic,this.orderKey,this.orderDirection);
+          if(this.operator=='or') {
+            let aggs = e.detail;
+            this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+          }
 				});
 			});
 		}
