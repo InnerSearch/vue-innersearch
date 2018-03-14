@@ -70,8 +70,7 @@
                         </template>
                     </hits>
 
-                    <!--<paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>-->
-                    <paginate-alt :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate-alt>
+                    <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
                 </section>
             `
         });
