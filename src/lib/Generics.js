@@ -197,7 +197,7 @@ export default {
 		/*
 			Execute ES request
 		*/
-		fetch : function() {
+		fetch : function(self = undefined) {
 			//console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Reset debounce events
@@ -216,7 +216,14 @@ export default {
 				/***
 				 * Update aggregations after each ES request
 				 */
-				var event = new CustomEvent('updateAggs', { 'detail' : resp.aggregations });
+				let params = { 'detail' : {
+					'aggs' : resp.aggregations
+				}};
+				if (self !== undefined) {
+					params.detail.base = self.$data.CID;
+				}
+				
+				var event = new CustomEvent('updateAggs', params);
 				if (resp.aggregations !== undefined)
 					document.dispatchEvent(event);
 

@@ -79,6 +79,7 @@
 
 		data : function() {
 			return {
+				CID : undefined,
 				checkedItems : [], // list of checked items
 				localAggregations : [], // lcoal aggregation instructions
 				localInstructions : [] // local request
@@ -164,7 +165,7 @@
 				this.mount();
 
 				// Execute request
-				this.fetch();
+				this.fetch(this);
 
 				// Debugg
 				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
@@ -173,6 +174,9 @@
 		},
 
 		created : function () {
+			// Interactive component declaration
+			this.CID = this.addComponent("refinementListFilter");
+			
 			// Add aggregation, no need to update it later
 			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);   // TODO ; find an other way to create a new request
 
@@ -188,10 +192,11 @@
 
 				// triggered in Generics.js fetch method
 				document.addEventListener('updateAggs', e => {
-          if(this.operator=='or') {
-            let aggs = e.detail;
-            this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
-          }
+					let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true;
+					if(this.operator !== 'OR' || isBase) {
+						let aggs = e.detail.aggs;
+						this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+					}
 				});
 			});
 		}
