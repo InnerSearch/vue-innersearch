@@ -125,6 +125,14 @@
 			}
 		},
 
+		data : function() {
+			return {
+				CID : undefined,
+                nbPage : this.page,
+                nbPage1: this.page+1
+			}
+    	},
+
 		computed : {
 			hits : function() {
 				return {
@@ -137,14 +145,6 @@
 				return Math.ceil(this.hits.score / this.size);
 			}
 		},
-
-		data : function() {
-			return {
-				CID : undefined,
-                nbPage : this.page,
-                nbPage1: this.page+1
-			}
-    	},
 
 		methods : {
 			resetPagination : function() {
