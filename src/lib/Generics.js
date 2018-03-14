@@ -4,7 +4,6 @@ import Bodybuilder from 'bodybuilder';
 import Store from './Store';
 import ComponentType from './enum/Component.js';
 
-//FIXME global vue mixin
 export default {
 	computed : {
 		// Full Elasticsearch request
@@ -133,7 +132,7 @@ export default {
 			return name + '_C' + CID;
 		},
 
-		
+
 		/*
 			Add item into the Store
 		*/
@@ -222,7 +221,7 @@ export default {
 				if (self !== undefined) {
 					params.detail.base = self.$data.CID;
 				}
-				
+
 				var event = new CustomEvent('updateAggs', params);
 				if (resp.aggregations !== undefined)
 					document.dispatchEvent(event);
@@ -270,7 +269,7 @@ export default {
 						"type" : "string",
 						"index_analyzer": "index_ngram_analyzer",
 						"search_analyzer": "search_term_analyzer",
-						"term_vector":"with_positions_offsets" 
+						"term_vector":"with_positions_offsets"
 					}
 				}
 			}; */

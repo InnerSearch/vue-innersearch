@@ -4,7 +4,7 @@ import Hits from './src/components/Hits';
 import RefinementListFilter from './src/components/RefinementListFilter';
 import SearchButton from './src/components/SearchButton';
 import Paginate from './src/components/Paginate';
-import PaginateAlt from "./src/components/PaginateAlt.vue";
+import PaginateAlt from "./src/components/Paginate.vue";
 
 const InnerSearch = {
     Searchbox,
@@ -13,7 +13,7 @@ const InnerSearch = {
     SearchButton,
     Paginate,
     PaginateAlt,
-    
+
     install(Vue, options) {
         Vue.component('refinement-list-filter', RefinementListFilter);
         Vue.component('searchbox', Searchbox);
@@ -21,7 +21,7 @@ const InnerSearch = {
         Vue.component('hits', Hits);
         Vue.component('paginate', Paginate);
         Vue.component('paginate-alt', PaginateAlt);
-  
+
         Vue.mixin(Generics);
     }
 };
