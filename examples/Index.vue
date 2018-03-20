@@ -34,6 +34,19 @@
                     <div>
                         <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
+                        <search-datalist>
+                            <template slot="items">
+                            </template>
+
+                            <!--<template slot="nosuggestion" slot-scope="{ value }">
+                                Aucun résultat pour "{{ value }}"
+                            </template>-->
+
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                Found : {{ suggestion }}
+                            </template>
+                        </search-datalist>
+
                         <!--<searchbox :autofocus="true" :realtime="true" :timeout="200" :field="['firstname', 'lastname']" :placeholder="'Search by firstname & lastname'" :operator="'OR'"></searchbox>-->
                         
                         <!--<searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">

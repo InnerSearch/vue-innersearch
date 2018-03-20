@@ -218,9 +218,8 @@ export default {
 				let params = { 'detail' : {
 					'aggs' : resp.aggregations
 				}};
-				if (self !== undefined) {
+				if (self !== undefined)
 					params.detail.base = self.$data.CID;
-				}
 
 				var event = new CustomEvent('updateAggs', params);
 				if (resp.aggregations !== undefined)

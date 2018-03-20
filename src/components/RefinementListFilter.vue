@@ -178,7 +178,7 @@
 			this.CID = this.addComponent("refinementListFilter");
 			
 			// Add aggregation, no need to update it later
-			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);   // TODO ; find an other way to create a new request
+			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);
 
 			// Search respective aggregations
 			this.addAggregationInstructions();
@@ -194,8 +194,12 @@
 				document.addEventListener('updateAggs', e => {
 					let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true;
 					if(this.operator !== 'OR' || isBase) {
+						console.log("Dans IF", this.CID, e.detail.aggs)
 						let aggs = e.detail.aggs;
 						this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+					}
+					else {
+						//console.log("Hors IF", this.CID, e.detail.aggs)
 					}
 				});
 			});

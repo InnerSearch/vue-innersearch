@@ -1,6 +1,6 @@
 <template>
     <div class='is-component is-searchbox'>
-        <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
+        <div class='is-icon is-searchbox' v-on:click='focusOnField("input")'></div>
         <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
     </div>
 </template>

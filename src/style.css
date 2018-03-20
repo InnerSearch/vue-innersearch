@@ -75,6 +75,102 @@
 
 
 /*
+    Search Datalist
+*/
+
+.is-component.is-search-datalist {
+    display : flex;
+    width : 90%;
+    margin : 0 auto;
+}
+
+.is-icon.is-search-datalist {
+    width : 50px;
+    height : 50px;
+    margin : 5px;
+    background-image : url('./images/search.svg');
+    opacity : .4;
+}
+
+.is-field.is-search-datalist {
+    width : 100%;
+    border : 0;
+    color : #2C2C2C;
+}
+
+.is-search-datalist-items {
+    width : 90%;
+    margin : 0 auto;
+}
+
+.is-search-datalist-items li {
+    display : inline-block;
+    margin : 10px 5px;
+    padding : 5px 10px;
+    border-radius : 4px;
+    background-color : rgba(209, 209, 209, 0.8);
+    transition : all 0.3s ease;
+    cursor : pointer;
+}
+
+.is-search-datalist-items li:hover {
+    background-color : rgba(209, 209, 209, 1);
+}
+
+.is-search-datalist-items li:first-child {
+    margin-left : 0 !important;
+}
+
+.is-search-datalist-items li:after {
+    content : 'x';
+    margin-left : 5px;
+    color : rgba(129, 35, 35, 0.6);
+    font-family : Calibri, sans-serif;
+    font-weight : bolder;
+    transition : all 0.3s ease;
+}
+
+.is-search-datalist-items li:hover:after {
+    color : rgba(129, 35, 35, 0.8);
+}
+
+.is-search-datalist-suggestions {
+    width : 90%;
+    margin : 0 auto;
+    border-right : 1px solid #A9A9A9;
+    border-bottom : 1px solid #A9A9A9;
+    border-left : 1px solid #A9A9A9;
+}
+
+.is-search-datalist-suggestions li {
+    padding : 5px 10px;
+    font-family : Calibri, sans-serif;
+}
+
+.is-search-datalist-suggestions li:not(.noresult) {
+    cursor : pointer;
+}
+
+.is-search-datalist-suggestions li:not(.noresult):nth-child(odd) {
+    background-color : #EAEAEA;
+}
+
+.is-search-datalist-suggestions li:not(.noresult):nth-child(even) {
+    background-color : #F9F9F9;
+}
+
+.is-search-datalist-suggestions li.noresult {
+    font-style : oblique;
+    font-weight : bolder;
+}
+
+.is-search-datalist-suggestions li:not(.noresult).selected {
+    background : #181818;
+    color : #F0F0F0;
+}
+
+
+/*
     Refinement list
 */
 
