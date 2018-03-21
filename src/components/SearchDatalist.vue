@@ -3,7 +3,9 @@
         <div class='is-search-datalist-items'>
             <ul>
                 <li v-for='(selection, index) in selections' :key='index' @click='remove(index)'>
-                    {{ selection }}
+                    <slot name='items' v-bind:item='selection'>
+                        {{ selection }}
+                    </slot>
                 </li>
             </ul>
         </div>
