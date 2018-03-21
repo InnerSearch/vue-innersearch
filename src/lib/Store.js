@@ -89,8 +89,15 @@ export default new Vuex.Store({
                                     return obj.key === agg.key;
                                 })[0];
 
-                                if (_found === undefined)
-                                    agg.doc_count = 0;
+                                if (_found === undefined){
+                                  /***
+                                   * Fix for issue #4
+                                   * just command the line under
+                                   * we dont update doc_count to 0
+                                   */
+                                  //agg.doc_count = 0;
+                                }
+
                                 else
                                     agg.doc_count = _found.doc_count;
                             });
