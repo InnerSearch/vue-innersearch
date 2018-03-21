@@ -20,7 +20,6 @@ const InnerSearch = {
         Vue.component('search-button', SearchButton);
         Vue.component('hits', Hits);
         Vue.component('paginate', Paginate);
-        Vue.component('paginate-alt', PaginateAlt);
 
         Vue.mixin(Generics);
     }
