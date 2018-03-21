@@ -1,5 +1,6 @@
 import Generics from './src/lib/Generics';
 import Searchbox from './src/components/SearchBox';
+import SearchDatalist from './src/components/SearchDatalist';
 import Hits from './src/components/Hits';
 import RefinementListFilter from './src/components/RefinementListFilter';
 import SearchButton from './src/components/SearchButton';
@@ -8,6 +9,7 @@ import PaginateAlt from "./src/components/Paginate.vue";
 
 const InnerSearch = {
     Searchbox,
+    SearchDatalist,
     Hits,
     RefinementListFilter,
     SearchButton,
@@ -17,6 +19,7 @@ const InnerSearch = {
     install(Vue, options) {
         Vue.component('refinement-list-filter', RefinementListFilter);
         Vue.component('searchbox', Searchbox);
+        Vue.component('search-datalist', SearchDatalist);
         Vue.component('search-button', SearchButton);
         Vue.component('hits', Hits);
         Vue.component('paginate', Paginate);
@@ -29,6 +32,7 @@ export default InnerSearch;
 
 export {
     Searchbox,
+    SearchDatalist,
     Hits,
     RefinementListFilter,
     SearchButton,

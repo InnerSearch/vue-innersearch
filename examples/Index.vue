@@ -32,7 +32,24 @@
                     <hr class='is-line' />
 
                     <div>
-                        <searchbox :autofocus="true" :realtime="true" :timeout="2000" :field="['firstname']" :placeholder="'Search by firstname'"></searchbox>
+                        <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+
+                        <search-datalist :suggestion="['firstname', 'lastname']">
+                            <template slot="items">
+                            </template>
+
+                            <template slot="nosuggestion" slot-scope="{ value }">
+                                Sorry, "{{ value }}" doesn't exist... :(
+                            </template>
+
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                <span v-html="suggestion.highlight.firstname ? suggestion.highlight.firstname[0] : suggestion._source.firstname"></span>
+                                <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
+                            </template>
+                        </search-datalist>
+
+                        <!--<searchbox :autofocus="true" :realtime="true" :timeout="200" :field="['firstname', 'lastname']" :placeholder="'Search by firstname & lastname'" :operator="'OR'"></searchbox>-->
+                        
                         <!--<searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
                             <template slot="suggestions" slot-scope="{ suggestion }">
                                 <div style="display : inline-block; width : 60%;" v-html="">
@@ -48,6 +65,7 @@
                                 <div>{{ suggestion._source.firstname }} {{ suggestion._source.lastname }}</div>
                             </template>
                         </searchbox>-->
+
                         <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
                         <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>
                         <search-button></search-button>

@@ -1,23 +1,13 @@
 <template>
-    <div>
-        <div class='is-component is-searchbox'>
-            <div class='is-icon is-searchbox' ref='icon' v-on:click='focusOnField("input")'></div>
-            <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
-        </div>
-        <suggestionbox v-if='suggestionbox' v-show='activeSuggestion' :entry='entry' :field='field' :pattern='pattern' @selectItem='setEntry' @changeState='setState'>
-            <template slot='suggestions' slot-scope='{ suggestion }'>
-                <slot name='suggestions' v-bind:suggestion='suggestion'>
-                    [SuggestionItem]
-                </slot>
-            </template>
-        </suggestionbox>
+    <div class='is-component is-searchbox'>
+        <div class='is-icon is-searchbox' v-on:click='focusOnField("input")'></div>
+        <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
     </div>
 </template>
 
 <script>
     import generics from './../lib/Generics';
     import debounce from 'debounce';
-    import SuggestionBox from "./SuggestionBox.vue";
 
     export default {
         name : 'searchbox',
@@ -49,28 +39,16 @@
                 required: true
             },
 
-            // operator : logical operator applied when the is several field
+            // operator : logical operator applied when there are several field
             'operator' : {
                 type : String,
                 default : 'OR'
-            },
-
-            // pattern : regexp pattern
-            'pattern' : {
-                type : String,
-                default : '.*{v}.*'
             },
 
             // placeholder : text which appears into the input
             'placeholder' : {
                 type : String,
                 default : 'Search'
-            },
-
-            // suggestionbox : link the searchbox with a sub suggestionbox component
-            'suggestionbox' : {
-                type : Boolean,
-                default : false
             }
         },
 
@@ -79,9 +57,7 @@
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
-                localInstructions : [], // local request
-
-                activeSuggestion : false // show or not the suggestion component
+                localInstructions : [] // local request
             };
         },
 
@@ -102,20 +78,6 @@
                 // Case where val is not empty : we add instructions
                 if (val.length > 0) {
                     // Local request data initialization for each field value
-
-
-                    // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase
-                  /*
-                  let _instruction = {
-                        fun : 'query',
-                        args : ['multi_match', {
-                            "query" : val,
-                            //"type" : "phrase_prefix",
-                            "fields" : this.mutableField
-                        }]
-                    }*/
-
-
                     let _instruction = {
                         fun : 'filter',
                         args : ['bool', arg => {
@@ -144,28 +106,13 @@
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
                 this.fetch();
-            },
-
-            // Triggered by an emission from child suggestionbox component
-            setEntry : function(item) {
-
-                // Get the correct output (equals to elements corresponding to field property)
-                let _entry = "";
-                this.mutableField.forEach(field => {
-                    _entry += " " + item[field];
-                })
-                this.entry = _entry.substr(1);
-                this.focusOnField("input");
-            },
-
-            setState : function(state) {
-                this.activeSuggestion = state;
             }
         },
 
         mounted : function() {
-            // Add autofocus property to html tag
-            this.$refs.input.autofocus = this.autofocus || false;
+            // Autofocus event for the html tag
+            if (this.autofocus)
+                this.$refs.input.focus();
 
             // Add placeholder property to the input html tag
             this.$refs.input.setAttribute('placeholder', this.placeholder);
@@ -195,13 +142,8 @@
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];
 
-
             // Function calculation depending on operator property
             this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
-        },
-
-        components : {
-            'suggestionbox' : SuggestionBox
         }
     };
 </script>
