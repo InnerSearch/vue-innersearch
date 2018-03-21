@@ -215,6 +215,7 @@ export default {
 				/***
 				 * Update aggregations after each ES request
 				 */
+				/*
 				let params = { 'detail' : {
 					'aggs' : resp.aggregations
 				}};
@@ -225,6 +226,7 @@ export default {
 				if (resp.aggregations !== undefined)
 					document.dispatchEvent(event);
 
+				*/
 				if (hits.length === 0)
 					this.setScore(0);
 				else {

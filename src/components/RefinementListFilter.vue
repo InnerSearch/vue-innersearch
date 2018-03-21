@@ -176,7 +176,7 @@
 		created : function () {
 			// Interactive component declaration
 			this.CID = this.addComponent("refinementListFilter");
-			
+
 			// Add aggregation, no need to update it later
 			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);
 
@@ -185,23 +185,25 @@
 
 			// Get respective items
 			this.header.client.search(_aggsRequest).then(response => {
-				let value = response.aggregations['agg_terms_' + this.field].buckets;
+            let value = response.aggregations['agg_terms_' + this.field].buckets;
 
-				// Create aggregations items
-				this.updateLabels(value);
+            // Create aggregations items
+            this.updateLabels(value);
+/*
+            // triggered in Generics.js fetch method
+            document.addEventListener('updateAggs', e => {
+              let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true;
+              if(this.operator !== 'OR' || isBase) {
+                console.log("Dans IF", this.CID, e.detail.aggs)
+                let aggs = e.detail.aggs;
+                this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
 
-				// triggered in Generics.js fetch method
-				document.addEventListener('updateAggs', e => {
-					let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true;
-					if(this.operator !== 'OR' || isBase) {
-						console.log("Dans IF", this.CID, e.detail.aggs)
-						let aggs = e.detail.aggs;
-						this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
-					}
-					else {
-						//console.log("Hors IF", this.CID, e.detail.aggs)
+              }
+              else {
+                console.log("Hors IF", this.CID, e.detail.aggs)
 					}
 				});
+            */
 			});
 		}
 	};
