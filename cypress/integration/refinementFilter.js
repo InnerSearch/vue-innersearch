@@ -1,5 +1,6 @@
 const _URL = 'http://localhost:4000/#/test_refinementListFilter',
       _URL2 = 'http://localhost:4000/#/test_refinementListFilter2',
+      _URL3 = 'http://localhost:4000/#/test_multipleRLF',
       _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
       _HITS = '.is-score.is-hits',
       _ITEMS = 'div.hit',
@@ -11,6 +12,28 @@ const _URL = 'http://localhost:4000/#/test_refinementListFilter',
       _GENDER = '.gender';
 
 import refinementFilterList_sample_1 from '../fixtures/refinementFilterList_1.json';
+
+describe('Test Multiple RLF', () => {
+  beforeEach(function() {
+    cy.visit(_URL3);
+    cy.server();
+  });
+
+  /***
+   * https://github.com/InnerSearch/InnerSearch.js/issues/4
+   */
+  it('non regression test for issue #4', () => {
+    cy.get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
+    cy.get(':nth-child(14) > input').click(); // Check CA State
+    cy.get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Uncheck F gender
+    cy.get('.state_rlf > .is-component > .is-item > label').then($e => {
+        let regex = new RegExp(/^[A-Za-z]*\s\(\s[1-9]+[0-9]*\s\)$/);
+        for(let i=0;i < $e.length; i++){
+          expect(regex.test($e.get(i).innerHTML)).to.be.true;
+        }
+    });
+  });
+});
 
 describe('Test RefinementListFilter', () => {
   beforeEach(function() {
@@ -94,3 +117,6 @@ describe('Test RefinementListFilter2', () => {
     cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains('tx : 30');
   });
 });
+
+
+

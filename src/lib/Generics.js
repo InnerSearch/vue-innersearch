@@ -218,8 +218,12 @@ export default {
         let params = { 'detail' : {
           'aggs' : resp.aggregations
         }};
+        /*
+        if (self !== undefined)
+          params.detail.base = self.$data.CID;
+          */
 				this.bus.$emit('updateAggs',params);
-				
+
 				if (hits.length === 0)
 					this.setScore(0);
 				else {

@@ -190,7 +190,7 @@
             // Create aggregations items
             this.updateLabels(value);
             this.bus.$on('updateAggs', e => {
-          let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true;
+          let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true; // TODO maybe need to remove that
           if(this.operator !== 'OR' || isBase) {
             //console.log("Dans IF", this.CID, e.detail.aggs)
             let aggs = e.detail.aggs;
@@ -198,7 +198,7 @@
 
           }
           else {
-            //console.log("Hors IF", this.CID, e.detail.aggs)
+            console.log("Hors IF", this.CID, e.detail.aggs)
           }
         });
 			});
