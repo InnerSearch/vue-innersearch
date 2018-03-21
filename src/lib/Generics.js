@@ -250,28 +250,27 @@ export default {
 			Create independent request for autocomplete component
 			Fetch the hits which match with the value
 		*/
-		createRequestForAutocomplete : function(value, fields, pattern, size) {
+		createRequestForSuggs : function(value, fields, size) {
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 
 			// Feed the request
 			let _body = Bodybuilder().size(size);
-			for (let i = 0; i < fields.length; i++)
-				_body.orFilter('regexp', fields[i], pattern.replace('{v}', value));
+			fields.forEach(field => {
+				_body.orFilter('prefix', field, value);
+			});
 
 			// Convert the object to json
 			_request.body = _body.build();
 
-/* 			_request.body["highlight"] = {
-				"fields" : {
-					"firstname" : {
-						"type" : "string",
-						"index_analyzer": "index_ngram_analyzer",
-						"search_analyzer": "search_term_analyzer",
-						"term_vector":"with_positions_offsets"
-					}
-				}
-			}; */
+			// Highlighter
+			_request.body["highlight"] = {
+				"fields" : {}
+			};
+
+			fields.forEach(field => {
+				_request.body.highlight.fields[field] = {};
+			});
 
 			return _request;
 		},

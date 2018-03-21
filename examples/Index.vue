@@ -34,16 +34,17 @@
                     <div>
                         <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
-                        <search-datalist>
+                        <search-datalist :suggestion="['firstname', 'lastname']">
                             <template slot="items">
                             </template>
 
-                            <!--<template slot="nosuggestion" slot-scope="{ value }">
-                                Aucun résultat pour "{{ value }}"
-                            </template>-->
+                            <template slot="nosuggestion" slot-scope="{ value }">
+                                Sorry, "{{ value }}" doesn't exist... :(
+                            </template>
 
                             <template slot="suggestions" slot-scope="{ suggestion }">
-                                Found : {{ suggestion }}
+                                <span v-html="suggestion.highlight.firstname ? suggestion.highlight.firstname[0] : suggestion._source.firstname"></span>
+                                <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
                             </template>
                         </search-datalist>
 

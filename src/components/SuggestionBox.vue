@@ -93,15 +93,8 @@
                     // Update suggestions
                     let _suggsRequest = this.createRequestForAutocomplete(value, this.mutableField, this.pattern, this.size);
                     this.header.client.search(_suggsRequest).then(response => {
-
                         console.log("Response", response.hits.hits);
                         this.suggestions = response.hits.hits;
-
-/*                         response.hits.hits.forEach(hit => {
-
-                            this.suggestions.push(hit._source);
-
-                        }); */
                     });
 
                     // Check if the component should be hidden or not (not triggered when an item is selected)

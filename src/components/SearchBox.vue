@@ -39,7 +39,7 @@
                 required: true
             },
 
-            // operator : logical operator applied when the is several field
+            // operator : logical operator applied when there are several field
             'operator' : {
                 type : String,
                 default : 'OR'

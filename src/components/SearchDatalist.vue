@@ -9,7 +9,7 @@
         </div>
         <div class='is-component is-search-datalist'>
             <div class='is-icon is-search-datalist' v-on:click='focus()'></div>
-            <input class='is-field is-search-datalist' type='text' ref='input' v-model='entry' @keydown.down='next()' @keydown.up='previous()' @keydown.esc='hideSuggestions()' @keydown.enter='submit()' />
+            <input class='is-field is-search-datalist' type='text' ref='input' v-model='entry' @keydown.down='next()' @keydown.up='previous()' @keydown.esc='hideSuggestions()' @keydown.enter='enter()' />
         </div>
         <div class='is-search-datalist-suggestions' v-if='showSuggestions'>
             <ul ref="suggestionBox">
@@ -37,6 +37,28 @@
         mixins : [generics],
 
         props : {
+            // fields on which the search is done
+            'field' : {
+                type : [String, Array]
+            },
+
+            // fields on which the autcomplete box is filled up
+            'suggestion' : {
+                type : [String, Array]
+            },
+
+            // operator : logical operator applied when there are several field
+            'operator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // size : count of elements to show in the box
+            'size' : {
+                type : Number,
+                default : 10
+            },
+
             // placeholder : text which appears into the input
             'placeholder' : {
                 type : String,
@@ -47,6 +69,8 @@
         data : function() {
             return {
                 entry : '', // input value
+                mutableField : this.field, // editable fields param
+                mutableSuggestion : this.suggestion, // editable suggestion fields param
                 showSuggestions : false, // show suggestions list
                 selections : [], // selected items
                 suggestions : [], // suggestions list
@@ -57,15 +81,23 @@
         computed : {
             computedEntry : function() {
                 return this.entry.toLowerCase();
+            },
+
+            computedSelections : function() {
+                return this.selections;
             }
         },
 
         watch : {
             computedEntry : function(value) {
-                if (value !== '')
+                if (value.trim() !== '')
                     this.updateItems(value);
                 else
                     this.hideSuggestions();
+            },
+
+            computedSelections : function(selections) {
+                console.log("Do some stuff");
             }
         },
 
@@ -79,7 +111,18 @@
 
             // Triggered when the input changes
             updateItems : function(value) {
-                this.showSuggestions = true;
+                // Reset suggestions
+                this.suggestions = [];
+
+                // Update suggestions
+                let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.size);
+                this.header.client.search(_suggsRequest).then(response => {
+                    console.log("Request", _suggsRequest, "Response", response.hits.hits);
+                    this.suggestions = response.hits.hits;
+
+                    // Show the box
+                    this.showSuggestions = true;
+                });
             },
 
             // Hide the autosuggestion box
@@ -103,74 +146,62 @@
 
             // Select (highlight) a suggested item
             select : function(index) {
-                let el = this.$refs.suggestions[index];
-                if (el !== undefined) {
-                    let i = this.highlightedSuggestion;
-                    if (i !== undefined)
+                let _el = this.$refs.suggestions[index];
+                if (_el !== undefined) {
+                    if (this.highlightedSuggestion !== undefined)
                         this.unselect();
 
                     this.highlightedSuggestion = index;
-                    el.classList.add('selected');
+                    _el.classList.add('selected');
                 }
             },
 
             // Unselect a suggested item
             unselect : function() {
-                let index = this.highlightedSuggestion,
-                    el = this.$refs.suggestions[index];
-                if (el !== undefined) {
+                let _index = this.highlightedSuggestion,
+                    _el = this.$refs.suggestions;
+                if (_el !== undefined && _el[_index] !== undefined) {
                     this.highlightedSuggestion = undefined;
-                    el.classList.remove('selected');
+                    _el[_index].classList.remove('selected');
                 }
             },
 
             // Select the next suggestion from highlighted item
             next : function() {
-                let index = this.highlightedSuggestion;
-                if (index === undefined)
+                let _index = this.highlightedSuggestion;
+                if (_index === undefined)
                     this.selectAndScroll(0);
                 else
-                    this.selectAndScroll((index + 1) % this.suggestions.length);
+                    this.selectAndScroll((_index + 1) % this.suggestions.length);
             },
 
             // Select the previous suggestion from highlighted item
             previous : function() {
-                let index = this.highlightedSuggestion,
-                    size = this.suggestions.length;
-                if (index === undefined)
-                    this.selectAndScroll(size - 1)
+                let _index = this.highlightedSuggestion,
+                    _size = this.suggestions.length;
+                if (_index === undefined)
+                    this.selectAndScroll(_size - 1)
                 else
-                    this.selectAndScroll((((index - 1) % size) + size) % size)
+                    this.selectAndScroll((((_index - 1) % _size) + _size) % _size)
+            },
+
+            // When 'enter' is pushed, add the highlighted item to the selections array
+            enter : function() {
+                if (this.showSuggestions) {
+                    // If an item is selected
+                    let _index = this.highlightedSuggestion;
+                    if (_index !== undefined && this.$refs.suggestions[_index] !== undefined)
+                        this.add(_index);
+
+                    this.hideSuggestions();
+                }
             },
             
             // Scroll function
             selectAndScroll : function(index) {
-                let itemHeight = this.$refs.suggestions[index].offsetHeight;
+                let _itemHeight = this.$refs.suggestions[index].offsetHeight;
                 this.select(index);
-                this.$refs.suggestionBox.scrollTo(0, index * itemHeight);
-            },
-
-            // Submit the search
-            submit : function(domain) {
-                let open = false;
-                if (this.showSuggestions) {
-                    // Si un élément est sélectionné
-                    let index = this.highlightedSuggestion;
-                    if (index !== undefined && this.$refs.suggestions[index] !== undefined)
-                        this.add(index);
-                    else
-                        open = true;
-
-                    this.hideSuggestions();
-                }
-                else
-                    open = true;
-
-                if (open && this.highlightedSuggestion.length > 0) {
-                    // do some stuff
-                    this.entry = '';
-                    this.highlightedSuggestion = [];
-                }
+                this.$refs.suggestionBox.scrollTo(0, index * _itemHeight);
             }
         },
 
@@ -180,8 +211,13 @@
         },
 
         created : function() {
-            this.suggestions = ['li', 'li', 'li', 'li']
-            this.selections = ['li', 'li']
+            // Convert field string to field array
+            if (!Array.isArray(this.mutableField))
+                this.mutableField = [this.mutableField];
+
+            // Convert suggestion string to suggestion array
+            if (!Array.isArray(this.mutableSuggestion))
+                this.mutableSuggestion = [this.mutableSuggestion];
         }
     };
 </script>
