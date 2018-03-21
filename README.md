@@ -22,7 +22,7 @@ $ npm install --save innersearch
   */
 
   import Vue from 'vue';
-  import InnerSearch from "../../InnerSearch.js";
+  import InnerSearch from innerSearch.js;
   import '../src/style.css';
 
   Vue.use(InnerSearch);
@@ -40,7 +40,7 @@ $ npm install --save innersearch
 
       template : `
                 <section>
-                    <h1 class='is-title'>InnerSearch.js</h1>
+                    <h1 class='is-title'>innerSearch.js</h1>
 
                     <hr class='is-line' />
 

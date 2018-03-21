@@ -4,7 +4,7 @@
 
 <script>
   import Vue from 'vue';
-  import InnerSearch from "../../InnerSearch.js";
+  import InnerSearch from "../innerSearch.js";
   import '../src/style.css';
 
   Vue.use(InnerSearch);

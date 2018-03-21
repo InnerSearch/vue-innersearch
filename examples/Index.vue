@@ -9,7 +9,7 @@
     */
 
     import Vue from 'vue';
-    import InnerSearch from "../../InnerSearch.js";
+    import InnerSearch from "../innerSearch.js";
     import '../src/style.css';
 
     Vue.use(InnerSearch);
@@ -27,7 +27,7 @@
 
             template : `
                 <section>
-                    <h1 class='is-title'>InnerSearch.js</h1>
+                    <h1 class='is-title'>innerSearch.js</h1>
 
                     <hr class='is-line' />
 
@@ -50,7 +50,7 @@
                         </search-datalist>
 
                         <!--<searchbox :autofocus="true" :realtime="true" :timeout="200" :field="['firstname', 'lastname']" :placeholder="'Search by firstname & lastname'" :operator="'OR'"></searchbox>-->
-                        
+
                         <!--<searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
                             <template slot="suggestions" slot-scope="{ suggestion }">
                                 <div style="display : inline-block; width : 60%;" v-html="">
