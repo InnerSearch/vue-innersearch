@@ -34,7 +34,7 @@
                     <div>
                         <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
-                        <search-datalist :field="'lastname'" :suggestion="['firstname', 'lastname']">
+                        <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
                             <template slot="items" slot-scope="{ item }">
                                 {{ item._source.firstname }} {{ item._source.lastname }} (<strong>{{ item._source.gender }}</strong>)
                             </template>

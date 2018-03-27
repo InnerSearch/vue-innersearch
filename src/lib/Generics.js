@@ -249,14 +249,19 @@ export default {
 			Create independent request for autocomplete component
 			Fetch the hits which match with the value
 		*/
-		createRequestForSuggs : function(value, fields, size) {
+		createRequestForSuggs : function(value, fields, selections, fun, size) {
 			// Bodybuilder object
 			let _request = this.clone(this.request);
 
 			// Feed the request
 			let _body = Bodybuilder().size(size);
 			fields.forEach(field => {
-				_body.orFilter('prefix', field, value);
+				_body[fun]('prefix', field, value);
+			});
+
+			// Don't fetch items already selected
+			selections.forEach(selection => {
+				_body.notFilter('term', '_id', selection._id);
 			});
 
 			// Convert the object to json

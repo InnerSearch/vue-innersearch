@@ -14,7 +14,7 @@
         mixins : [generics],
 
         props : {
-            // autofocus : if the input is focused when the user load the page
+            // autofocus : it defines if the input is focused when the user load the page
             'autofocus' : {
                 type : Boolean,
                 default : false

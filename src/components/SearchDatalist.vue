@@ -39,6 +39,12 @@
         mixins : [generics],
 
         props : {
+            // realtime : it defines if the Store object is updated for each change of the input
+            'realtime' : {
+                type : Boolean,
+                default : false
+            },
+            
             // fields on which the search is done
             'field' : {
                 type : [String, Array]
@@ -49,8 +55,20 @@
                 type : [String, Array]
             },
 
-            // operator : logical operator applied when there are several field
-            'operator' : {
+            // itemOperator : logical operator applied betwen each item
+            'itemOperator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // propertyOperator : logical operator applied for each property of a specific item
+            'propertyOperator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // suggestionOperator : logical operator applied for suggestions
+            'suggestionOperator' : {
                 type : String,
                 default : 'OR'
             },
@@ -73,6 +91,10 @@
                 entry : '', // input value
                 mutableField : this.field, // editable fields param
                 mutableSuggestion : this.suggestion, // editable suggestion fields param
+                itemFun : undefined, // function applied for items
+                propertyFun : undefined, // function applied for propertie(s) of an item
+                suggestionFun : undefined, // function applied for suggestion search
+                localInstructions : [], // local request
                 showSuggestions : false, // show suggestions list
                 selections : [], // selected items
                 suggestions : [], // suggestions list
@@ -99,7 +121,38 @@
             },
 
             computedSelections : function(selections) {
-                console.log("Do some stuff");
+ 				// Reset all deep instructions of local request
+				this.localInstructions.forEach(instruction => {
+					this.removeInstruction(instruction);
+				});
+				this.localInstructions = [];
+
+                // Case where the selection array is not empty : we add instructions
+                if (selections.length > 0) {
+                    // Local request data initialization for each field selection
+                    let _instruction = {
+                        fun : 'filter',
+                        args : ['bool', arg => {
+                            this.selections.forEach(selection => {
+                                arg[this.itemFun]('bool', sub => {
+                                    this.mutableField.forEach(attr => {
+                                        sub[this.propertyFun]('prefix', attr, selection._source[attr].toLowerCase());
+                                    });
+
+                                    return sub;
+                                })
+                            });
+
+                            return arg;
+                        }]
+                    };
+
+                    this.localInstructions.push(_instruction);
+					this.addInstruction(_instruction);
+                }
+
+                // Update the request
+                this.mount();
             }
         },
 
@@ -117,9 +170,9 @@
                 this.suggestions = [];
 
                 // Update suggestions
-                let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.size);
+                let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.selections, this.suggestionFun, this.size);
                 this.header.client.search(_suggsRequest).then(response => {
-                    console.log("Request", _suggsRequest, "Response", response.hits.hits);
+                    //console.log("Request", _suggsRequest, "Response", response.hits.hits);
                     this.suggestions = response.hits.hits;
 
                     // Show the box
@@ -220,6 +273,11 @@
             // Convert suggestion string to suggestion array
             if (!Array.isArray(this.mutableSuggestion))
                 this.mutableSuggestion = [this.mutableSuggestion];
+
+            // Functions calculation depending on operator
+            this.itemFun = (this.itemOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+            this.propertyFun = (this.propertyOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+            this.suggestionFun = (this.suggestionOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
         }
     };
 </script>
