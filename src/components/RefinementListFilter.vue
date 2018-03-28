@@ -196,7 +196,7 @@
 
       this.bus.$on('updateAggs', e => {
         let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
-        if(this.operator !== 'OR' || isMe) {
+        if(this.operator.toLowerCase() !== 'or' || isMe) {
 
           let aggs = e.aggs;
 
