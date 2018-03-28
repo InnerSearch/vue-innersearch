@@ -215,13 +215,11 @@ export default {
 				/***
 				 * Update aggregations after each ES request
 				 */
-				let params = { 'detail' : {
+				let params = {
 					'aggs' : resp.aggregations
-				}};
-				/*
+				};
 				if (self !== undefined)
-				params.detail.base = self.$data.CID;
-				*/
+				  params.base = self.$data.CID;
 				this.bus.$emit('updateAggs',params);
 
 				if (hits.length === 0)
