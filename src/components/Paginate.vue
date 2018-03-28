@@ -39,7 +39,7 @@
             </li>
 
             <li
-                v-if="nbPage>6"
+                v-if="nbPage > (unpiled + 1) /* 6 */"
             >
                 <span class="pagination-ellipsis">&hellip;</span>
             </li>
@@ -56,7 +56,7 @@
                     {{e}}
                 </a>
                 <a 
-                    v-else-if="(e > nbPage-5 && e < nbPage+6)"
+                    v-else-if="(e > nbPage - unpiled && e <= nbPage + (unpiled + 1) /* 6 */)"
                     class="pagination-link" 
                     @click="jumpToPage(e)"
                 >
@@ -65,7 +65,7 @@
             </li>
 
             <li
-                v-if="nbPage < maxPage-5"
+                v-if="nbPage < maxPage - unpiled"
             >
                 <span class="pagination-ellipsis">&hellip;</span>
             </li>
@@ -122,7 +122,12 @@
 			page : {
 				type : Number,
 				default : 0
-			}
+			},
+
+            unpiled: {
+                type: Number,
+                default: 5
+            }
 		},
 
 		data : function() {
