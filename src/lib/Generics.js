@@ -108,8 +108,8 @@ export default {
 			Add a debounce event to ES store
 			That permits to clear (reset) all listed hanged debounces when an user is triggered fetch()
 		*/
-		addDebounce : (debounce) => {
-			Store.commit("Elasticsearch/addDebounce", debounce);
+		addDebounce : (component, debounce) => {
+			Store.commit("Elasticsearch/addDebounce", { component, debounce });
 		},
 
 
@@ -117,8 +117,8 @@ export default {
 			Reset all the listed debounces
 			Called by fetch()
 		*/
-		resetDebounce : () => {
-			Store.commit("Elasticsearch/resetDebounce");
+		resetDebounce : (component = null) => {
+			Store.commit("Elasticsearch/resetDebounce", component);
 		},
 
 
@@ -197,7 +197,7 @@ export default {
 			Execute ES request
 		*/
 		fetch : function(self = undefined) {
-			//console.log("[Generics:Fetch] Request : ", this.request);
+			console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Reset debounce events
 			this.resetDebounce();
@@ -215,13 +215,13 @@ export default {
 				/***
 				 * Update aggregations after each ES request
 				 */
-        let params = { 'detail' : {
-          'aggs' : resp.aggregations
-        }};
-        /*
-        if (self !== undefined)
-          params.detail.base = self.$data.CID;
-          */
+				let params = { 'detail' : {
+					'aggs' : resp.aggregations
+				}};
+				/*
+				if (self !== undefined)
+				params.detail.base = self.$data.CID;
+				*/
 				this.bus.$emit('updateAggs',params);
 
 				if (hits.length === 0)

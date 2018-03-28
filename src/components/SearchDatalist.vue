@@ -44,6 +44,12 @@
                 type : Boolean,
                 default : false
             },
+
+            // timeout : independant of realtime, duration between two requests (in ms) for suggestion query
+            'timeout' : {
+                type : Number,
+                default : 300
+            },
             
             // fields on which the search is done
             'field' : {
@@ -53,6 +59,12 @@
             // fields on which the autcomplete box is filled up
             'suggestion' : {
                 type : [String, Array]
+            },
+
+            // ES function used for item search
+            'function' : {
+                type : String,
+                default : 'match'
             },
 
             // itemOperator : logical operator applied betwen each item
@@ -136,7 +148,7 @@
                             this.selections.forEach(selection => {
                                 arg[this.itemFun]('bool', sub => {
                                     this.mutableField.forEach(attr => {
-                                        sub[this.propertyFun]('prefix', attr, selection._source[attr].toLowerCase());
+                                        sub[this.propertyFun](this.function, attr, selection._source[attr].toLowerCase());
                                     });
 
                                     return sub;
@@ -157,6 +169,11 @@
         },
 
         methods : {
+            // Execute the mixins Fetch method to update hits
+            executeSearch : function() {
+                this.fetch();
+            },
+
             // Focus on input
             focus : function() {
                 this.$nextTick(function () {
@@ -166,13 +183,12 @@
 
             // Triggered when the input changes
             updateItems : function(value) {
-                // Reset suggestions
-                this.suggestions = [];
-
                 // Update suggestions
                 let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.selections, this.suggestionFun, this.size);
                 this.header.client.search(_suggsRequest).then(response => {
-                    //console.log("Request", _suggsRequest, "Response", response.hits.hits);
+                    // Reset suggestions
+                    this.suggestions = [];
+
                     this.suggestions = response.hits.hits;
 
                     // Show the box
@@ -182,6 +198,9 @@
 
             // Hide the autosuggestion box
             hideSuggestions : function() {
+                // Stop any debounced request only for searchdatalist components
+                this.resetDebounce('searchdatalist');
+
                 this.showSuggestions = false;
                 this.unselect();
             },
@@ -197,6 +216,7 @@
             // Remove a suggested item
             remove : function(index) {
                 this.selections.splice(index, 1);
+                this.focus();
             },
 
             // Select (highlight) a suggested item
@@ -266,6 +286,25 @@
         },
 
         created : function() {
+            // Create a dynamic watcher on the input which calls the mixins Fetch function
+            let _disableWatcherFetch = this.$watch(function() {
+                return this.selections;
+            }, {
+                handler : function(val) {
+                    this.executeSearch.call(this);
+                },
+                deep : true
+            });
+
+            // Behavior when realtime is disabled
+            if (!this.realtime)
+                _disableWatcherFetch(); // Disable the watcher that disable fetch event
+            
+            // Debounce for suggestion list update
+            let _debounce = debounce(this.updateItems, this.timeout); // Debounce method with the timeout value on the current SeachOn function
+            this.addDebounce('searchdatalist', _debounce); // Add debounce event to listed debounce into the Store
+            this.updateItems = _debounce; // Apply debounce
+
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];

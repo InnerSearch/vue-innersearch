@@ -132,7 +132,7 @@
             // Behavior when realtime is enabled or not
             if (this.realtime) {
                 let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
-                this.addDebounce(_debounce); // Add debounce event to listed debounce into the Store
+                this.addDebounce('searchbox', _debounce); // Add debounce event to listed debounce into the Store
                 this.executeSearch = _debounce; // Apply debounce
             }
             else

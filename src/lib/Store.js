@@ -31,7 +31,10 @@ export default new Vuex.Store({
                 aggregations : {},
 
                 // Hanged debounce list
-                debounce : [],
+                debounce : {
+                    searchbox : [],
+                    searchdatalist : []
+                },
 
                 // Components identification for interactions
                 components : {
@@ -130,13 +133,26 @@ export default new Vuex.Store({
                 },
 
                 addDebounce(state, value) {
-                    state.debounce.push(value);
+                    state.debounce[value.component].push(value.debounce);
                 },
 
-                resetDebounce(state) {
-                    state.debounce.forEach(debounce => {
-                        debounce.clear();
-                    });
+                resetDebounce(state, value) {
+                    if (value !== null) {
+                        let _obj = state.debounce[value];
+                        _obj.forEach(debounce => {
+                            debounce.clear();
+                        });
+                    }
+                    else {
+                        for (let key in state.debounce) {
+                            if (!state.debounce.hasOwnProperty(key)) continue;
+                        
+                            let _obj = state.debounce[key];
+                            _obj.forEach(debounce => {
+                                debounce.clear();
+                            });
+                        }
+                    }
                 },
 
                 addComponent(state, value) {
