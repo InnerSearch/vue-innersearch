@@ -39,6 +39,18 @@
         mixins : [generics],
 
         props : {
+            // realtime : it defines if the Store object is updated for each change of the input
+            'realtime' : {
+                type : Boolean,
+                default : false
+            },
+
+            // timeout : independant of realtime, duration between two requests (in ms) for suggestion query
+            'timeout' : {
+                type : Number,
+                default : 300
+            },
+            
             // fields on which the search is done
             'field' : {
                 type : [String, Array]
@@ -49,8 +61,26 @@
                 type : [String, Array]
             },
 
-            // operator : logical operator applied when there are several field
-            'operator' : {
+            // ES function used for item search
+            'function' : {
+                type : String,
+                default : 'match'
+            },
+
+            // itemOperator : logical operator applied betwen each item
+            'itemOperator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // propertyOperator : logical operator applied for each property of a specific item
+            'propertyOperator' : {
+                type : String,
+                default : 'OR'
+            },
+
+            // suggestionOperator : logical operator applied for suggestions
+            'suggestionOperator' : {
                 type : String,
                 default : 'OR'
             },
@@ -73,6 +103,10 @@
                 entry : '', // input value
                 mutableField : this.field, // editable fields param
                 mutableSuggestion : this.suggestion, // editable suggestion fields param
+                itemFun : undefined, // function applied for items
+                propertyFun : undefined, // function applied for propertie(s) of an item
+                suggestionFun : undefined, // function applied for suggestion search
+                localInstructions : [], // local request
                 showSuggestions : false, // show suggestions list
                 selections : [], // selected items
                 suggestions : [], // suggestions list
@@ -99,11 +133,47 @@
             },
 
             computedSelections : function(selections) {
-                console.log("Do some stuff");
+ 				// Reset all deep instructions of local request
+				this.localInstructions.forEach(instruction => {
+					this.removeInstruction(instruction);
+				});
+				this.localInstructions = [];
+
+                // Case where the selection array is not empty : we add instructions
+                if (selections.length > 0) {
+                    // Local request data initialization for each field selection
+                    let _instruction = {
+                        fun : 'filter',
+                        args : ['bool', arg => {
+                            this.selections.forEach(selection => {
+                                arg[this.itemFun]('bool', sub => {
+                                    this.mutableField.forEach(attr => {
+                                        sub[this.propertyFun](this.function, attr, selection._source[attr].toLowerCase());
+                                    });
+
+                                    return sub;
+                                })
+                            });
+
+                            return arg;
+                        }]
+                    };
+
+                    this.localInstructions.push(_instruction);
+					this.addInstruction(_instruction);
+                }
+
+                // Update the request
+                this.mount();
             }
         },
 
         methods : {
+            // Execute the mixins Fetch method to update hits
+            executeSearch : function() {
+                this.fetch();
+            },
+
             // Focus on input
             focus : function() {
                 this.$nextTick(function () {
@@ -113,13 +183,12 @@
 
             // Triggered when the input changes
             updateItems : function(value) {
-                // Reset suggestions
-                this.suggestions = [];
-
                 // Update suggestions
-                let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.size);
+                let _suggsRequest = this.createRequestForSuggs(value, this.mutableSuggestion, this.selections, this.suggestionFun, this.size);
                 this.header.client.search(_suggsRequest).then(response => {
-                    console.log("Request", _suggsRequest, "Response", response.hits.hits);
+                    // Reset suggestions
+                    this.suggestions = [];
+
                     this.suggestions = response.hits.hits;
 
                     // Show the box
@@ -129,6 +198,9 @@
 
             // Hide the autosuggestion box
             hideSuggestions : function() {
+                // Stop any debounced request only for searchdatalist components
+                this.resetDebounce('searchdatalist');
+
                 this.showSuggestions = false;
                 this.unselect();
             },
@@ -144,6 +216,7 @@
             // Remove a suggested item
             remove : function(index) {
                 this.selections.splice(index, 1);
+                this.focus();
             },
 
             // Select (highlight) a suggested item
@@ -213,6 +286,25 @@
         },
 
         created : function() {
+            // Create a dynamic watcher on the input which calls the mixins Fetch function
+            let _disableWatcherFetch = this.$watch(function() {
+                return this.selections;
+            }, {
+                handler : function(val) {
+                    this.executeSearch.call(this);
+                },
+                deep : true
+            });
+
+            // Behavior when realtime is disabled
+            if (!this.realtime)
+                _disableWatcherFetch(); // Disable the watcher that disable fetch event
+            
+            // Debounce for suggestion list update
+            let _debounce = debounce(this.updateItems, this.timeout); // Debounce method with the timeout value on the current SeachOn function
+            this.addDebounce('searchdatalist', _debounce); // Add debounce event to listed debounce into the Store
+            this.updateItems = _debounce; // Apply debounce
+
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))
                 this.mutableField = [this.mutableField];
@@ -220,6 +312,11 @@
             // Convert suggestion string to suggestion array
             if (!Array.isArray(this.mutableSuggestion))
                 this.mutableSuggestion = [this.mutableSuggestion];
+
+            // Functions calculation depending on operator
+            this.itemFun = (this.itemOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+            this.propertyFun = (this.propertyOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+            this.suggestionFun = (this.suggestionOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
         }
     };
 </script>
