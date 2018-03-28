@@ -211,17 +211,15 @@ export default {
 				var hits = resp.hits.hits;
 				//console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
-
+        console.log(this.instructions);
 				/***
 				 * Update aggregations after each ES request
 				 */
-        let params = { 'detail' : {
+        let params = {
           'aggs' : resp.aggregations
-        }};
-        /*
+        };
         if (self !== undefined)
-          params.detail.base = self.$data.CID;
-          */
+          params.base = self.$data.CID;
 				this.bus.$emit('updateAggs',params);
 
 				if (hits.length === 0)

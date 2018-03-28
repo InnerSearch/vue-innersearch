@@ -28,6 +28,7 @@
 	import generics from './../lib/Generics';
 	import Store from './../lib/Store';
 
+
 	export default {
 		name : "refinement-list-filter",
 		mixins : [generics],
@@ -189,19 +190,41 @@
 
             // Create aggregations items
             this.updateLabels(value);
-            this.bus.$on('updateAggs', e => {
-          let isBase = (e.detail.base !== undefined) ? this.CID !== e.detail.base : true; // TODO maybe need to remove that
-          if(this.operator !== 'OR' || isBase) {
-            //console.log("Dans IF", this.CID, e.detail.aggs)
-            let aggs = e.detail.aggs;
-            this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
-
-          }
-          else {
-            console.log("Hors IF", this.CID, e.detail.aggs)
-          }
-        });
 			});
+
+      this.bus.$on('updateAggs', e => {
+        let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
+        if(this.operator !== 'OR' || isMe) {
+
+          let aggs = e.aggs;
+
+          let _instr = [];
+          this.instructions.forEach( instr => {
+            this.localInstructions.forEach( localInstr => {
+              if (instr !== localInstr) {
+                _instr.push(instr);
+              }
+            })
+
+          });
+          let query = this.mountInstructions(_instr);
+
+          let _fullQuery = Object.assign({
+            index : this.header.index,
+            type : this.header.type
+          }, {
+            body : query
+          });
+
+          this.header.client.search(_fullQuery).then((resp) => {
+              if(resp.aggregations === undefined){
+                this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+              } else {
+                this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+              }
+          });
+        }
+      });
 		}
 	};
 </script>
