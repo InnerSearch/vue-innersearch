@@ -10,7 +10,7 @@
 				:name="item.key"
 				:value="item.key"
 				v-model="checkedItems"
-				@change="clickOnItem()">
+				@change="clickOnItem(item.key)">
 			<slot name="label" v-bind:item="item"
 				v-bind:displayCount="displayCount"
 				v-bind:clickOnItem="clickOnItem"
@@ -124,13 +124,13 @@
 			},
 
 			// Triggered when user select or unselect an item
-			clickOnItem : function() {
+			clickOnItem : function(key) {
 
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
-					this.removeInstruction(instruction);
-				});
-				this.localInstructions = [];
+          this.removeInstruction(instruction);
+        });
+        this.localInstructions = [];
 
 				// Read all checked items and create appropriate instruction for each of them
 				// OR operator case
@@ -151,6 +151,8 @@
 
 				// AND operator case
 				else {
+				  this.checkedItems = [key];
+
 					this.checkedItems.forEach(item => {
 						let _instruction = {
 							fun : 'andFilter',
