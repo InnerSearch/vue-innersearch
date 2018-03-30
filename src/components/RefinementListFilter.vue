@@ -151,11 +151,6 @@
 
 				// AND operator case
 				else {
-					console.log(this.checkedItems.indexOf(key))
-					if (this.checkedItems.indexOf(key) === -1)
-				  		this.checkedItems = [];
-					else
-						this.checkedItems = [key];
 
 					this.checkedItems.forEach(item => {
 						let _instruction = {
