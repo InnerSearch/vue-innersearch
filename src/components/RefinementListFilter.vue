@@ -20,7 +20,9 @@
 			</slot>
 		</div>
 
-    	<slot name="footer"></slot>
+    	<slot name="footer">
+        <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+      </slot>
 	</div>
 </template>
 
@@ -85,7 +87,8 @@
 				CID : undefined,
 				checkedItems : [], // list of checked items
 				localAggregations : [], // lcoal aggregation instructions
-				localInstructions : [] // local request
+				localInstructions : [], // local request
+        aggsSize : this.size,
 			};
 		},
 
@@ -103,7 +106,7 @@
 			addAggregationInstructions : function() {
 				let _instruction = {
 					fun : 'aggregation',
-					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } , size : this.size }]
+					args : ['terms', this.field, { order : { [this.orderKey] : this.orderDirection } , size : this.aggsSize }]
 				};
 
 
@@ -173,7 +176,22 @@
 				// Debugg
 				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
 				//console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
-			}
+			},
+      updateAggsSize : function () {
+			  this.aggsSize += 50;
+
+        let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
+
+        this.addAggregationInstructions();
+
+        // Get respective items
+        this.header.client.search(_aggsRequest).then(response => {
+          let value = response.aggregations['agg_terms_' + this.field].buckets;
+
+          // Create aggregations items
+          this.updateLabels(value);
+        });
+      }
 		},
 
 		created : function () {

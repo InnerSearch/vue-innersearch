@@ -32,7 +32,7 @@
                     <hr class='is-line' />
 
                     <div>
-                        <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="AND"></refinement-list-filter>
+                        <refinement-list-filter :field="'state'" :title="'State : '" :size="20" :dynamic="true" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
                         <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>
                     </div>
 
