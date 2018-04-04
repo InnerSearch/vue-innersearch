@@ -259,6 +259,17 @@ export default {
 
 
 		/*
+			Remove instructions of the component
+		*/
+		removeInstructions : function() {
+			this.localInstructions.forEach(instruction => {
+				this.removeInstruction(instruction);
+			});
+			this.localInstructions = [];
+		},
+
+
+		/*
 			Create independent request for autocomplete component
 			Fetch the hits which match with the value
 		*/

@@ -4,5 +4,6 @@ export const Component = Object.freeze({
     'REFINEMENT_LIST_FILTER' : 'Refinement-List-Filter',
     'PAGINATE' : 'Paginate',
     'SEARCHBUTTON' : 'SearchButton',
+    'RESETBUTTON' : 'ResetButton',
     'HITS' : 'Hits'
 });

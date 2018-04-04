@@ -72,10 +72,7 @@
         watch : {
             computedEntry : function(val) {
 				// Reset all deep instructions of local request
-				this.localInstructions.forEach(instruction => {
-					this.removeInstruction(instruction);
-				});
-				this.localInstructions = [];
+				this.removeInstructions();
 
                 // Case where val is not empty : we add instructions
                 if (val.length > 0) {
@@ -108,6 +105,11 @@
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
                 this.fetch();
+            },
+
+            // Reset the input field
+            reset : function() {
+                this.entry = '';
             }
         },
 
