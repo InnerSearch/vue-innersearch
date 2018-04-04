@@ -10,7 +10,7 @@
 				:name="item.key"
 				:value="item.key"
 				v-model="checkedItems"
-				@change="clickOnItem(item.key)">
+				@change="clickOnItem()">
 			<slot name="label" v-bind:item="item"
 				v-bind:displayCount="displayCount"
 				v-bind:clickOnItem="clickOnItem"
@@ -126,12 +126,9 @@
 			},
 
 			// Triggered when user select or unselect an item
-			clickOnItem : function(key) {
+			clickOnItem : function() {
 				// Reset all deep instructions of local request
-				this.localInstructions.forEach(instruction => {
-          this.removeInstruction(instruction);
-        });
-        this.localInstructions = [];
+				this.removeInstructions();
 
 				// Read all checked items and create appropriate instruction for each of them
 				// OR operator case
@@ -173,6 +170,13 @@
 				// Debugg
 				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
 				//console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
+			},
+
+			// Reset refinementlistfilter items
+			reset : function() {
+				this.checkedItems = [];
+				if (this.localInstructions.length !== 0)
+					this.removeInstructions();
 			}
 		},
 
@@ -194,40 +198,37 @@
             this.updateLabels(value);
 			});
 
-      this.bus.$on('updateAggs', e => {
-		//console.log(e)
-        let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
-        if(this.operator.toLowerCase() !== 'or' || isMe) {
+			this.bus.$on('updateAggs', e => {
+				//console.log(e)
+				let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
+				if(this.operator.toLowerCase() !== 'or' || isMe) {
+					let aggs = e.aggs;
 
-          let aggs = e.aggs;
+					let _instr = [];
+					this.instructions.forEach( instr => {
+						this.localInstructions.forEach( localInstr => {
+							if (instr !== localInstr)
+								_instr.push(instr);
+						});
+					});
+					let query = this.mountInstructions(_instr);
 
-          let _instr = [];
-          this.instructions.forEach( instr => {
-            this.localInstructions.forEach( localInstr => {
-              if (instr !== localInstr) {
-                _instr.push(instr);
-              }
-            })
+					let _fullQuery = Object.assign({
+						index : this.header.index,
+						type : this.header.type
+					}, {
+						body : query
+					});
 
-          });
-          let query = this.mountInstructions(_instr);
-
-          let _fullQuery = Object.assign({
-            index : this.header.index,
-            type : this.header.type
-          }, {
-            body : query
-          });
-
-          this.header.client.search(_fullQuery).then((resp) => {
-              if(resp.aggregations === undefined){
-                this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
-              } else {
-                this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
-              }
-          });
-        }
-      });
+					this.header.client.search(_fullQuery).then((resp) => {
+						if(resp.aggregations === undefined){
+							this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+						} else {
+							this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+						}
+					});
+				}
+			});
 		}
 	};
 </script>

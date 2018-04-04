@@ -54,8 +54,8 @@
                             </template>
                         </search-datalist>
 
-
                         <search-button></search-button>
+                        <reset-button></reset-button>
                     </div>
 
                     <hits>

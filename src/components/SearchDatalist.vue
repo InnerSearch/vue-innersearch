@@ -136,11 +136,8 @@
 
             computedSelections : function(selections) {
  				// Reset all deep instructions of local request
-				this.localInstructions.forEach(instruction => {
-					this.removeInstruction(instruction);
-				});
-				this.localInstructions = [];
-
+                this.removeInstructions();
+                
                 // Case where the selection array is not empty : we add instructions
                 if (selections.length > 0) {
                     // Local request data initialization for each field selection
@@ -279,6 +276,12 @@
                 let _itemHeight = this.$refs.suggestions[index].offsetHeight;
                 this.select(index);
                 this.$refs.suggestionBox.scrollTo(0, index * _itemHeight);
+            },
+
+            // Reset items and input
+            reset : function() {
+                this.entry = '';
+                this.selections = [];
             }
         },
 
