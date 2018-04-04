@@ -174,27 +174,27 @@
 				//console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
 				//console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
 			},
-            updateAggsSize : function () {
-                    this.aggsSize += 50;
+      updateAggsSize : function () {
+              this.aggsSize += 50;
 
-              let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
+        let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
 
-              this.addAggregationInstructions();
+        this.addAggregationInstructions();
 
-              // Get respective items
-              this.header.client.search(_aggsRequest).then(response => {
-                let value = response.aggregations['agg_terms_' + this.field].buckets;
+        // Get respective items
+        this.header.client.search(_aggsRequest).then(response => {
+          let value = response.aggregations['agg_terms_' + this.field].buckets;
 
-                // Create aggregations items
-                this.updateLabels(value);
-              });
-            },
-            // Reset refinementlistfilter items
-            reset : function() {
-              this.checkedItems = [];
-              if (this.localInstructions.length !== 0)
-                this.removeInstructions();
-            },
+          // Create aggregations items
+          this.updateLabels(value);
+        });
+      },
+      // Reset refinementlistfilter items
+      reset : function() {
+        this.checkedItems = [];
+        if (this.localInstructions.length !== 0)
+          this.removeInstructions();
+      },
 		},
 
 		created : function () {
