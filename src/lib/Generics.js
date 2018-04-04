@@ -138,7 +138,7 @@ export default {
 			Get a specific component list by their enum type
 			Returns a list of components or an empty list if any component is found
 		*/
-		getComponent : function(type) {
+		getComponents : function(type) {
 			let _components = this.components;
 			if (_components[type] !== undefined)
 				return _components[type];
@@ -251,7 +251,7 @@ export default {
 
 
 			// Events emission for appropriate components
-			this.getComponent(Component.PAGINATE).forEach(component => {
+			this.getComponents(Component.PAGINATE).forEach(component => {
 				if (component.CID !== undefined)
 					this.bus.$emit(component.CID);
 			});
