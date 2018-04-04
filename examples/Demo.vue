@@ -41,21 +41,6 @@
                         <div class="column">
                             <div>
                                 <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
-
-                                <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
-                                    <template slot="items" slot-scope="{ item }">
-                                        {{ item._source.firstname }} {{ item._source.lastname }} (<strong>{{ item._source.gender }}</strong>)
-                                    </template>
-
-                                    <template slot="nosuggestion" slot-scope="{ value }">
-                                        Sorry, "{{ value }}" doesn't exist... :(
-                                    </template>
-
-                                    <template slot="suggestions" slot-scope="{ suggestion }">
-                                        <span v-html="suggestion.highlight.firstname ? suggestion.highlight.firstname[0] : suggestion._source.firstname"></span>
-                                        <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
-                                    </template>
-                                </search-datalist>
                                 <div style="margin: 20px auto;width: 90%">
                                     <search-button></search-button>
                                     <reset-button></reset-button>
