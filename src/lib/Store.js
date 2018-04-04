@@ -40,11 +40,7 @@ export default new Vuex.Store({
                 components : {
                     CID : 0, // Static component counter
                     bus : new Vue(), // communication bus
-                    list : {
-                        searchbox : [],
-                        refinementListFilter : [],
-                        paginate : []
-                    }
+                    refs : {}
                 }
             },
 
@@ -156,8 +152,11 @@ export default new Vuex.Store({
                 },
 
                 addComponent(state, value) {
-                    let ID = value + '_C' + state.components.CID++;
-                    state.components.list[value].push(ID);
+                    if (state.components.refs[value.type] === undefined)
+                        state.components.refs[value.type] = [];
+
+                    state.components.refs[value.type].push(value.self);
+                    ++state.components.CID;
                 }
             },
 
@@ -191,7 +190,7 @@ export default new Vuex.Store({
                 },
 
                 getComponents : state => {
-                    return state.components.list;
+                    return state.components.refs;
                 }
             }
         },

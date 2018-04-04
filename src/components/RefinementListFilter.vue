@@ -27,6 +27,7 @@
 <script>
 	import generics from './../lib/Generics';
 	import Store from './../lib/Store';
+	import { Component } from '../lib/Enums.js';
 
 
 	export default {
@@ -42,8 +43,9 @@
 			size : {
 				type : Number,
 				default : 10000
-				/* buckets counts are approximate
-				   https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
+				/*
+					buckets counts are approximate
+					https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
 				*/
 			},
 
@@ -125,7 +127,6 @@
 
 			// Triggered when user select or unselect an item
 			clickOnItem : function(key) {
-
 				// Reset all deep instructions of local request
 				this.localInstructions.forEach(instruction => {
           this.removeInstruction(instruction);
@@ -177,7 +178,7 @@
 
 		created : function () {
 			// Interactive component declaration
-			this.CID = this.addComponent("refinementListFilter");
+            this.CID = this.addComponent(Component.REFINEMENT_LIST_FILTER, this);
 
 			// Add aggregation, no need to update it later
 			let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);
@@ -194,6 +195,7 @@
 			});
 
       this.bus.$on('updateAggs', e => {
+		//console.log(e)
         let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
         if(this.operator.toLowerCase() !== 'or' || isMe) {
 

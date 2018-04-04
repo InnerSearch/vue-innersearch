@@ -33,6 +33,7 @@
 <script>
     import generics from './../lib/Generics';
     import debounce from 'debounce';
+    import { Component } from '../lib/Enums.js';
 
     export default {
         name : 'datalist',
@@ -100,6 +101,7 @@
 
         data : function() {
             return {
+                CID : undefined,
                 entry : '', // input value
                 mutableField : this.field, // editable fields param
                 mutableSuggestion : this.suggestion, // editable suggestion fields param
@@ -286,6 +288,9 @@
         },
 
         created : function() {
+			// Interactive component declaration
+            this.CID = this.addComponent(Component.SEARCHDATALIST, this);
+
             // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
                 return this.selections;

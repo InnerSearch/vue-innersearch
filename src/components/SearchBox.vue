@@ -8,6 +8,7 @@
 <script>
     import generics from './../lib/Generics';
     import debounce from 'debounce';
+    import { Component } from '../lib/Enums.js';
 
     export default {
         name : 'searchbox',
@@ -54,6 +55,7 @@
 
         data : function() {
             return {
+                CID : undefined,
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
@@ -119,6 +121,9 @@
         },
 
         created : function() {
+			// Interactive component declaration
+            this.CID = this.addComponent(Component.SEARCHBOX, this);
+
             // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
                 return this.entry;
