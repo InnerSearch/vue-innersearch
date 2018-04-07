@@ -1,4 +1,4 @@
-# InnerSearch
+# InnerSearch : Vue.js components for ElasticSearch
 [![npm](https://img.shields.io/npm/v/innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![npm](https://img.shields.io/npm/dm/innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![coverage](https://img.shields.io/badge/coverage-90%25-green.svg)]()
@@ -6,9 +6,19 @@
 [![npm](https://img.shields.io/npm/l/innersearch.svg)]()
 
 ## What is InnerSearch ?
-InnerSearch is a suite of UI components built with Vue.js for ElasticSearch
+An Open Source project created to help developers working with vue.js and Elastic, give them the possibility to create search UIs within the hour.
 
-The aim is to rapidly create beautiful specified search applications using declarative components without being an ElasticSearch expert.
+InnerSearch is a suite of UI components like SearchBox, RefinementListFilter, Paginator and many others to come built with Vue.js.
+
+The aim is to rapidly create beautiful specified search interfaces using declarative components without being an ElasticSearch and Vue.js expert.
+
+Thanks too component props and slot features from Vue.js, the components are easily customizable
+
+An UI example buit with InnerSearch : 
+[![Exemple UI](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/exemple-ui.png)]()
+
+Corresponding code : 
+[![Exemple Code](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/exemple-code.png)]()
 
 
 ## Quick Start
