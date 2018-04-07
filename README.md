@@ -28,7 +28,7 @@ Corresponding code :
     </div>
     <div class="column">
         <div>
-            <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+            <searchbox :field="'firstname'"></searchbox>
             <div style="margin: 20px auto;width: 90%">
                 <search-button></search-button>
                 <reset-button></reset-button>
