@@ -33,7 +33,7 @@ $ npm install --save innersearch
 ## Quick Intro
 [Allow-Control-Allow-Origin: *](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi)
 
-**CORS need to be enable on your browser in order to make the demo work**
+:warning: **CORS need to be enable on your browser in order to make the demo work**
 
 [Live demo](http://vue-innersearch.surge.sh/)
 ```html
