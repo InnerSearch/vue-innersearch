@@ -15,8 +15,28 @@ An UI example buit with InnerSearch :
 [![Exemple UI](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/exemple-ui.png)]()
 
 Corresponding code : 
-[![Exemple Code](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/exemple-code.png)]()
+```html
+<div class="columns">
+    <div class="column is-one-fifth">
+        <div>
+            <refinement-list-filter :field="'state'"></refinement-list-filter>
+            <refinement-list-filter :field="'gender'"></refinement-list-filter>
+        </div>
+    </div>
+    <div class="column">
+        <div>
+            <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+            <div style="margin: 20px auto;width: 90%">
+                <search-button></search-button>
+                <reset-button></reset-button>
+            </div>
+            <hits></hits>
 
+            <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+        </div>
+     </div>
+</div>
+```
 
 ## 2 Installation
 ### Installing via NPM
