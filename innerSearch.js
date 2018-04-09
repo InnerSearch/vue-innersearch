@@ -6,6 +6,7 @@ import Paginate from './src/components/Paginate';
 import SearchButton from './src/components/SearchButton';
 import ResetButton from './src/components/ResetButton';
 import Hits from './src/components/Hits';
+import NumericListFilter from "./src/components/NumericListFilter"
 
 const InnerSearch = {
     Searchbox,
@@ -15,6 +16,7 @@ const InnerSearch = {
     SearchButton,
     ResetButton,
     Paginate,
+    NumericListFilter,
 
     install(Vue, options) {
         Vue.component('searchbox', Searchbox);
@@ -24,6 +26,7 @@ const InnerSearch = {
         Vue.component('search-button', SearchButton);
         Vue.component('reset-button', ResetButton);
         Vue.component('hits', Hits);
+        Vue.component("numeric-list-filter", NumericListFilter);
 
         Vue.mixin(Generics);
     }
@@ -38,5 +41,6 @@ export {
     Paginate,
     SearchButton,
     ResetButton,
-    Hits
+    Hits,
+    NumericListFilter
 };

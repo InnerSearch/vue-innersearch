@@ -56,6 +56,7 @@
                                         <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
                                     </template>
                                 </search-datalist>
+                                <numeric-list-filter></numeric-list-filter>
                                 <div style="margin: 20px auto;width: 90%">
                                     <search-button></search-button>
                                     <reset-button></reset-button>
