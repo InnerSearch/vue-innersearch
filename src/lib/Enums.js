@@ -5,5 +5,6 @@ export const Component = Object.freeze({
     'PAGINATE' : 'Paginate',
     'SEARCHBUTTON' : 'SearchButton',
     'RESETBUTTON' : 'ResetButton',
-    'HITS' : 'Hits'
+    'HITS' : 'Hits',
+    'NUMERIC_LIST_FILTER' : 'Numeric-List-Filter'
 });

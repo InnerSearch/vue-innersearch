@@ -56,7 +56,11 @@
                                         <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
                                     </template>
                                 </search-datalist>
-                                <numeric-list-filter></numeric-list-filter>
+                                <numeric-list-filter :field="'balance'">
+                                    <template slot="header">
+                                        <p>Balance : </p>
+                                    </template>
+                                </numeric-list-filter>
                                 <div style="margin: 20px auto;width: 90%">
                                     <search-button></search-button>
                                     <reset-button></reset-button>
@@ -69,7 +73,7 @@
                                             <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
                                         </div>
                                         <div v-for="item in hits.items" :item="item">
-                                            <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }})</div>
+                                            <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }} , {{item._source.balance}})</div>
                                         </div>
                                     </template>
                                 </hits>

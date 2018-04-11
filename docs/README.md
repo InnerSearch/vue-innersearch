@@ -41,16 +41,64 @@ Corresponding code :
 ## 2 Installation
 ### Installing via NPM
 ```bash
-$ npm install --save innersearch
+$ npm install --save vue-innersearch
+```
+
+## 3 Getting Started
+### Setup a new Vue project using vue-innersearch
+You can use the innersearch-starter-app 
+- `git clone https://github.com/TrimA74/innerSearch-starter-app.git`
+- `cd innerSearch-starter-app`
+- `npm i`
+### Run the dev server
+- `npm run dev`
+
+This should open a new tab in your browser at [http://localhost:8080](http://localhost:8080) 
+
+### Use the vue-innersearch plugin
+
+You need to tell Vue to use the Vue InnerSearch plugin so that all components are available
+
+```javascript
+import InnerSearch from 'vue-innersearch';
+
+Vue.use(InnerSearch);
+```
+
+If you only want specific components like SearchBox and Hits components, you can do the following.
+
+:warning: Don't forget to import the Generics mixin component.
+
+```javascript
+import {Searchbox, Hits, Generics} from 'vue-innersearch';
+
+Vue.component('searchbox', Searchbox);
+Vue.component('hits', Hits);
+Vue.mixin(Generics);
+```
+
+### Your first search UI
+You need first to set ElasticSearch host, index and type. 
+
+```javascript
+// ES server configuration
+this.setHost('http://es.yinyan.fr');
+this.setIndex('bank');
+this.setType('account');
 ```
 
 
-## 3 Components list
+
+
+
+## 4 Components list
 - [SearchBox](components/searchbox.md)
 - [RefinementListFilter](components/refinementListFilter.md)
 - [SearchButton](components/searchButton.md)
 - [Hits](components/hits.md)
 - [Paginate](components/paginate.md)
+- [SearchDataList](components/searchDataList.md)
+
 
 
 
