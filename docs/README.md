@@ -98,6 +98,7 @@ this.setType('account');
 - [Hits](components/hits.md)
 - [Paginate](components/paginate.md)
 - [SearchDataList](components/searchDataList.md)
+- [NumericListFilter](components/numericListFilter.md)
 
 
 
