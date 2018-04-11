@@ -47,7 +47,7 @@ Checkout innersearch starter app [starter app](https://github.com/TrimA74/innerS
 See full [Documentation](https://yinyanfr.gitbooks.io/innersearch-doc/content/)
 ### Installing via NPM
 ```bash
-$ npm install --save innersearch
+$ npm install --save vue-innersearch
 ```
 
 ## Quick Intro

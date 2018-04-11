@@ -41,7 +41,7 @@ Corresponding code :
 ## 2 Installation
 ### Installing via NPM
 ```bash
-$ npm install --save innersearch
+$ npm install --save vue-innersearch
 ```
 
 
