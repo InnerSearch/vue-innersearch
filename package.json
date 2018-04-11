@@ -1,9 +1,9 @@
 {
-  "name": "innersearch",
-  "version": "0.0.8",
-  "description": "Bibliotheque d'elatsic serach",
+  "name": "vue-innersearch",
+  "version": "0.0.2",
+  "description": "Vue.js components for ElasticSearch",
   "main": "innersearch.js",
-  "author": "Nous",
+  "author": "InnerSearch Organization",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "npm run dev",

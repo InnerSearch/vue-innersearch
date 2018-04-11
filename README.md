@@ -1,9 +1,9 @@
 # InnerSearch : Vue.js components for ElasticSearch
-[![npm](https://img.shields.io/npm/v/innersearch.svg)](https://www.npmjs.com/package/innersearch)
-[![npm](https://img.shields.io/npm/dm/innersearch.svg)](https://www.npmjs.com/package/innersearch)
+[![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
+[![npm](https://img.shields.io/npm/dm/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![coverage](https://img.shields.io/badge/coverage-90%25-green.svg)]()
 [![Build Status](https://travis-ci.org/InnerSearch/InnerSearch.js.svg?branch=master)](https://travis-ci.org/InnerSearch/InnerSearch)
-[![npm](https://img.shields.io/npm/l/innersearch.svg)]()
+[![npm](https://img.shields.io/npm/l/vue-innersearch.svg)]()
 
 ## What is InnerSearch ?
 An Open Source project created to help developers working with vue.js and Elastic, give them the possibility to create search UIs within the hour.
