@@ -2,7 +2,7 @@
 [![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![npm](https://img.shields.io/npm/dm/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![coverage](https://img.shields.io/badge/coverage-90%25-green.svg)]()
-[![Build Status](https://travis-ci.org/InnerSearch/InnerSearch.js.svg?branch=master)](https://travis-ci.org/InnerSearch/InnerSearch)
+[![Build Status](https://travis-ci.org/InnerSearch/vue-innersearch.svg?branch=master)](https://travis-ci.org/InnerSearch/vue-innersearch)
 [![npm](https://img.shields.io/npm/l/vue-innersearch.svg)]()
 
 ## What is InnerSearch ?
