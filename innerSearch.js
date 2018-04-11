@@ -42,5 +42,6 @@ export {
     SearchButton,
     ResetButton,
     Hits,
-    NumericListFilter
+    NumericListFilter,
+    Generics
 };
