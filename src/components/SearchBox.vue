@@ -8,6 +8,7 @@
 <script>
     import generics from './../lib/Generics';
     import debounce from 'debounce';
+    import { Component } from '../lib/Enums.js';
 
     export default {
         name : 'searchbox',
@@ -54,6 +55,7 @@
 
         data : function() {
             return {
+                CID : undefined,
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
@@ -70,10 +72,7 @@
         watch : {
             computedEntry : function(val) {
 				// Reset all deep instructions of local request
-				this.localInstructions.forEach(instruction => {
-					this.removeInstruction(instruction);
-				});
-				this.localInstructions = [];
+				this.removeInstructions();
 
                 // Case where val is not empty : we add instructions
                 if (val.length > 0) {
@@ -106,6 +105,11 @@
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
                 this.fetch();
+            },
+
+            // Reset the input field
+            reset : function() {
+                this.entry = '';
             }
         },
 
@@ -119,6 +123,9 @@
         },
 
         created : function() {
+			// Interactive component declaration
+            this.CID = this.addComponent(Component.SEARCHBOX, this);
+
             // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
                 return this.entry;
@@ -132,7 +139,7 @@
             // Behavior when realtime is enabled or not
             if (this.realtime) {
                 let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
-                this.addDebounce(_debounce); // Add debounce event to listed debounce into the Store
+                this.addDebounce('searchbox', _debounce); // Add debounce event to listed debounce into the Store
                 this.executeSearch = _debounce; // Apply debounce
             }
             else
