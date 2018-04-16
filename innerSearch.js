@@ -1,12 +1,11 @@
 import Generics from './src/lib/Generics';
 import Searchbox from './src/components/SearchBox';
 import SearchDatalist from './src/components/SearchDatalist';
-import RefinementListFilter from './src/components/RefinementListFilter';
-import Paginate from './src/components/Paginate';
-import SearchButton from './src/components/SearchButton';
-import ResetButton from './src/components/ResetButton';
 import Hits from './src/components/Hits';
-import NumericListFilter from "./src/components/NumericListFilter"
+import RefinementListFilter from './src/components/RefinementListFilter';
+import SearchButton from './src/components/SearchButton';
+import Paginate from './src/components/Paginate';
+import PaginateAlt from "./src/components/Paginate.vue";
 
 const InnerSearch = {
     Searchbox,
@@ -14,19 +13,16 @@ const InnerSearch = {
     Hits,
     RefinementListFilter,
     SearchButton,
-    ResetButton,
     Paginate,
-    NumericListFilter,
+    PaginateAlt,
 
     install(Vue, options) {
+        Vue.component('refinement-list-filter', RefinementListFilter);
         Vue.component('searchbox', Searchbox);
         Vue.component('search-datalist', SearchDatalist);
-        Vue.component('refinement-list-filter', RefinementListFilter);
-        Vue.component('paginate', Paginate);
         Vue.component('search-button', SearchButton);
-        Vue.component('reset-button', ResetButton);
         Vue.component('hits', Hits);
-        Vue.component("numeric-list-filter", NumericListFilter);
+        Vue.component('paginate', Paginate);
 
         Vue.mixin(Generics);
     }
@@ -37,11 +33,9 @@ export default InnerSearch;
 export {
     Searchbox,
     SearchDatalist,
-    RefinementListFilter,
-    Paginate,
-    SearchButton,
-    ResetButton,
     Hits,
-    NumericListFilter,
-    Generics
+    RefinementListFilter,
+    SearchButton,
+    Paginate,
+    PaginateAlt
 };

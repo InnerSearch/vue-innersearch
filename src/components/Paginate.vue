@@ -95,7 +95,7 @@
     import Store from './../lib/Store'
 	import generics from './../lib/Generics'
     import Bodybuilder from 'bodybuilder'
-    import { Component } from './../lib/Enums.js';
+    import ComponentType from './../lib/enum/Component.js';
 
     import "bulma/css/bulma.css"
 
@@ -211,7 +211,7 @@
 
 		created : function() {
 			// Interactive component declaration
-            this.CID = this.addComponent(Component.PAGINATE, this);
+            this.CID = this.addComponent("paginate");
 
 			// Listening on self-component emissions
 			this.bus.$on(this.CID, this.resetPagination);

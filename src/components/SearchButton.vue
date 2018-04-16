@@ -6,7 +6,6 @@
 
 <script>
     import Generics from './../lib/Generics';
-    import { Component } from '../lib/Enums.js';
 
     export default {
         name : 'search-button',
@@ -20,22 +19,14 @@
             }
         },
 
-        data : function() {
-            return {
-                CID : undefined
-            }
-        },
-
         methods : {
             clickOn : function() {
+                // Clear debounce actions
+                //this.executeSearch.clear(); ON SEARCHBOX COMPONENT
+
                 // Execute request
                 this.fetch();
             }
-        },
-
-        created : function() {
-			// Interactive component declaration
-            this.CID = this.addComponent(Component.SEARCHBUTTON, this);
         }
     };
 </script>

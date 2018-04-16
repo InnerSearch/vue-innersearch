@@ -31,57 +31,61 @@
 
                     <hr class='is-line' />
 
-                    <div class="columns">
-                        <div class="column is-one-fifth">
-                            <div>
-                                <refinement-list-filter :field="'state'" :title="'State : '" :size="10" :dynamic="true" orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
-                                <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div>
-                                <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+                    <div>
+                        <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
-                                <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
-                                    <template slot="items" slot-scope="{ item }">
-                                        {{ item._source.firstname }} {{ item._source.lastname }} (<strong>{{ item._source.gender }}</strong>)
-                                    </template>
+                        <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
+                            <template slot="items" slot-scope="{ item }">
+                                {{ item._source.firstname }} {{ item._source.lastname }} (<strong>{{ item._source.gender }}</strong>)
+                            </template>
 
-                                    <template slot="nosuggestion" slot-scope="{ value }">
-                                        Sorry, "{{ value }}" doesn't exist... :(
-                                    </template>
+                            <template slot="nosuggestion" slot-scope="{ value }">
+                                Sorry, "{{ value }}" doesn't exist... :(
+                            </template>
 
-                                    <template slot="suggestions" slot-scope="{ suggestion }">
-                                        <span v-html="suggestion.highlight.firstname ? suggestion.highlight.firstname[0] : suggestion._source.firstname"></span>
-                                        <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
-                                    </template>
-                                </search-datalist>
-                                <numeric-list-filter :field="'balance'">
-                                    <template slot="header">
-                                        <p>Balance : </p>
-                                    </template>
-                                </numeric-list-filter>
-                                <div style="margin: 20px auto;width: 90%">
-                                    <search-button></search-button>
-                                    <reset-button></reset-button>
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                <span v-html="suggestion.highlight.firstname ? suggestion.highlight.firstname[0] : suggestion._source.firstname"></span>
+                                <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
+                            </template>
+                        </search-datalist>
+
+                        <!--<searchbox :autofocus="true" :realtime="true" :timeout="200" :field="['firstname', 'lastname']" :placeholder="'Search by firstname & lastname'" :operator="'OR'"></searchbox>-->
+
+                        <!--<searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname (prefix)'" :suggestionbox="true">
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                <div style="display : inline-block; width : 60%;" v-html="">
+                                    {{ suggestion._source.firstname }} {{ suggestion._source.lastname }}
                                 </div>
-                                <hits>
-                                    <template slot="hits" slot-scope="{ hits }">
-                                        <div class="is-score is-hits">
-                                            <strong v-if="hits.score === 0">No result found</strong>
-                                            <strong v-else-if="hits.score === 1">1 result found</strong>
-                                            <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
-                                        </div>
-                                        <div v-for="item in hits.items" :item="item">
-                                            <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }} , {{item._source.balance}})</div>
-                                        </div>
-                                    </template>
-                                </hits>
+                                <div style="display : inline-block; width : 39%; text-align : right; opacity : 0.35;">
+                                    <strong>{{ suggestion._source.gender }}</strong>
+                                </div>
+                            </template>
+                        </searchbox>
+                        <searchbox :realtime="true" :field="['firstname', 'lastname']" :pattern="'.*{v}.*'" :operator="'OR'" :placeholder="'Search by firstname and lastname'" :suggestionbox="true">
+                            <template slot="suggestions" slot-scope="{ suggestion }">
+                                <div>{{ suggestion._source.firstname }} {{ suggestion._source.lastname }}</div>
+                            </template>
+                        </searchbox>-->
 
-                                <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
-                            </div>
-                         </div>
+                        <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+                        <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>
+                        <search-button></search-button>
                     </div>
+
+                    <hits>
+                        <template slot="hits" slot-scope="{ hits }">
+                            <div class="is-score is-hits">
+                                <strong v-if="hits.score === 0">No result found</strong>
+                                <strong v-else-if="hits.score === 1">1 result found</strong>
+                                <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
+                            </div>
+                            <div v-for="item in hits.items" :item="item">
+                                <div><strong>Identity (firstname, lastname) :</strong> {{ item._source.firstname }} {{ item._source.lastname }} ({{ item._source.state }}, {{ item._source.gender }})</div>
+                            </div>
+                        </template>
+                    </hits>
+
+                    <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
                 </section>
             `
         });

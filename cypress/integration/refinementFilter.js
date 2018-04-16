@@ -19,7 +19,6 @@ describe('Test Multiple RLF', () => {
     cy.server();
   });
 
-
   /***
    * https://github.com/InnerSearch/InnerSearch.js/issues/4
    */
@@ -34,20 +33,6 @@ describe('Test Multiple RLF', () => {
         }
     });
   });
-  /***
-   * https://github.com/InnerSearch/InnerSearch.js/issues/5
-   */
-  it('non regression test for issue #5', () => {
-    cy.get(':nth-child(14) > input').click(); // Check CA State
-    cy.get('.gender_rlf > .is-component > :nth-child(3) > input').click(); // Check M gender
-    cy.wait(500).get(':nth-child(9) > label').then(e => {
-      expect(e.get(0).innerHTML).to.contains('11');
-      cy.get(':nth-child(9) > input').click(); // Check CA State
-      cy.wait(1000).get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
-    });
-
-  });
-
 });
 
 describe('Test RefinementListFilter', () => {
@@ -132,5 +117,6 @@ describe('Test RefinementListFilter2', () => {
     cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains('tx : 30');
   });
 });
+
 
 

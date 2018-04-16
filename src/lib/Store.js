@@ -31,16 +31,17 @@ export default new Vuex.Store({
                 aggregations : {},
 
                 // Hanged debounce list
-                debounce : {
-                    searchbox : [],
-                    searchdatalist : []
-                },
+                debounce : [],
 
                 // Components identification for interactions
                 components : {
                     CID : 0, // Static component counter
                     bus : new Vue(), // communication bus
-                    refs : {}
+                    list : {
+                        searchbox : [],
+                        refinementListFilter : [],
+                        paginate : []
+                    }
                 }
             },
 
@@ -129,34 +130,18 @@ export default new Vuex.Store({
                 },
 
                 addDebounce(state, value) {
-                    state.debounce[value.component].push(value.debounce);
+                    state.debounce.push(value);
                 },
 
-                resetDebounce(state, value) {
-                    if (value !== null) {
-                        let _obj = state.debounce[value];
-                        _obj.forEach(debounce => {
-                            debounce.clear();
-                        });
-                    }
-                    else {
-                        for (let key in state.debounce) {
-                            if (!state.debounce.hasOwnProperty(key)) continue;
-                        
-                            let _obj = state.debounce[key];
-                            _obj.forEach(debounce => {
-                                debounce.clear();
-                            });
-                        }
-                    }
+                resetDebounce(state) {
+                    state.debounce.forEach(debounce => {
+                        debounce.clear();
+                    });
                 },
 
                 addComponent(state, value) {
-                    if (state.components.refs[value.type] === undefined)
-                        state.components.refs[value.type] = [];
-
-                    state.components.refs[value.type].push(value.self);
-                    ++state.components.CID;
+                    let ID = value + '_C' + state.components.CID++;
+                    state.components.list[value].push(ID);
                 }
             },
 
@@ -190,7 +175,7 @@ export default new Vuex.Store({
                 },
 
                 getComponents : state => {
-                    return state.components.refs;
+                    return state.components.list;
                 }
             }
         },

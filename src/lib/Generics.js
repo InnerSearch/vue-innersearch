@@ -2,7 +2,7 @@ import Vue from 'vue';
 import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
 import Store from './Store';
-import { Component } from './Enums.js';
+import ComponentType from './enum/Component.js';
 
 export default {
 	computed : {
@@ -42,9 +42,10 @@ export default {
 		},
 
 		// Interactive components (for $emit events)
-		components : () => {
+		components : (name) => {
 			return Store.getters["Elasticsearch/getComponents"]
 		},
+
 
 		// Output items
 		items : () => {
@@ -107,8 +108,8 @@ export default {
 			Add a debounce event to ES store
 			That permits to clear (reset) all listed hanged debounces when an user is triggered fetch()
 		*/
-		addDebounce : (component, debounce) => {
-			Store.commit("Elasticsearch/addDebounce", { component, debounce });
+		addDebounce : (debounce) => {
+			Store.commit("Elasticsearch/addDebounce", debounce);
 		},
 
 
@@ -116,8 +117,8 @@ export default {
 			Reset all the listed debounces
 			Called by fetch()
 		*/
-		resetDebounce : (component = null) => {
-			Store.commit("Elasticsearch/resetDebounce", component);
+		resetDebounce : () => {
+			Store.commit("Elasticsearch/resetDebounce");
 		},
 
 
@@ -125,25 +126,10 @@ export default {
 			Add an interactive component to the store
 			Returns the component ID (CID)
 		*/
-		addComponent : function(type, self) {
-			let _CID = Store.getters["Elasticsearch/getCid"],
-				_name = type + '_' + _CID;
-
-			Store.commit('Elasticsearch/addComponent', { type, self });
-			
-			return _name;
-		},
-
-		/*
-			Get a specific component list by their enum type
-			Returns a list of components or an empty list if any component is found
-		*/
-		getComponents : function(type) {
-			let _components = this.components;
-			if (_components[type] !== undefined)
-				return _components[type];
-			
-			return [];
+		addComponent : function(name) {
+			let CID = Store.getters["Elasticsearch/getCid"];
+			Store.commit('Elasticsearch/addComponent', name);
+			return name + '_C' + CID;
 		},
 
 
@@ -176,15 +162,15 @@ export default {
 		*/
 		mountInstructions : function(instructions) {
 			// Bodybuilder object
-			let _BD = Bodybuilder();
+			let BD = Bodybuilder();
 
 			// Execute all instructions to create request
 			instructions.forEach(instr => {
-				_BD[instr.fun](...instr.args);
+				BD[instr.fun](...instr.args);
 			});
 
 			// Return the built request
-			return _BD.build();
+			return BD.build();
 		},
 
 		/*
@@ -192,15 +178,15 @@ export default {
 		*/
 		mount : function() {
 			// Bodybuilder object
-			let _BD = Bodybuilder().from(0).size(10);
+			let BD = Bodybuilder().from(0).size(10);
 
 			// Execute all instructions to create request
 			this.instructions.forEach(instr => {
-				_BD[instr.fun](...instr.args);
+				BD[instr.fun](...instr.args);
 			});
 
 			// Store the JSON request into the body
-			this.setBody(_BD.build());
+			this.setBody(BD.build());
 
 			// Debug
 			console.log("[Generics:Mount] Request : ", this.request);
@@ -211,7 +197,7 @@ export default {
 			Execute ES request
 		*/
 		fetch : function(self = undefined) {
-			console.log("[Generics:Fetch] Request : ", this.request);
+			//console.log("[Generics:Fetch] Request : ", this.request);
 
 			// Reset debounce events
 			this.resetDebounce();
@@ -229,12 +215,14 @@ export default {
 				/***
 				 * Update aggregations after each ES request
 				 */
-				let _params = {
-					'aggs' : resp.aggregations
-				};
-				if (self !== undefined)
-					_params.base = self.$data.CID;
-				this.bus.$emit('updateAggs', _params);
+        let params = { 'detail' : {
+          'aggs' : resp.aggregations
+        }};
+        /*
+        if (self !== undefined)
+          params.detail.base = self.$data.CID;
+          */
+				this.bus.$emit('updateAggs',params);
 
 				if (hits.length === 0)
 					this.setScore(0);
@@ -251,21 +239,9 @@ export default {
 
 
 			// Events emission for appropriate components
-			this.getComponents(Component.PAGINATE).forEach(component => {
-				if (component.CID !== undefined)
-					this.bus.$emit(component.CID);
+			this.components.paginate.forEach(component => {
+				this.bus.$emit(component);
 			});
-		},
-
-
-		/*
-			Remove instructions of the component
-		*/
-		removeInstructions : function() {
-			this.localInstructions.forEach(instruction => {
-				this.removeInstruction(instruction);
-			});
-			this.localInstructions = [];
 		},
 
 
