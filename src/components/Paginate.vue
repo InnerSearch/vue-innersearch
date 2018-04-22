@@ -1,37 +1,37 @@
 <template>
-    <nav 
-        class="pagination is-centered" 
-        role="navigation" 
+    <nav
+        class="pagination is-centered"
+        role="navigation"
         aria-label="pagination"
         v-if='hits.score != undefined'
     >
-        <a 
+        <a
             class="pagination-previous"
             :value="previousText"
             @click="clickOnPrevious"
         >
             Previous
         </a>
-        <a 
+        <a
             class="pagination-next"
             :value="nextText"
             @click="clickOnNext"
         >
             Next page
         </a>
-        <ul 
+        <ul
             class="pagination-list"
         >
             <li>
-                <a 
+                <a
                     v-if="nbPage == 0"
-                    class="pagination-link is-current" 
+                    class="pagination-link is-current"
                 >
                     1
                 </a>
-                <a 
+                <a
                     v-else
-                    class="pagination-link" 
+                    class="pagination-link"
                     @click="jumpToPage(1)"
                 >
                     1
@@ -43,21 +43,21 @@
             >
                 <span class="pagination-ellipsis">&hellip;</span>
             </li>
-        
+
             <li
                 v-for="(e, i) in maxPage"
                 :key="i"
                 v-if="e>1 && e<maxPage"
             >
-                <a 
+                <a
                     v-if="e == nbPage+1"
-                    class="pagination-link is-current" 
+                    class="pagination-link is-current"
                 >
                     {{e}}
                 </a>
-                <a 
+                <a
                     v-else-if="(e > nbPage - unpiled && e <= nbPage + (unpiled + 1) /* 6 */)"
-                    class="pagination-link" 
+                    class="pagination-link"
                     @click="jumpToPage(e)"
                 >
                     {{e}}
@@ -73,15 +73,15 @@
             <li
                 v-if="maxPage>1"
             >
-                <a 
+                <a
                     v-if="nbPage == maxPage-1"
-                    class="pagination-link is-current" 
+                    class="pagination-link is-current"
                 >
                     {{maxPage}}
                 </a>
-                <a 
+                <a
                     v-else
-                    class="pagination-link" 
+                    class="pagination-link"
                     @click="jumpToPage(maxPage)"
                 >
                     {{maxPage}}
@@ -96,8 +96,6 @@
 	import generics from './../lib/Generics'
     import Bodybuilder from 'bodybuilder'
     import { Component } from './../lib/Enums.js';
-
-    import "bulma/css/bulma.css"
 
     export default {
 		name : 'paginate',
@@ -224,5 +222,5 @@
 </script>
 
 <style>
-
+@import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css';
 </style>
