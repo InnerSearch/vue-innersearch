@@ -103,37 +103,6 @@
     margin : 0 auto;
 }
 
-.is-search-datalist-items li {
-    display : inline-block;
-    margin : 10px 5px;
-    padding : 5px 10px;
-    border-radius : 4px;
-    background-color : rgba(209, 209, 209, 0.8);
-    transition : all 0.3s ease;
-    cursor : pointer;
-}
-
-.is-search-datalist-items li:hover {
-    background-color : rgba(209, 209, 209, 1);
-}
-
-.is-search-datalist-items li:first-child {
-    margin-left : 0 !important;
-}
-
-.is-search-datalist-items li:after {
-    content : 'x';
-    margin-left : 5px;
-    color : rgba(129, 35, 35, 0.6);
-    font-family : Calibri, sans-serif;
-    font-weight : bolder;
-    transition : all 0.3s ease;
-}
-
-.is-search-datalist-items li:hover:after {
-    color : rgba(129, 35, 35, 0.8);
-}
-
 .is-search-datalist-suggestions {
     width : 90%;
     margin : 0 auto;
@@ -195,6 +164,42 @@
 .is-item.is-refinement-list {
     display : inline-block;
     width : 100%;
+}
+
+
+/*
+    Search Datalist & ResetButton
+*/
+
+.is-search-datalist-items li, .is-reset-button li {
+    display : inline-block;
+    margin : 10px 5px;
+    padding : 5px 10px;
+    border-radius : 4px;
+    background-color : rgba(209, 209, 209, 0.8);
+    transition : all 0.3s ease;
+    cursor : pointer;
+}
+
+.is-search-datalist-items li:hover, .is-reset-button li:hover {
+    background-color : rgba(209, 209, 209, 1);
+}
+
+.is-search-datalist-items li:first-child, .is-reset-button li:first-child {
+    margin-left : 0 !important;
+}
+
+.is-search-datalist-items li:after, .is-reset-button li:after {
+    content : 'x';
+    margin-left : 5px;
+    color : rgba(129, 35, 35, 0.6);
+    font-family : Calibri, sans-serif;
+    font-weight : bolder;
+    transition : all 0.3s ease;
+}
+
+.is-search-datalist-items li:hover:after, .is-reset-button li:hover:after {
+    color : rgba(129, 35, 35, 0.8);
 }
 
 

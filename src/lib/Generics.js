@@ -213,6 +213,9 @@ export default {
 		fetch : function(self = undefined) {
 			console.log("[Generics:Fetch] Request : ", this.request);
 
+			// Diffuse the data from static components
+			this.forceDiffuse();
+
 			// Reset debounce events
 			this.resetDebounce();
 
@@ -324,6 +327,17 @@ export default {
 				.build();
 
 			return _request;
+		},
+
+		forceDiffuse : function() {
+			for (let key in Component) {
+				this.getComponents(Component[key]).forEach(component => {
+					if (component.$props !== undefined
+							&& component.$props.realtime !== undefined && !component.$props.realtime
+							&& component.diffuse !== undefined && typeof component.diffuse === 'function')
+						component.diffuse();
+				});
+			}
 		},
 
 		clone : (object) => {

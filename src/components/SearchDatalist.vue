@@ -3,7 +3,7 @@
         <div class='is-search-datalist-items'>
             <ul>
                 <li v-for='(selection, index) in selections' :key='index' @click='remove(index)'>
-                    <slot name='items' v-bind:item='selection'>
+                    <slot name='items' :item='selection'>
                         {{ selection }}
                     </slot>
                 </li>
@@ -16,12 +16,12 @@
         <div class='is-search-datalist-suggestions' v-if='showSuggestions'>
             <ul ref="suggestionBox">
                 <li class='noresult' v-show='suggestions.length === 0'>
-                    <slot name='nosuggestion' v-bind:value='entry'>
+                    <slot name='nosuggestion' :value='entry'>
                         No result for "{{ entry }}"
                     </slot>
                 </li>
                 <li v-for='(suggestion, index) in suggestions' :key='index' @click='add(index)' @mouseenter='select(index)' @mouseleave='unselect()' ref='suggestions'>
-                    <slot name='suggestions' v-bind:suggestion='suggestion'>
+                    <slot name='suggestions' :suggestion='suggestion'>
                         {{ suggestion }}
                     </slot>
                 </li>

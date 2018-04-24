@@ -15,6 +15,11 @@
         mixins : [generics],
 
         props : {
+            // id : specify an id (or a name) to identificate the component instance
+            'id' : {
+                type : [Number, String]
+            },
+
             // autofocus : it defines if the input is focused when the user load the page
             'autofocus' : {
                 type : Boolean,
@@ -56,10 +61,12 @@
         data : function() {
             return {
                 CID : undefined,
+                name : undefined, // for named component
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
-                localInstructions : [] // local request
+                localInstructions : [], // local request
+                channels : [] // communicate the value (entry) to another component on specific channels
             };
         },
 
@@ -71,6 +78,13 @@
 
         watch : {
             computedEntry : function(val) {
+                this.update(val);
+            }
+        },
+
+        methods : {
+            // Update instructions
+            update : function(val) {
 				// Reset all deep instructions of local request
 				this.removeInstructions();
 
@@ -93,10 +107,8 @@
 
                 // Update the request
                 this.mount();
-            }
-        },
+            },
 
-        methods : {
             // Set the focus on "tag" DOM element when the function is called
             focusOnField : function(tag) {
                 this.$refs[tag].focus();
@@ -104,27 +116,44 @@
 
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
+                // Send the value to reset components
+                this.diffuse();
+
+                // Fetch the results
                 this.fetch();
             },
 
             // Reset the input field
             reset : function() {
                 this.entry = '';
+            },
+
+            // Force reset with instructions update
+            forceReset : function() {
+                this.reset();
+                this.update(this.entry);
+            },
+
+            // Diffuse the entry value
+            diffuse : function() {
+                this.channels.forEach(channel => {
+                    this.bus.$emit(channel, this.computedEntry);
+                });
             }
-        },
-
-        mounted : function() {
-            // Autofocus event for the html tag
-            if (this.autofocus)
-                this.$refs.input.focus();
-
-            // Add placeholder property to the input html tag
-            this.$refs.input.setAttribute('placeholder', this.placeholder);
         },
 
         created : function() {
 			// Interactive component declaration
             this.CID = this.addComponent(Component.SEARCHBOX, this);
+
+            // Assign the name to the component if needed
+            if (this.id !== undefined)
+                this.name = this.id;
+
+            // ResetButton listening for entry value diffusion
+            this.bus.$on('reset_' + this.CID, destination => {
+                this.channels.push(destination);
+            });
 
             // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
@@ -151,6 +180,15 @@
 
             // Function calculation depending on operator property
             this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+        },
+
+        mounted : function() {
+            // Autofocus event for the html tag
+            if (this.autofocus)
+                this.$refs.input.focus();
+
+            // Add placeholder property to the input html tag
+            this.$refs.input.setAttribute('placeholder', this.placeholder);
         }
     };
 </script>

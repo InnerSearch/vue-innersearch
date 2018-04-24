@@ -40,7 +40,15 @@
                         </div>
                         <div class="column">
                             <div>
-                                <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+                                <reset-button :for="'searchbox01'">
+                                    <template slot-scope="{ value }">
+                                        <strong>Search :</strong> <em>{{ value }}</em>
+                                    </template>
+                                </reset-button>
+                            </div>
+
+                            <div>
+                                <searchbox :id="'searchbox01'" :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
                                 <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
                                     <template slot="items" slot-scope="{ item }">
