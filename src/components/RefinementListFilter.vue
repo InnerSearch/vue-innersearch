@@ -51,6 +51,11 @@
                         */
             },
 
+            sizeMore : {
+                type : Number,
+                default : 50
+            },
+
             orderKey : {
                 type : String,
                 default : '_term'
@@ -175,19 +180,14 @@
                 //console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
             },
             updateAggsSize : function () {
-                this.aggsSize += 50;
+                this.aggsSize += this.sizeMore;
 
                 let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
 
                 this.addAggregationInstructions();
 
-                // Get respective items
-                this.header.client.search(_aggsRequest).then(response => {
-                    let value = response.aggregations['agg_terms_' + this.field].buckets;
-
-                    // Create aggregations items
-                    this.updateLabels(value);
-                });
+                this.mount();
+                this.fetch();
             },
             // Reset refinementlistfilter items
             reset : function() {
