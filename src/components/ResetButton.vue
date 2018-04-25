@@ -34,20 +34,17 @@
                 Component : Component,
                 category : undefined,
                 instance : undefined,
+                realtime : false,
                 data : undefined,
                 fun : undefined
             }
         },
 
         methods : {
-            reset : function() {
-                this.fun();
-                this.fetch();
-            },
-
             resetSearchbox : function() {
                 this.data = undefined;
-                this.reset();
+                this.fun();
+                this.fetch();
             },
 
             resetAll : function() {
@@ -58,6 +55,8 @@
                             component.reset();
                     });
                 }
+
+                this.fetch();
             }
         },
 
@@ -77,10 +76,10 @@
                             this.instance = component;
 
                             if (component.$props !== undefined
-                                && component.$props.realtime !== undefined && !component.$props.realtime
-                                && component.forceReset !== undefined && typeof component.forceReset === 'function')
-                                this.fun = component.forceReset;
-                            else if (component.reset !== undefined && typeof component.reset === 'function')
+                                && component.$props.realtime !== undefined && component.$props.realtime)
+                                this.realtime = true;
+
+                            if (component.reset !== undefined && typeof component.reset === 'function')
                                 this.fun = component.reset;
                                 
                             _found = true;

@@ -66,7 +66,11 @@
                 entry : '', // input value
                 fun : undefined, // function applied
                 localInstructions : [], // local request
-                channels : [] // communicate the value (entry) to another component on specific channels
+                channels : [], // communicate the value (entry) to another component on specific channels
+                ignoreWatcher : { // conditional trigger for the watcher
+                    mount : false, // corresponding to 'computedEntry' watcher
+                    fetch : false // corresponding to dynamic '_disableWatcherFetch' watcher
+                }
             };
         },
 
@@ -78,7 +82,10 @@
 
         watch : {
             computedEntry : function(val) {
-                this.update(val);
+                if (!this.ignoreWatcher.mount)
+                    this.update(val);
+                else
+                    this.ignoreWatcher.mount = !this.ignoreWatcher.mount;
             }
         },
 
@@ -125,13 +132,18 @@
 
             // Reset the input field
             reset : function() {
+                this.ignoreWatcher.mount = true;
+                this.ignoreWatcher.fetch = true;
                 this.entry = '';
+                this.update(this.entry);
+                this.diffuse();
             },
 
             // Force reset with instructions update
             forceReset : function() {
-                this.reset();
-                this.update(this.entry);
+                this.ignoreWatcher = true;
+                this.reset(); // it will not trigger update() function
+                this.update(this.entry); // trigger update() manually
             },
 
             // Diffuse the entry value
@@ -160,7 +172,10 @@
                 return this.entry;
             }, {
                 handler : function(val) {
-                    this.executeSearch.call(this);
+                    if (!this.ignoreWatcher.fetch)
+                        this.executeSearch.call(this);
+                    else
+                        this.ignoreWatcher.fetch = false;
                 },
                 deep : true
             });
