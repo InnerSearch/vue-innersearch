@@ -93,8 +93,9 @@ export default new Vuex.Store({
                                    * Fix for issue #4
                                    * just command the line under
                                    * we dont update doc_count to 0
+                                   * maybe not....
                                    */
-                                  //agg.doc_count = 0;
+                                  agg.doc_count = 0;
                                 }
 
                                 else
@@ -142,7 +143,7 @@ export default new Vuex.Store({
                     else {
                         for (let key in state.debounce) {
                             if (!state.debounce.hasOwnProperty(key)) continue;
-                        
+
                             let _obj = state.debounce[key];
                             _obj.forEach(debounce => {
                                 debounce.clear();
