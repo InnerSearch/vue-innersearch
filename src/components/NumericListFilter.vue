@@ -38,7 +38,8 @@
         },
         methods : {
             performRequest : function () {
-                if(this.from !== null && this.to !== null){
+                let regex = new RegExp(/^[0-9][0-9]*$/);
+                if(regex.test(this.from) && regex.test(this.to) ){
                     this.removeInstructions();
 
                     let _instruction = {
