@@ -13,20 +13,59 @@
 A component to add facet refinements in the form of a list of checkboxes.
   
 ```html
-<refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+<refinement-list-filter :field="'state'" :size="100" :title="'State : '" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
 ```
 
 You can also customize the title and the aggregations display using : 
 ```<template slot="slotName"></template>```
 
+Refinment List with checkbox
 ```html
-<refinement-list-filter :field="'state'" :size="100" :title="'State : '" orderKey="_count" orderDirection="asc" operator="OR">
-  <template slot="title">
-    <h2>US State : </h2>
-  </template>
-  <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,item }">
-    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} : {{ item.doc_count }} </label>
-    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-  </template>
+<refinement-list-filter :type="'checkbox_list'" :field="'state'" :title="'State : '" :size="10"  orderKey="_count" orderDirection="desc" operator="OR">
+    <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
+        <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
+
+                <input
+                type="checkbox"
+                :name="item.key"
+                :value="item.key"
+                v-model="checkedItems"
+                @click="clickOnItem(checkedItems)">
+                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+        </div>
+    </template>
+</refinement-list-filter>
+```
+
+Refinement List with simple dropdownlist
+```html
+<refinement-list-filter :field="'state'" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
+    <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
+        <select name="" id="" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
+            <option v-for="(item, index) in items" :value="item.key">
+
+                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+            </option>
+        </select>
+    </template>
+    <template slot="viewmore"></template>
+</refinement-list-filter>
+```
+
+Refinement List with dropdownlist (multiple)
+```html
+<refinement-list-filter :field="'state'" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
+    <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
+        <select name="" id="" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
+            <option v-for="(item, index) in items" :value="item.key">
+
+                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+            </option>
+        </select>
+    </template>
+    <template slot="viewmore"></template>
 </refinement-list-filter>
 ```

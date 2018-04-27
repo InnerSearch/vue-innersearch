@@ -3,26 +3,26 @@
         <slot name="title">
             <h3 class="is-refinement-menu-title">{{title}}</h3>
         </slot>
-
-        <div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
-            <input
-                type="checkbox"
-                :name="item.key"
-                :value="item.key"
-                v-model="checkedItems"
-                @change="clickOnItem()">
-            <slot name="label" v-bind:item="item"
-                  v-bind:displayCount="displayCount"
-                  v-bind:clickOnItem="clickOnItem"
-                  v-bind:clickOnLabel="clickOnLabel">
-                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-                <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-            </slot>
-        </div>
-
-        <slot name="footer">
-            <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+        <slot name="label" :items="items"
+        :displayCount="displayCount"
+        :checkedItems="checkedItems"
+        :clickOnItem="clickOnItem"
+        :clickOnLabel="clickOnLabel">
+            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
+                    <input
+                    type="checkbox"
+                    :name="item.key"
+                    :value="item.key"
+                    v-model="checkedItems"
+                    @change="clickOnItem(checkedItems)">
+                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+            </div>
         </slot>
+            <slot name="viewmore">
+                <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+            </slot>        
+        <slot name="footer"></slot>
     </div>
 </template>
 
@@ -79,6 +79,11 @@
             operator : {
                 type : String,
                 default : 'AND'
+            },
+            
+            type : {
+                type : String,
+                default : 'checkbox_list'
             }
         },
 
@@ -99,6 +104,10 @@
         },
 
         methods : {
+            test : function () {
+                console.log(this.checkedItems);
+            },
+
             updateLabels : function(value) {
                 this.setAggregations(this.field, value, this.orderKey, this.orderDirection);
             },
@@ -129,22 +138,45 @@
             },
 
             // Triggered when user select or unselect an item
-            clickOnItem : function() {
+            clickOnItem : function(checkedItems) {
+                /// For the dropdownlist
+                if(checkedItems === '' || checkedItems[0] === ""){
+                    this.removeInstructions();
+                        // Update the request
+                    this.mount();
+
+                    // Execute request
+                    this.fetch(this);
+                    return;
+                }
+
+                this.checkedItems = checkedItems;
+
                 // Reset all deep instructions of local request
                 this.removeInstructions();
 
                 // Read all checked items and create appropriate instruction for each of them
                 // OR operator case
+                var _instruction = undefined;
                 if (this.operator.toLowerCase() === 'or') {
-                    let _instruction = {
-                        fun : 'filter',
-                        args : ['bool', arg => {
-                            this.checkedItems.forEach(item => {
-                                arg.orFilter('term', this.field, item);
-                            });
-                            return arg;
-                        }]
-                    };
+                    if(typeof checkedItems === 'string'){
+                        console.log("coucou");
+                        _instruction = {
+                            fun : 'orFilter',
+                            args : ['term', this.field, checkedItems],
+                        };
+                    } else {
+                        _instruction = {
+                            fun : 'filter',
+                            args : ['bool', arg => {
+                                this.checkedItems.forEach(item => {
+                                    arg.orFilter('term', this.field, item);
+                                });
+                                return arg;
+                            }]
+                        };
+                    }
+
 
                     this.localInstructions.push(_instruction);
                     this.addInstruction(_instruction);
@@ -152,16 +184,24 @@
 
                 // AND operator case
                 else {
-
-                    this.checkedItems.forEach(item => {
-                        let _instruction = {
+                    if(typeof checkedItems === 'string'){
+                        _instruction = {
                             fun : 'andFilter',
-                            args : ['term', this.field, item]
+                            args : ['term', this.field, checkedItems],
                         };
+                    } else {
+                        this.checkedItems.forEach(item => {
+                            _instruction = {
+                                fun : 'andFilter',
+                                args : ['term', this.field, item]
+                            };
 
-                        this.localInstructions.push(_instruction);
-                        this.addInstruction(_instruction);
-                    });
+                            
+                        });
+                    }
+                    this.localInstructions.push(_instruction);
+                    this.addInstruction(_instruction);
+
                 }
 
                 // Update the request
