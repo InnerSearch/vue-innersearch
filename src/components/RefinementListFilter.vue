@@ -66,11 +66,6 @@
                 default : 'asc'
             },
 
-            dynamic : {
-                type : Boolean,
-                default : false
-            },
-
             displayCount : {
                 type : Boolean,
                 default : true
@@ -105,7 +100,7 @@
 
         methods : {
             updateLabels : function(value) {
-                this.setAggregations(this.field, value, this.dynamic, this.orderKey, this.orderDirection);
+                this.setAggregations(this.field, value, this.orderKey, this.orderDirection);
             },
 
             addAggregationInstructions : function() {
@@ -182,7 +177,7 @@
             updateAggsSize : function () {
                 this.aggsSize += this.sizeMore;
 
-                let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
+                //let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
 
                 this.addAggregationInstructions();
 
@@ -239,9 +234,9 @@
 
                     this.header.client.search(_fullQuery).then((resp) => {
                         if(resp.aggregations === undefined){
-                            this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+                            this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         } else {
-                            this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.dynamic, this.orderKey, this.orderDirection);
+                            this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         }
                     });
                 }

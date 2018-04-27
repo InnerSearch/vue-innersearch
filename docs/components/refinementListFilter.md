@@ -5,7 +5,6 @@
   - `size` (_Number_): Amount of facets
   - `orderKey` (_String_) : Possible value (`_term`  |`_count` ) to order by count number or by name term
   - `orderDirection` (_String_) : Possible value ( `asc` | `desc ` )
-  - `dymanic` (_Boolean_) : Updating aggregations dynamically 
   - `displayCount` (_Boolean_) : Display or not numbers of aggregations
   - `title` (_String_) : Title of the menu. Shown as a header and within selected filters
   - `operator` (_'AND'|'OR'_) : If you filter on a and b with OR, results with either the value a or b will match. If you select a and b, results will show which have both a and b.
@@ -21,7 +20,7 @@ You can also customize the title and the aggregations display using :
 ```<template slot="slotName"></template>```
 
 ```html
-<refinement-list-filter :field="'state'" :size="100" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR">
+<refinement-list-filter :field="'state'" :size="100" :title="'State : '" orderKey="_count" orderDirection="asc" operator="OR">
   <template slot="title">
     <h2>US State : </h2>
   </template>

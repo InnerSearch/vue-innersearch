@@ -34,8 +34,8 @@
                     <div class="columns">
                         <div class="column is-one-fifth">
                             <div>
-                                <refinement-list-filter :field="'state'" :title="'State : '" :size="10" :dynamic="true" orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
-                                <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" :dynamic="true" ></refinement-list-filter>
+                                <refinement-list-filter :field="'state'" :title="'State : '" :size="10"  orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
+                                <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
                             </div>
                         </div>
                         <div class="column">

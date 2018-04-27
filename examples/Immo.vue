@@ -35,8 +35,8 @@
                 <div class="columns">
                     <div class="column is-one-fifth">
                         <div>
-                            <refinement-list-filter :field="'SITE'" :size="10" :title="'Website : '" :dynamic="true" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
-                            <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '" :dynamic="false" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
+                            <refinement-list-filter :field="'SITE'" :size="10" :title="'Website : '" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
+                            <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '"  orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
                         </div>
                     </div>
                     <div class="column">

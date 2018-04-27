@@ -30,7 +30,7 @@
                 <hr class='is-line' />
 
                 <div>
-                <refinement-list-filter :field="'state'" :size="23" title="State : " operator="OR" :displayCount="true" orderDirection="desc" orderKey="_count" :dynamic="false" >
+                <refinement-list-filter :field="'state'" :size="23" title="State : " operator="OR" :displayCount="true" orderDirection="desc" orderKey="_count"  >
                 <template slot="title">
                 <h2>US State : </h2>
                 </template>

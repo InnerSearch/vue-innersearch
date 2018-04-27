@@ -71,52 +71,8 @@ export default new Vuex.Store({
                     });
                 },
 
-                setAggregations (state, { name, value, isDynamic, orderKey, orderDirection }) {
-                    if (isDynamic)
-                        Vue.set(state.aggregations, name, value);
-                    else {
-                      let _aggs = state.aggregations[name];
-
-                        // Initialization : the agg object doesn't still exist
-                        if (_aggs === undefined)
-                            _aggs = value;
-
-                        // Update : the agg object still exists, we just update it
-                        else {
-                            _aggs.forEach(agg => {
-                                let _found = value.filter(obj => {
-                                    return obj.key === agg.key;
-                                })[0];
-
-                                if (_found === undefined){
-                                  /***
-                                   * Fix for issue #4
-                                   * just command the line under
-                                   * we dont update doc_count to 0
-                                   * maybe not....
-                                   */
-                                  agg.doc_count = 0;
-                                }
-
-                                else
-                                    agg.doc_count = _found.doc_count;
-                            });
-
-                            // Sorting aggs in terms of orderKey and orderDirection
-                            if(orderKey==="_count"){
-                                _aggs.sort((e,e2) => {
-                                    if(orderDirection==="asc"){
-
-                                        return e.doc_count - e2.doc_count;
-                                    }else {
-                                        return e2.doc_count - e.doc_count;
-                                    }
-                                });
-                            }
-                        }
-                        // Save the new agg object
-                        Vue.set(state.aggregations, name, _aggs);
-                    }
+                setAggregations (state, { name, value, orderKey, orderDirection }) {
+                    Vue.set(state.aggregations, name, value);
                 },
 
                 addDebounce(state, value) {

@@ -15,6 +15,7 @@ const _URL = 'http://localhost:4000/#/test_refinementListFilter',
     _GENDER = '.gender';
 
 import refinementFilterList_sample_1 from '../fixtures/refinementFilterList_1.json';
+
 describe('Test RLF with Searchbox' , () => {
     beforeEach(function() {
         cy.visit(_URL4);
@@ -23,7 +24,7 @@ describe('Test RLF with Searchbox' , () => {
     it('2nd non regression test for issue #4' , () => {
         cy.get(_SEARCHBOX).type('fred');
         cy.wait(500).get('.gender_rlf > .is-component > .is-item > label').then ( $e => {
-            expect($e.get(1).innerHTML).to.equal("m ( 0 )");
+            expect($e.get(0).innerHTML).to.equal("f ( 1 )");
         });
 
     });
@@ -54,9 +55,10 @@ describe('Test Multiple RLF', () => {
   it('non regression test for issue #5', () => {
     cy.get(':nth-child(14) > input').click(); // Check CA State
     cy.get('.gender_rlf > .is-component > :nth-child(3) > input').click(); // Check M gender
-    cy.wait(500).get(':nth-child(9) > label').then(e => {
-      expect(e.get(0).innerHTML).to.contains('11');
-      cy.get(':nth-child(9) > input').click(); // Check CA State
+    let ctLabel = ':nth-child(28) > label';
+    cy.wait(500).get(ctLabel).then(e => {
+      expect(e.get(0).innerHTML).to.contains('11'); // CT State contains 11
+      cy.get(ctLabel).click(); // Check CT State
       cy.wait(1000).get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
     });
 
