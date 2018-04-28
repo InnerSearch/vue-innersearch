@@ -34,7 +34,7 @@
                     <div class="columns">
                         <div class="column is-one-fifth">
                             <div>
-                                <refinement-list-filter :field="'state'" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
+                                <refinement-list-filter :field="'state'" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="AND">
                                     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
                                         <select name="" id="" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
                                             <option selected="selected"></option>
@@ -49,10 +49,9 @@
                                 </refinement-list-filter>
                                 <refinement-list-filter :field="'age'" :title="'Age : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
                                     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
-                                        <select name="" id="" v-model="checkedItems"  @change="clickOnItem(checkedItems)" multiple>
+                                        <select name="" id="" v-model="checkedItems"  @change="clickOnItem(checkedItems)" multiple style="height : 500px;">
                                             <option selected="selected"></option>
                                             <option v-for="(item, index) in items" :value="item.key">
-
                                                     <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
                                                     <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
                                             </option>

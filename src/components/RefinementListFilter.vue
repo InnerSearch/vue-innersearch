@@ -153,7 +153,7 @@
                 // OR operator case
                 var _instruction = undefined;
                 if (this.operator.toLowerCase() === 'or') {
-                    if(typeof checkedItems === 'string'){
+                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
                         _instruction = {
                             fun : 'orFilter',
                             args : ['term', this.field, checkedItems],
@@ -177,7 +177,7 @@
 
                 // AND operator case
                 else {
-                    if(typeof checkedItems === 'string'){
+                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
                         _instruction = {
                             fun : 'andFilter',
                             args : ['term', this.field, checkedItems],
@@ -251,6 +251,7 @@
                 //console.log(e)
                 let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
                 if(this.operator.toLowerCase() !== 'or' || isMe) {
+                    console.log(this.field);
                     let aggs = e.aggs;
 
                     let _instr = [];
@@ -269,12 +270,16 @@
                         body : query
                     });
 
+                    console.log(_fullQuery);
+
                     this.header.client.search(_fullQuery).then((resp) => {
                         if(resp.aggregations === undefined){
                             this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         } else {
                             this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         }
+                        if(this.field === 'age')
+                            console.log(this.items);
                     });
                 }
             });
