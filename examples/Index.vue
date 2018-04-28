@@ -48,17 +48,23 @@
                                     <template slot="viewmore"></template>
                                 </refinement-list-filter>
                                 <refinement-list-filter :field="'age'" :search="true" :title="'Age : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
+                                    <template slot="title" slot-scope="{ title }">
+                                        <h3 class="is-refinement-menu-title" style="width: fit-content;display: inline-block;margin-right: 120px;">{{title}}</h3>
+                                    </template>
                                     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
                                         <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list">
                                             <input
                                             type="radio"
-                                            :name="item.key"
+                                            name="age"
                                             :value="item.key"
                                             v-model="checkedItems"
                                             @change="clickOnItem(checkedItems)">
                                             <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} years old ( {{ item.doc_count }} )</label>
                                             <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
                                         </div>
+                                    </template>
+                                    <template slot="uncheck_all" slot-scope="{ uncheckAll }">
+                                        <a href="#" v-on:click='uncheckAll()' style="font-size:0.8em">Clear</a>
                                     </template>
                                 </refinement-list-filter>
                                 <refinement-list-filter :field="'gender'" :search="true" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
@@ -84,7 +90,7 @@
                                 </search-datalist>
                                 <numeric-list-filter :field="'balance'">
                                     <template slot="header">
-                                        <p>Balance : </p>
+                                        <h3 class="is-nlf-title">Balance : </h3>
                                     </template>
                                 </numeric-list-filter>
                                 <div style="margin: 20px auto;width: 90%">

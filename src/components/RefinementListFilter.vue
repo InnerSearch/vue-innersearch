@@ -1,13 +1,15 @@
 <template>
     <div class="is-component is-refinement-list">
-        <slot name="title">
+        <slot name="title" :title="title">
             <h3 class="is-refinement-menu-title">{{title}}</h3>
         </slot>
+        <slot name="uncheck_all" :uncheckAll="uncheckAll"></slot> 
         <input v-if="search" type="text" placeholder="search..." v-model="test_">
         <slot name="label" :items="items"
         :displayCount="displayCount"
         :checkedItems="checkedItems"
-        :clickOnItem="clickOnItem"
+        :clickOnItem="clickOnItem" 
+        :name=""
         :clickOnLabel="clickOnLabel" :ref="input">
             <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
                     <input
@@ -116,7 +118,16 @@
         },
 
         methods : {
-            
+            uncheckAll : function () {
+                Array.from( document.querySelectorAll('input[name="'+ this.field +'"]:checked'), input => input.checked = false );
+
+                this.removeInstructions();
+                    // Update the request
+                this.mount();
+
+                // Execute request
+                this.fetch(this);
+            },
 
             updateLabels : function(value) {
                 this.setAggregations(this.field, value, this.orderKey, this.orderDirection);
