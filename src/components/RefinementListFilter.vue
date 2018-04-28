@@ -3,6 +3,7 @@
         <slot name="title">
             <h3 class="is-refinement-menu-title">{{title}}</h3>
         </slot>
+        <input v-if="search" type="text" placeholder="search..." v-model="test_">
         <slot name="label" :items="items"
         :displayCount="displayCount"
         :checkedItems="checkedItems"
@@ -84,6 +85,10 @@
             type : {
                 type : String,
                 default : 'checkbox_list'
+            },
+            search : {
+                type: Boolean,
+                default : false
             }
         },
 
@@ -94,19 +99,24 @@
                 localAggregations : [], // lcoal aggregation instructions
                 localInstructions : [], // local request
                 aggsSize : this.size,
+                test_ : null,
             };
         },
 
         computed : {
             items : function() {
-                return this.aggregations[this.field];
+                if(this.test_ !== null && this.test_.length !== 0){
+                    let aggs = this.aggregations[this.field];
+                    console.log(aggs);
+                    return aggs.filter(e => (e.key.toString().startsWith(this.test_)));
+                } else {
+                    return this.aggregations[this.field];
+                }
             }
         },
 
         methods : {
-            test : function () {
-                console.log(this.checkedItems);
-            },
+            
 
             updateLabels : function(value) {
                 this.setAggregations(this.field, value, this.orderKey, this.orderDirection);

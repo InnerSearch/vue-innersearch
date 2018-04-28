@@ -8,6 +8,7 @@
   - `displayCount` (_Boolean_) : Display or not numbers of aggregations
   - `title` (_String_) : Title of the menu. Shown as a header and within selected filters
   - `operator` (_'AND'|'OR'_) : If you filter on a and b with OR, results with either the value a or b will match. If you select a and b, results will show which have both a and b.
+  - `search` (_Boolean_) : Add a input text filter above the component
   
 - **Description :**
 A component to add facet refinements in the form of a list of checkboxes.
@@ -44,7 +45,7 @@ Refinement List with radio button
     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
         <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list">
             <input
-            type="checkbox"
+            type="radio"
             :name="item.key"
             :value="item.key"
             v-model="checkedItems"
