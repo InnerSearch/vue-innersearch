@@ -7,8 +7,8 @@
         :displayCount="displayCount"
         :checkedItems="checkedItems"
         :clickOnItem="clickOnItem"
-        :clickOnLabel="clickOnLabel">
-            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
+        :clickOnLabel="clickOnLabel" :ref="input">
+            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
                     <input
                     type="checkbox"
                     :name="item.key"
@@ -19,9 +19,9 @@
                     <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
             </div>
         </slot>
-            <slot name="viewmore">
-                <a href="#"  v-on:click='updateAggsSize()'>view more</a>
-            </slot>        
+        <slot name="viewmore">
+            <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+        </slot>        
         <slot name="footer"></slot>
     </div>
 </template>
@@ -125,22 +125,16 @@
 
             // Check or uncheck an item for the input corresponding to the name
             clickOnLabel : function(name) {
-                // Find input check with the right name
-                let _tag = this.$refs.input.map(div => {
-                    return div.getElementsByTagName("input")[0];
-                }).filter((input) => {
-                    return input.getAttribute("name") === name;
-                });
-
-                // Trigger click event on checkbox
-                if (_tag[0])
-                    _tag[0].click();
+                document.querySelector('.is-refinement-list > input[name=' + name + ']').click();
             },
 
             // Triggered when user select or unselect an item
             clickOnItem : function(checkedItems) {
+
                 /// For the dropdownlist
-                if(checkedItems === '' || checkedItems[0] === ""){
+                if(checkedItems === '' || checkedItems[0] === "" || checkedItems.length === 0){
+                    this.checkedItems = checkedItems;
+
                     this.removeInstructions();
                         // Update the request
                     this.mount();
@@ -160,7 +154,6 @@
                 var _instruction = undefined;
                 if (this.operator.toLowerCase() === 'or') {
                     if(typeof checkedItems === 'string'){
-                        console.log("coucou");
                         _instruction = {
                             fun : 'orFilter',
                             args : ['term', this.field, checkedItems],
@@ -189,6 +182,9 @@
                             fun : 'andFilter',
                             args : ['term', this.field, checkedItems],
                         };
+
+                        this.localInstructions.push(_instruction);
+                        this.addInstruction(_instruction);
                     } else {
                         this.checkedItems.forEach(item => {
                             _instruction = {
@@ -196,14 +192,14 @@
                                 args : ['term', this.field, item]
                             };
 
+                            this.localInstructions.push(_instruction);
+                            this.addInstruction(_instruction);
                             
                         });
                     }
-                    this.localInstructions.push(_instruction);
-                    this.addInstruction(_instruction);
+                    
 
                 }
-
                 // Update the request
                 this.mount();
 
@@ -213,6 +209,7 @@
                 // Debugg
                 //console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
                 //console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
+
             },
             updateAggsSize : function () {
                 this.aggsSize += this.sizeMore;

@@ -66,6 +66,8 @@ describe('Test Multiple RLF', () => {
 
 });
 
+
+
 describe('Test RefinementListFilter', () => {
   beforeEach(function() {
     cy.visit(_URL);
