@@ -8,8 +8,7 @@
         <slot name="label" :items="items"
         :displayCount="displayCount"
         :checkedItems="checkedItems"
-        :clickOnItem="clickOnItem" 
-        :name=""
+        :clickOnItem="clickOnItem"
         :clickOnLabel="clickOnLabel" :ref="input">
             <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
                     <input
@@ -145,8 +144,8 @@
             },
 
             // Check or uncheck an item for the input corresponding to the name
-            clickOnLabel : function(name) {
-                document.querySelector('.is-refinement-list > input[name=' + name + ']').click();
+            clickOnLabel : function(key) {
+                document.querySelector('.is-refinement-list > input[value="' + key + '"]').click();
             },
 
             // Triggered when user select or unselect an item
