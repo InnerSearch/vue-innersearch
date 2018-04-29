@@ -22,7 +22,7 @@
             </div>
         </slot>
         <slot name="viewmore">
-            <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+            <a href="#" :style="{ display : viewMoreDisplay}"  v-on:click='updateAggsSize()'>view more</a>
         </slot>        
         <slot name="footer"></slot>
     </div>
@@ -101,6 +101,8 @@
                 localInstructions : [], // local request
                 aggsSize : this.size,
                 test_ : null,
+                aggsCardinality : null,
+                viewMoreDisplay : "inherit"
             };
         },
 
@@ -108,7 +110,6 @@
             items : function() {
                 if(this.test_ !== null && this.test_.length !== 0){
                     let aggs = this.aggregations[this.field];
-                    console.log(aggs);
                     return aggs.filter(e => (e.key.toString().startsWith(this.test_)));
                 } else {
                     return this.aggregations[this.field];
@@ -231,16 +232,22 @@
                 //console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
 
             },
+
             updateAggsSize : function () {
-                this.aggsSize += this.sizeMore;
+                if(this.aggsSize < this.aggsCardinality){
+                    this.aggsSize += this.sizeMore;
 
-                //let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
+                    this.addAggregationInstructions();
 
-                this.addAggregationInstructions();
-
-                this.mount();
-                this.fetch();
+                    this.mount();
+                    this.fetch();
+                    if(this.aggsCardinality < this.aggsSize)
+                        this.viewMoreDisplay = "none";
+                } else {
+                    this.viewMoreDisplay = "none";
+                }
             },
+
             // Reset refinementlistfilter items
             reset : function() {
                 this.checkedItems = [];
@@ -262,16 +269,21 @@
             // Get respective items
             this.header.client.search(_aggsRequest).then(response => {
                 let value = response.aggregations['agg_terms_' + this.field].buckets;
+                // get count of aggs distinct values
+                this.aggsCardinality = response.aggregations['agg_cardinality_' + this.field ].value;
+
+                if(this.aggsCardinality < this.aggsSize ){
+                    this.viewMoreDisplay = "none";
+                }
 
                 // Create aggregations items
                 this.updateLabels(value);
             });
 
             this.bus.$on('updateAggs', e => {
-                //console.log(e)
+                
                 let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
                 if(this.operator.toLowerCase() !== 'or' || isMe) {
-                    console.log(this.field);
                     let aggs = e.aggs;
 
                     let _instr = [];
@@ -290,16 +302,12 @@
                         body : query
                     });
 
-                    console.log(_fullQuery);
-
                     this.header.client.search(_fullQuery).then((resp) => {
                         if(resp.aggregations === undefined){
                             this.setAggregations(this.field, aggs['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         } else {
                             this.setAggregations(this.field, resp.aggregations['agg_terms_' + this.field].buckets, this.orderKey, this.orderDirection);
                         }
-                        if(this.field === 'age')
-                            console.log(this.items);
                     });
                 }
             });

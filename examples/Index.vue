@@ -47,7 +47,7 @@
                                     </template>
                                     <template slot="viewmore"></template>
                                 </refinement-list-filter>
-                                <refinement-list-filter :field="'age'" :search="true" :title="'Age : '" :size="100"  orderKey="_count" orderDirection="desc" operator="OR">
+                                <refinement-list-filter :field="'age'" :search="true" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
                                     <template slot="title" slot-scope="{ title }">
                                         <h3 class="is-refinement-menu-title" style="width: fit-content;display: inline-block;margin-right: 120px;">{{title}}</h3>
                                     </template>

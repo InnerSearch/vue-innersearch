@@ -320,7 +320,7 @@ export default {
 						[orderKey] : orderDirection
 					},
 					size : size
-				})
+				}).aggregation("cardinality",field)
 				.build();
 
 			return _request;
