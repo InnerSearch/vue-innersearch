@@ -29,7 +29,7 @@ describe('Test RLF with Searchbox' , () => {
 
     });
 });
-/*
+
 
 describe('Test Multiple RLF', () => {
   beforeEach(function() {
@@ -153,7 +153,7 @@ describe('Test RefinementListFilter2', () => {
 
 });
 
-*/
+
 
 
 
