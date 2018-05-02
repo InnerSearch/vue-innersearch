@@ -32,9 +32,17 @@
                         <div class="column is-one-fifth">
                         <div>
                           <refinement-list-filter :field="'state'" :size="20" title="State : " operator="AND" :displayCount="true" orderKey="_count" orderDirection="desc" >
-                          <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,item }">
-                              <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-                              <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+                          <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
+                            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
+                                    <input
+                                    type="checkbox"
+                                    :name="item.key"
+                                    :value="item.key"
+                                    v-model="checkedItems"
+                                    @change="clickOnItem(checkedItems)">
+                                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+                            </div>
                           </template>
                           </refinement-list-filter>
                           <div class="gender_rlf">
@@ -43,7 +51,7 @@
                        </div>
                         </div>
                         <div class="column">
-                            <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+                            <searchbox :autofocus="true" :realtime="false" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
                             <hits>
                                 <template slot="hits" slot-scope="{ hits }">
                                     <div class="is-score is-hits">
@@ -56,6 +64,10 @@
                                     </div>
                                 </template>
                             </hits>
+                            <div style="margin: 20px auto;width: 90%">
+                                <search-button></search-button>
+                                <reset-button></reset-button>
+                            </div>
                         </div>
                 </div>
 
