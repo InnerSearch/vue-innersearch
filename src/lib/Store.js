@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     modules : {
         /*
-            Elasticsearch header Store
+                Elasticsearch header Store
                 For API ES object
                 For Request
         */
@@ -173,6 +173,7 @@ export default new Vuex.Store({
 
             getters : {
                 getItems : state => {
+                    console.log("Store.getItems",state);
                     return state.items;
                 },
 

@@ -44,3 +44,34 @@
         }
     };
 </script>
+<style>
+    .is-component.is-reset-button {
+        display : inline-block;
+        margin : 5px 10px 5px 0;
+        border : 0;
+    }
+
+    .is-button.is-reset-button {
+        color : #fff;
+        background-color : #B73337;
+        border-color : #A42E2E;
+    }
+
+    .is-button.is-reset-button:hover {
+        color : #fff;
+        background-color : #902828;
+        border-color : #742020;
+    }
+
+    .is-button.is-reset-button:active {
+        color : #fff;
+        background-color : #902828;
+        border-color : #742020;
+    }
+
+    .is-button.is-reset-button:focus {
+        color : #fff;
+        background-color : #902828;
+        border-color : #401212;
+    }
+</style>

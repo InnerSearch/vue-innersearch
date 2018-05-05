@@ -39,3 +39,34 @@
         }
     };
 </script>
+<style>
+    .is-component.is-search-button {
+        display : inline-block;
+        margin : 5px 10px 5px 0;
+        border : 0;
+    }
+
+    .is-button.is-search-button {
+        color : #fff;
+        background-color : #337ab7;
+        border-color : #2e6da4;
+    }
+
+    .is-button.is-search-button:hover {
+        color : #fff;
+        background-color : #286090;
+        border-color : #204d74;
+    }
+
+    .is-button.is-search-button:active {
+        color : #fff;
+        background-color : #286090;
+        border-color : #204d74;
+    }
+
+    .is-button.is-search-button:focus {
+        color : #fff;
+        background-color : #286090;
+        border-color : #122b40;
+    }
+</style>

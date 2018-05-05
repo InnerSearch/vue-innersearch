@@ -1,90 +1,42 @@
 <template>
-    <nav
-        class="pagination is-centered"
-        role="navigation"
-        aria-label="pagination"
-        v-if='hits.score != undefined'
-    >
-        <a
-            class="pagination-previous"
-            :value="previousText"
-            @click="clickOnPrevious"
-        >
-            Previous
-        </a>
-        <a
-            class="pagination-next"
-            :value="nextText"
-            @click="clickOnNext"
-        >
-            Next page
-        </a>
-        <ul
-            class="pagination-list"
-        >
+    <nav class="is-paginate is-component" v-if='hits.score != undefined'>
+        <a class="is-previous is-button" v-show="nbPage > 0" :value="previousText"  @click="clickOnPrevious" v-html="previousText"></a>
+
+        <a class="is-next is-button" v-show="nbPage < maxPage - 1" :value="nextText" @click="clickOnNext" v-html="nextText"></a>
+
+        <ul class="is-list">
             <li>
-                <a
-                    v-if="nbPage == 0"
-                    class="pagination-link is-current"
-                >
+                <a v-if="nbPage == 0" class="is-page is-active">
                     1
                 </a>
-                <a
-                    v-else
-                    class="pagination-link"
-                    @click="jumpToPage(1)"
-                >
+                <a v-else class="is-page" @click="jumpToPage(1)">
                     1
                 </a>
             </li>
 
-            <li
-                v-if="nbPage > (unpiled + 1) /* 6 */"
-            >
-                <span class="pagination-ellipsis">&hellip;</span>
+            <li v-if="nbPage > (unpiled + 1)">
+                <span class="is-ellipsis">&hellip;</span>
             </li>
 
-            <li
-                v-for="(e, i) in maxPage"
-                :key="i"
-                v-if="e>1 && e<maxPage"
-            >
-                <a
-                    v-if="e == nbPage+1"
-                    class="pagination-link is-current"
-                >
+            <li v-for="(e, i) in maxPage" :key="i" v-if="e > 1 && e < maxPage">
+                <a v-if="e == nbPage + 1" class="is-page is-active">
                     {{e}}
                 </a>
-                <a
-                    v-else-if="(e > nbPage - unpiled && e <= nbPage + (unpiled + 1) /* 6 */)"
-                    class="pagination-link"
-                    @click="jumpToPage(e)"
-                >
+                <a v-else-if="(e > nbPage - unpiled && e <= nbPage + (unpiled + 1))" class="is-page" @click="jumpToPage(e)">
                     {{e}}
                 </a>
             </li>
 
-            <li
-                v-if="nbPage < maxPage - unpiled"
-            >
-                <span class="pagination-ellipsis">&hellip;</span>
+            <li v-if="nbPage < maxPage - unpiled">
+                <span class="is-ellipsis">&hellip;</span>
             </li>
 
-            <li
-                v-if="maxPage>1"
-            >
-                <a
-                    v-if="nbPage == maxPage-1"
-                    class="pagination-link is-current"
-                >
-                    {{maxPage}}
+            <li v-if="maxPage > 1">
+                <a v-if="nbPage == maxPage - 1" class="is-page is-active">
+                    {{ maxPage }}
                 </a>
-                <a
-                    v-else
-                    class="pagination-link"
-                    @click="jumpToPage(maxPage)"
-                >
-                    {{maxPage}}
+                <a v-else class="is-page" @click="jumpToPage(maxPage)">
+                    {{ maxPage }}
                 </a>
             </li>
         </ul>
@@ -122,7 +74,7 @@
 				default : 0
 			},
 
-            unpiled: {
+            unpiled : {
                 type: Number,
                 default: 5
             }
@@ -132,7 +84,7 @@
 			return {
 				CID : undefined,
                 nbPage : this.page,
-                nbPage1: this.page+1
+                nbPage1: this.page + 1
 			}
     	},
 
@@ -195,14 +147,13 @@
 
             jumpToPage: function(nb) {
 
-                this.nbPage = nb-1
-                // i don't want to know
+                this.nbPage = nb-1;
 
                 // Update pagination
-                this.updatePagination()
+                this.updatePagination();
 
                 // Execute ES request
-                this.fetchPagination()
+                this.fetchPagination();
 
             }
 		},
@@ -222,5 +173,80 @@
 </script>
 
 <style>
-@import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css';
+    .is-component.is-paginate {
+        display : flex;
+        width : 90%;
+        margin : 20px auto;
+        align-items : center;
+        justify-content : center;
+        text-align : center;
+        border : 1px solid transparent;
+    }
+
+    .is-previous {
+        order: 1;
+    }
+
+    .is-list {
+        display : flex;
+        flex-grow : 1;
+        align-items : center;
+        justify-content : center;
+        text-align : center;
+        list-style : none;
+        list-style-type : none;
+        list-style-position : initial;
+        list-style-image : initial;
+        order : 2;
+    }
+
+    .is-next {
+        order: 3;
+    }
+
+    .is-next, .is-previous {
+        padding-left : .75em;
+        padding-right : .75em;
+        white-space : nowrap;
+    }
+
+    .is-page, .is-next, .is-previous {
+        min-width : 2.25em;
+        border-color : #dbdbdb;
+        color : #363636;
+        cursor : pointer;
+    }
+
+    .is-page.is-active {
+        background-color: #3273dc;
+        border-color: #3273dc;
+        color: #fff;
+    }
+
+    .is-page:active:not(.is-active), .is-next:active, .is-previous:active {
+        box-shadow : inset 0 1px 2px rgba(10,10,10,.2);
+    }
+
+    .is-page:hover:not(.is-active), .is-next:hover, .is-previous:hover {
+        border-color : #b5b5b5;
+    }
+
+    .is-page, .is-next, .is-previous, .is-ellipsis {
+        margin : .25rem;
+        justify-content : center;
+        text-align : center;
+    }
+
+    .is-page, .is-next, .is-previous, .is-ellipsis {
+        display : inline-flex;
+        align-items : center;
+        border : 1px solid transparent;
+        border-radius : 4px;
+        font-size : 1rem;
+        height : 2.25em;
+        padding-bottom : calc(.175em - 1px);
+        padding-left : calc(.325em - 1px);
+        padding-right : calc(.325em - 1px);
+        padding-top : calc(.175em - 1px);
+    }
 </style>

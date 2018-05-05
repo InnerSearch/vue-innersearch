@@ -42,3 +42,30 @@
         }
     };
 </script>
+<style>
+    .is-component.is-hits {
+        width : 90%;
+        margin : 20px auto;
+        padding : 15px;
+        font-size : 1.25em;
+        box-sizing : border-box;
+    }
+
+    .is-score.is-hits {
+        margin : 10px 0 20px 50px;
+        font-size : 1.75em;
+        font-weight : bolder;
+        font-variant : small-caps;
+    }
+
+    .is-item.is-hits {
+        width : 90%;
+        margin : 20px auto;
+        padding : 20px;
+        background : #EFEFEF;
+    }
+
+    .is-item.is-hits ul {
+        margin : 0;
+    }
+</style>

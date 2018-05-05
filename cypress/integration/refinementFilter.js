@@ -2,6 +2,7 @@ const _URL = 'http://localhost:4000/#/test_refinementListFilter',
     _URL2 = 'http://localhost:4000/#/test_refinementListFilter2',
     _URL3 = 'http://localhost:4000/#/test_multipleRLF',
     _URL4 = 'http://localhost:4000/#/test_RLF_With_Searchbox',
+    _ES_URL = '**/_search',
     _SEARCHBOX = '.is-field.is-searchbox',
     _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
     _HITS = '.is-score.is-hits',
@@ -16,14 +17,21 @@ const _URL = 'http://localhost:4000/#/test_refinementListFilter',
 
 import refinementFilterList_sample_1 from '../fixtures/refinementFilterList_1.json';
 
+
+
 describe('Test RLF with Searchbox' , () => {
     beforeEach(function() {
         cy.visit(_URL4);
         cy.server();
+        cy.route('POST', _ES_URL).as('ES');
     });
     it('2nd non regression test for issue #4' , () => {
-        cy.get(_SEARCHBOX).type('fred');
-        cy.wait(500).get('.gender_rlf > .is-component > .is-item > label').then ( $e => {
+        
+        // we wait for 2 the aggs request
+        cy.wait('@ES').wait('@ES').get(_SEARCHBOX).type('fred')
+        cy.get('.is-component.is-search-button > .is-button').click();
+        // we wait for the 2 aggs request update and the request with searchbox
+        cy.wait('@ES').wait('@ES').wait('@ES').get('.gender_rlf > .is-component > .is-item > label').then ( $e => {
             expect($e.get(0).innerHTML).to.equal("f ( 1 )");
         });
 
@@ -31,19 +39,39 @@ describe('Test RLF with Searchbox' , () => {
 });
 
 
-describe('Test Multiple RLF', () => {
+describe('Test Multiple RLF 5', () => {
   beforeEach(function() {
     cy.visit(_URL3);
     cy.server();
+    cy.route('POST', _ES_URL).as('ES');
   });
 
+  it('non regression test for issue #5', () => {
+    cy.wait('@ES').wait('@ES').get(':nth-child(14) > input').click(); // Check CA State
+    cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(3) > input').click(); // Check M gender
+    let ctLabel = ':nth-child(28) > label';
+    cy.wait('@ES').wait('@ES').get(ctLabel).then(e => {
+      expect(e.get(0).innerHTML).to.contains('11'); // CT State contains 11
+      cy.get(ctLabel).click(); // Check CT State
+      cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
+    });
 
+  });
+
+});
+
+describe('Test Multiple RLF 4', () => {
+  beforeEach(function() {
+    cy.visit(_URL3);
+    cy.server();
+    cy.route('POST', _ES_URL).as('ES');
+  });
 
   it('non regression test for issue #4', () => {
-    cy.get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
-    cy.get(':nth-child(14) > input').click(); // Check CA State
-    cy.get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Uncheck F gender
-    cy.get('.state_rlf > .is-component > .is-item > label').then($e => {
+    cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
+    cy.wait('@ES').get(':nth-child(14) > input').click(); // Check CA State
+    cy.wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Uncheck F gender
+    cy.wait('@ES').wait('@ES').get('.state_rlf > .is-component > .is-item > label').then($e => {
         let regex = new RegExp(/^[A-Za-z]*\s\(\s[1-9]+[0-9]*\s\)$/);
         for(let i=0;i < $e.length; i++){
           expect(regex.test($e.get(i).innerHTML)).to.be.true;
@@ -52,24 +80,17 @@ describe('Test Multiple RLF', () => {
   });
 
 
-  it('non regression test for issue #5', () => {
-    cy.get(':nth-child(14) > input').click(); // Check CA State
-    cy.get('.gender_rlf > .is-component > :nth-child(3) > input').click(); // Check M gender
-    let ctLabel = ':nth-child(28) > label';
-    cy.wait(500).get(ctLabel).then(e => {
-      expect(e.get(0).innerHTML).to.contains('11'); // CT State contains 11
-      cy.get(ctLabel).click(); // Check CT State
-      cy.wait(1000).get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
-    });
 
-  });
 
 });
+
+
 
 describe('Test RefinementListFilter', () => {
   beforeEach(function() {
     cy.visit(_URL);
     cy.server();
+    cy.route('POST', _ES_URL).as('ES');
   });
 
   it('should check the input when the label is clicked' , function() {
@@ -90,7 +111,7 @@ describe('Test RefinementListFilter', () => {
     };
     beforeEach(function () {
       cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
-      cy.wait(250);
+      cy.wait('@ES');
     });
     it('should be filtering as expected' , function () {
       cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains(valCheck.name+' ( '+valCheck.count+' )');
@@ -123,6 +144,7 @@ describe('Test RefinementListFilter2', () => {
   beforeEach(function() {
     cy.visit(_URL2);
     cy.server();
+    cy.route('POST', _ES_URL).as('ES');
   });
 
   it('should display at least 23 aggs state', function () {
@@ -132,11 +154,10 @@ describe('Test RefinementListFilter2', () => {
   it('should display 57 hits when filtering Texas (tx) or Idaho (id) states' , function () {
 
 
-    cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
-    cy.get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name2);
-    cy.wait(250);
+    cy.wait('@ES').get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name);
+    cy.wait('@ES').get(_REFINEMENT_LIST_FILTER + ' input').check(valCheck.name2);
 
-    cy.wait(150).get(_HITS).contains('57 results found');
+    cy.wait('@ES').get(_HITS).contains('57 results found');
 
 
   });

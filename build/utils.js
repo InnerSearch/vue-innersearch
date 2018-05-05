@@ -70,3 +70,7 @@ exports.styleLoaders = function (options) {
   }
   return output
 }
+
+exports.assetsLibPath = function (_path) {
+    return path.posix.join(config.lib.assetsSubDirectory, _path)
+}

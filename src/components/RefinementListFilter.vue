@@ -1,28 +1,30 @@
 <template>
     <div class="is-component is-refinement-list">
-        <slot name="title">
+        <slot name="title" :title="title">
             <h3 class="is-refinement-menu-title">{{title}}</h3>
         </slot>
-
-        <div v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
-            <input
-                type="checkbox"
-                :name="item.key"
-                :value="item.key"
-                v-model="checkedItems"
-                @change="clickOnItem()">
-            <slot name="label" v-bind:item="item"
-                  v-bind:displayCount="displayCount"
-                  v-bind:clickOnItem="clickOnItem"
-                  v-bind:clickOnLabel="clickOnLabel">
-                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-                <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-            </slot>
-        </div>
-
-        <slot name="footer">
-            <a href="#"  v-on:click='updateAggsSize()'>view more</a>
+        <slot name="uncheck_all" :uncheckAll="uncheckAll"></slot> 
+        <input v-if="search" type="text" placeholder="search..." v-model="test_">
+        <slot name="label" :items="items"
+        :displayCount="displayCount"
+        :checkedItems="checkedItems"
+        :clickOnItem="clickOnItem"
+        :clickOnLabel="clickOnLabel" :ref="input">
+            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
+                    <input
+                    type="checkbox"
+                    :name="item.key"
+                    :value="item.key"
+                    v-model="checkedItems"
+                    @change="clickOnItem(checkedItems)">
+                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+            </div>
         </slot>
+        <slot name="viewmore">
+            <a href="#" :style="{ display : viewMoreDisplay}"  v-on:click='updateAggsSize()'>view more</a>
+        </slot>        
+        <slot name="footer"></slot>
     </div>
 </template>
 
@@ -79,6 +81,15 @@
             operator : {
                 type : String,
                 default : 'AND'
+            },
+            
+            type : {
+                type : String,
+                default : 'checkbox_list'
+            },
+            search : {
+                type: Boolean,
+                default : false
             }
         },
 
@@ -89,16 +100,38 @@
                 localAggregations : [], // lcoal aggregation instructions
                 localInstructions : [], // local request
                 aggsSize : this.size,
+                test_ : null,
+                aggsCardinality : null,
+                viewMoreDisplay : "inherit"
             };
         },
 
         computed : {
             items : function() {
-                return this.aggregations[this.field];
+                if(this.test_ !== null && this.test_.length !== 0){
+                    let aggs = this.aggregations[this.field];
+                    return aggs.filter(e => (e.key.toString().startsWith(this.test_)));
+                } else {
+                    return this.aggregations[this.field];
+                }
             }
         },
 
         methods : {
+            uncheckAll : function () {
+                
+                Array.from( document.querySelectorAll('input[name="'+ this.field +'"]:checked'), input => input.checked = false );
+
+                this.removeInstructions();
+                    // Update the request
+                this.mount();
+
+                // Execute request
+                this.fetch(this);
+
+                this.checkedItems = null;
+            },
+
             updateLabels : function(value) {
                 this.setAggregations(this.field, value, this.orderKey, this.orderDirection);
             },
@@ -115,36 +148,53 @@
             },
 
             // Check or uncheck an item for the input corresponding to the name
-            clickOnLabel : function(name) {
-                // Find input check with the right name
-                let _tag = this.$refs.input.map(div => {
-                    return div.getElementsByTagName("input")[0];
-                }).filter((input) => {
-                    return input.getAttribute("name") === name;
-                });
-
-                // Trigger click event on checkbox
-                if (_tag[0])
-                    _tag[0].click();
+            clickOnLabel : function(key) {
+                console.log(document.querySelector('.is-refinement-list > input[value="' + key + '"]'));
+                document.querySelector('.is-refinement-list > input[value="' + key + '"]').click();
             },
 
             // Triggered when user select or unselect an item
-            clickOnItem : function() {
+            clickOnItem : function(checkedItems) {
+
+                /// For the dropdownlist
+                if(checkedItems === '' || checkedItems[0] === "" || checkedItems.length === 0){
+                    this.checkedItems = checkedItems;
+
+                    this.removeInstructions();
+                        // Update the request
+                    this.mount();
+
+                    // Execute request
+                    this.fetch(this);
+                    return;
+                }
+
+                this.checkedItems = checkedItems;
+
                 // Reset all deep instructions of local request
                 this.removeInstructions();
 
                 // Read all checked items and create appropriate instruction for each of them
                 // OR operator case
+                var _instruction = undefined;
                 if (this.operator.toLowerCase() === 'or') {
-                    let _instruction = {
-                        fun : 'filter',
-                        args : ['bool', arg => {
-                            this.checkedItems.forEach(item => {
-                                arg.orFilter('term', this.field, item);
-                            });
-                            return arg;
-                        }]
-                    };
+                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
+                        _instruction = {
+                            fun : 'orFilter',
+                            args : ['term', this.field, checkedItems],
+                        };
+                    } else {
+                        _instruction = {
+                            fun : 'filter',
+                            args : ['bool', arg => {
+                                this.checkedItems.forEach(item => {
+                                    arg.orFilter('term', this.field, item);
+                                });
+                                return arg;
+                            }]
+                        };
+                    }
+
 
                     this.localInstructions.push(_instruction);
                     this.addInstruction(_instruction);
@@ -152,18 +202,29 @@
 
                 // AND operator case
                 else {
-
-                    this.checkedItems.forEach(item => {
-                        let _instruction = {
+                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
+                        _instruction = {
                             fun : 'andFilter',
-                            args : ['term', this.field, item]
+                            args : ['term', this.field, checkedItems],
                         };
 
                         this.localInstructions.push(_instruction);
                         this.addInstruction(_instruction);
-                    });
-                }
+                    } else {
+                        this.checkedItems.forEach(item => {
+                            _instruction = {
+                                fun : 'andFilter',
+                                args : ['term', this.field, item]
+                            };
 
+                            this.localInstructions.push(_instruction);
+                            this.addInstruction(_instruction);
+                            
+                        });
+                    }
+                    
+
+                }
                 // Update the request
                 this.mount();
 
@@ -173,17 +234,24 @@
                 // Debugg
                 //console.log("[RefinementListFilter:clickOnItem] Instructions : ", this.localInstructions);
                 //console.log('[RefinementListFilter:clickOnItem] Items : ', this.items);
+
             },
+
             updateAggsSize : function () {
-                this.aggsSize += this.sizeMore;
+                if(this.aggsSize < this.aggsCardinality){
+                    this.aggsSize += this.sizeMore;
 
-                //let _aggsRequest = this.createRequestForAggs(this.field, this.aggsSize, this.orderKey, this.orderDirection);
+                    this.addAggregationInstructions();
 
-                this.addAggregationInstructions();
-
-                this.mount();
-                this.fetch();
+                    this.mount();
+                    this.fetch();
+                    if(this.aggsCardinality < this.aggsSize)
+                        this.viewMoreDisplay = "none";
+                } else {
+                    this.viewMoreDisplay = "none";
+                }
             },
+
             // Reset refinementlistfilter items
             reset : function() {
                 this.checkedItems = [];
@@ -205,13 +273,19 @@
             // Get respective items
             this.header.client.search(_aggsRequest).then(response => {
                 let value = response.aggregations['agg_terms_' + this.field].buckets;
+                // get count of aggs distinct values
+                this.aggsCardinality = response.aggregations['agg_cardinality_' + this.field ].value;
+
+                if(this.aggsCardinality < this.aggsSize ){
+                    this.viewMoreDisplay = "none";
+                }
 
                 // Create aggregations items
                 this.updateLabels(value);
             });
 
             this.bus.$on('updateAggs', e => {
-                //console.log(e)
+                
                 let isMe = (e.base !== undefined) ? this.CID !== e.base : true;
                 if(this.operator.toLowerCase() !== 'or' || isMe) {
                     let aggs = e.aggs;
@@ -244,3 +318,17 @@
         }
     };
 </script>
+<style>
+    .is-component.is-refinement-list {
+        width : 90%;
+        margin : 20px auto;
+        padding : 15px;
+        font-size : 1.25em;
+        box-sizing : border-box;
+    }
+
+    .is-item.is-refinement-list {
+        display : inline-block;
+        width : 100%;
+    }
+</style>
