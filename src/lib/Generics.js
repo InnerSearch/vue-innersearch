@@ -212,8 +212,6 @@ export default {
 		*/
 		fetch : function(self = undefined) {
 			console.log("[Generics:Fetch] Request : ", this.request);
-			console.log("[Generics:Fetch] Store : ", Store);
-
 			// Reset debounce events
 			this.resetDebounce();
 
@@ -224,7 +222,7 @@ export default {
 				this.clearItems();
 
 				var hits = resp.hits.hits;
-				console.log("[Generics:Fetch] Response : ", resp);
+				//console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
 				/***

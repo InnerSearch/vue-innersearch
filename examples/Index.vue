@@ -39,9 +39,7 @@
                                         <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
                                             <option selected="selected"></option>
                                             <option v-for="(item, index) in items" :value="item.key">
-
                                                     <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-                                                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
                                             </option>
                                         </select>
                                     </template>

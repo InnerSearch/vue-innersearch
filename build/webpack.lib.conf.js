@@ -23,6 +23,20 @@ var webpackConfig = merge(baseWebpackConfig, {
       extract: true
     })
   },
+  externals: {
+    vue: {
+      commonjs: "vue",
+      commonjs2: "vue",
+      amd: "vue",
+      root: "Vue" // indicates global variable
+    },
+    vuex : {
+      commonjs: "vuex",
+      commonjs2: "vuex",
+      amd: "vuex",
+      root: "Vuex" // indicates global variable
+    }
+  },
   devtool: config.lib.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.lib.assetsRoot,
