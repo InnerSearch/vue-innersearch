@@ -29,7 +29,7 @@ rm(path.join(config.lib.assetsRoot, config.lib.assetsSubDirectory), err => {
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
       '  Tip: Now you are ready to publish your library to npm.\n' +
-      '  Then users can import it as an es6 module: import innersearchBuild from \'innersearch-build\'\n'
+      '  Then users can import it as an es6 module: import InnerSearch from from \'vue-innersearch\'\n'
     ))
   })
 })
