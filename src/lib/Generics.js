@@ -151,7 +151,6 @@ export default {
 			Add item into the Store
 		*/
 		addItem : (item) => {
-			console.log("AddItem");
 			Store.commit("Hits/addItem", item);
 		},
 

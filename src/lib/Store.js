@@ -173,7 +173,6 @@ export default new Vuex.Store({
 
             getters : {
                 getItems : state => {
-                    console.log("Store.getItems",state);
                     return state.items;
                 },
 

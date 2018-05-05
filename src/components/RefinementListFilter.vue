@@ -149,7 +149,6 @@
 
             // Check or uncheck an item for the input corresponding to the name
             clickOnLabel : function(key) {
-                console.log(document.querySelector('.is-refinement-list > input[value="' + key + '"]'));
                 document.querySelector('.is-refinement-list > input[value="' + key + '"]').click();
             },
 
