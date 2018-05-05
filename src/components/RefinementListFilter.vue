@@ -318,3 +318,17 @@
         }
     };
 </script>
+<style>
+    .is-component.is-refinement-list {
+        width : 90%;
+        margin : 20px auto;
+        padding : 15px;
+        font-size : 1.25em;
+        box-sizing : border-box;
+    }
+
+    .is-item.is-refinement-list {
+        display : inline-block;
+        width : 100%;
+    }
+</style>

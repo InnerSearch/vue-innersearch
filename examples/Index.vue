@@ -31,8 +31,8 @@
 
                     <hr class='is-line' />
 
-                    <div class="columns">
-                        <div class="column is-one-fifth">
+                    <div class="is-columns">
+                        <div class="is-column is-one-fifth">
                             <div>
                                 <refinement-list-filter :field="'state'" :search="true" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="AND">
                                     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
@@ -70,7 +70,7 @@
                                 <refinement-list-filter :field="'gender'" :search="true" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
                             </div>
                         </div>
-                        <div class="column">
+                        <div class="is-column">
                             <div>
                                 <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
@@ -110,7 +110,7 @@
                                     </template>
                                 </hits>
 
-                                <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+                                <paginate :previousText="'&#x2B9C; Previous page'" :nextText="'Next page &#x2B9E;'" :size="10"></paginate>
                             </div>
                          </div>
                     </div>
@@ -121,7 +121,3 @@
 
     export default {};
 </script>
-
-<style>
-    @import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css';
-</style>
