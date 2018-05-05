@@ -39,7 +39,7 @@ describe('Test RLF with Searchbox' , () => {
 });
 
 
-describe.only('Test Multiple RLF', () => {
+describe('Test Multiple RLF 5', () => {
   beforeEach(function() {
     cy.visit(_URL3);
     cy.server();
@@ -56,6 +56,15 @@ describe.only('Test Multiple RLF', () => {
       cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
     });
 
+  });
+
+});
+
+describe('Test Multiple RLF 4', () => {
+  beforeEach(function() {
+    cy.visit(_URL3);
+    cy.server();
+    cy.route('POST', _ES_URL).as('ES');
   });
 
   it('non regression test for issue #4', () => {
