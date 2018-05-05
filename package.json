@@ -21,17 +21,11 @@
     "debounce": "^1.1.0",
     "elasticsearch": "^13.3.1",
     "elasticsearch-browser": "^13.3.1",
-<<<<<<< HEAD
-    "vue": "^2.5.16",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
-=======
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "peerDependencies": {
     "vue": "^2.5.2"
->>>>>>> 9bd10a60514d747250401fff89fed39d1001c335
   },
   "devDependencies": {
     "autoprefixer": "^7.2.6",
