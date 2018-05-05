@@ -1,12 +1,12 @@
-import Generics from './src/lib/Generics';
-import Searchbox from './src/components/SearchBox';
-import SearchDatalist from './src/components/SearchDatalist';
-import RefinementListFilter from './src/components/RefinementListFilter';
-import Paginate from './src/components/Paginate';
-import SearchButton from './src/components/SearchButton';
-import ResetButton from './src/components/ResetButton';
-import Hits from './src/components/Hits';
-import NumericListFilter from "./src/components/NumericListFilter"
+import Generics from './lib/Generics';
+import Searchbox from './components/SearchBox';
+import SearchDatalist from './components/SearchDatalist';
+import RefinementListFilter from './components/RefinementListFilter';
+import Paginate from './components/Paginate';
+import SearchButton from './components/SearchButton';
+import ResetButton from './components/ResetButton';
+import Hits from './components/Hits';
+import NumericListFilter from "./components/NumericListFilter"
 
 const InnerSearch = {
     Searchbox,
