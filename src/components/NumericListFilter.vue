@@ -71,25 +71,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-    .is-nlf-inputs {
-        margin : 0;
-        display: flex;
-    }
-
-    .is-nlf {
-        margin: 20px auto;
-        width: 90%;
-    }
-
-    .is-range{
-        width: 50%;
-
-    }
-    .is-nlf-title {
-        margin-bottom: 5px;
-    }
-
-</style>
-
