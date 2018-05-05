@@ -39,27 +39,12 @@ describe('Test RLF with Searchbox' , () => {
 });
 
 
-describe('Test Multiple RLF', () => {
+describe.only('Test Multiple RLF', () => {
   beforeEach(function() {
     cy.visit(_URL3);
     cy.server();
     cy.route('POST', _ES_URL).as('ES');
   });
-
-
-
-  it('non regression test for issue #4', () => {
-    cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
-    cy.wait('@ES').get(':nth-child(14) > input').click(); // Check CA State
-    cy.wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Uncheck F gender
-    cy.wait('@ES').wait('@ES').wait('@ES').get('.state_rlf > .is-component > .is-item > label').then($e => {
-        let regex = new RegExp(/^[A-Za-z]*\s\(\s[1-9]+[0-9]*\s\)$/);
-        for(let i=0;i < $e.length; i++){
-          expect(regex.test($e.get(i).innerHTML)).to.be.true;
-        }
-    });
-  });
-
 
   it('non regression test for issue #5', () => {
     cy.wait('@ES').wait('@ES').get(':nth-child(14) > input').click(); // Check CA State
@@ -72,6 +57,21 @@ describe('Test Multiple RLF', () => {
     });
 
   });
+
+  it('non regression test for issue #4', () => {
+    cy.wait('@ES').wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
+    cy.wait('@ES').get(':nth-child(14) > input').click(); // Check CA State
+    cy.wait('@ES').get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Uncheck F gender
+    cy.wait('@ES').wait('@ES').get('.state_rlf > .is-component > .is-item > label').then($e => {
+        let regex = new RegExp(/^[A-Za-z]*\s\(\s[1-9]+[0-9]*\s\)$/);
+        for(let i=0;i < $e.length; i++){
+          expect(regex.test($e.get(i).innerHTML)).to.be.true;
+        }
+    });
+  });
+
+
+
 
 });
 
