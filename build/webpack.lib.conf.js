@@ -26,7 +26,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     path: config.lib.assetsRoot,
     filename: utils.assetsLibPath('[name].min.js'),
     library: 'innerSearch',
-    libraryTarget: 'var'
+    libraryTarget: 'umd'
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
