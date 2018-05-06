@@ -51,6 +51,17 @@ See full [Documentation](https://innersearch.github.io/vue-innersearch)
 $ npm install --save vue-innersearch
 ```
 
+### Using as `<script>` tag
+vue-innersearch needs Vue and Vuex to work
+
+````html
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js"></script>
+  <script src="https://unpkg.com/vue-innersearch@0.0.9/vue-innersearch.min.js"></script>
+````
+
+Have a look at how to use the standalone UMD build in our [Jsbin example](http://jsbin.com/jazezahevi/edit?html,output)
+
 ## Quick Intro
 
 [Live demo](http://jsbin.com/jazezahevi/edit?html,output)
