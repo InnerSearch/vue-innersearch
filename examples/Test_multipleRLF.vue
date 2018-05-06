@@ -9,7 +9,7 @@
   */
 
   import Vue from 'vue';
-  import InnerSearch from "../innerSearch.js";
+  import InnerSearch from "../src/innerSearch.js";
   import '../src/style.css';
 
   Vue.use(InnerSearch);
@@ -33,7 +33,7 @@
 
                     <div>
                       <div class="state_rlf">
-                       <refinement-list-filter :field="'state'" :title="'State : '" :dynamic="false" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
+                       <refinement-list-filter :field="'state'" :title="'State : '" orderKey="_count" orderDirection="asc" operator="OR"></refinement-list-filter>
                       </div>
                       <div class="gender_rlf">
                       <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>

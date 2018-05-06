@@ -1,11 +1,13 @@
 <template>
-    <div>
-        <slot name="header"></slot>
-        <div class="is-component is-nlf">
-            <input class="is-range is-field" v-model="from" type="text" placeholder="from" @change="performRequest()" />
-            <input class="is-range is-field"  v-model="to" type="text" placeholder="to" @change="performRequest()" />
+    <section>
+        <div class="is-nlf">
+            <slot name="header"></slot>
+                <div class="is-nlf-inputs">
+                    <input class="is-range is-field" v-model="from" type="text" placeholder="from" @change="performRequest()" />
+                    <input class="is-range is-field"  v-model="to" type="text" placeholder="to" @change="performRequest()" />
+                </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -38,7 +40,8 @@
         },
         methods : {
             performRequest : function () {
-                if(this.from !== null && this.to !== null){
+                let regex = new RegExp(/^[0-9][0-9]*$/);
+                if(regex.test(this.from) && regex.test(this.to) ){
                     this.removeInstructions();
 
                     let _instruction = {
@@ -68,26 +71,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-    .nlf{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .is-nlf {
-        margin: 20px auto;
-        display: flex;
-        width: 90%;
-    }
-
-    .is-range{
-        width: 50%;
-
-    }
-
-</style>
-

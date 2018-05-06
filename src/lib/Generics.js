@@ -212,7 +212,6 @@ export default {
 		*/
 		fetch : function(self = undefined) {
 			console.log("[Generics:Fetch] Request : ", this.request);
-
 			// Reset debounce events
 			this.resetDebounce();
 
@@ -320,7 +319,7 @@ export default {
 						[orderKey] : orderDirection
 					},
 					size : size
-				})
+				}).aggregation("cardinality",field)
 				.build();
 
 			return _request;

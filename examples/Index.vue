@@ -9,7 +9,7 @@
     */
 
     import Vue from 'vue';
-    import InnerSearch from "../innerSearch.js";
+    import InnerSearch from "../src/innerSearch.js";
     import '../src/style.css';
 
     Vue.use(InnerSearch);
@@ -31,14 +31,44 @@
 
                     <hr class='is-line' />
 
-                    <div class="columns">
-                        <div class="column is-one-fifth">
+                    <div class="is-columns">
+                        <div class="is-column is-one-fifth">
                             <div>
-                                <refinement-list-filter :field="'state'" :title="'State : '" :size="10" :dynamic="true" orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
-                                <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"></refinement-list-filter>
+                                <refinement-list-filter :field="'state'" :search="true" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="AND">
+                                    <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
+                                        <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
+                                            <option selected="selected"></option>
+                                            <option v-for="(item, index) in items" :value="item.key">
+                                                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                                            </option>
+                                        </select>
+                                    </template>
+                                    <template slot="viewmore"></template>
+                                </refinement-list-filter>
+                                <refinement-list-filter :field="'age'" :search="true" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
+                                    <template slot="title" slot-scope="{ title }">
+                                        <h3 class="is-refinement-menu-title" style="width: fit-content;display: inline-block;margin-right: 120px;">{{title}}</h3>
+                                    </template>
+                                    <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
+                                        <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list">
+                                            <input
+                                            type="radio"
+                                            name="age"
+                                            :value="item.key"
+                                            v-model="checkedItems"
+                                            @change="clickOnItem(checkedItems)">
+                                            <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} years old ( {{ item.doc_count }} )</label>
+                                            <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+                                        </div>
+                                    </template>
+                                    <template slot="uncheck_all" slot-scope="{ uncheckAll }">
+                                        <a href="#" v-on:click='uncheckAll()' style="font-size:0.8em">Clear</a>
+                                    </template>
+                                </refinement-list-filter>
+                                <refinement-list-filter :field="'gender'" :search="true" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
                             </div>
                         </div>
-                        <div class="column">
+                        <div class="is-column">
                             <div>
                                 <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
@@ -58,7 +88,7 @@
                                 </search-datalist>
                                 <numeric-list-filter :field="'balance'">
                                     <template slot="header">
-                                        <p>Balance : </p>
+                                        <h3 class="is-nlf-title">Balance : </h3>
                                     </template>
                                 </numeric-list-filter>
                                 <div style="margin: 20px auto;width: 90%">
@@ -78,7 +108,7 @@
                                     </template>
                                 </hits>
 
-                                <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10"></paginate>
+                                <paginate :previousText="'&#x2B9C; Previous page'" :nextText="'Next page &#x2B9E;'" :size="10"></paginate>
                             </div>
                          </div>
                     </div>
@@ -89,7 +119,3 @@
 
     export default {};
 </script>
-
-<style>
-    @import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css';
-</style>

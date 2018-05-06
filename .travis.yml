@@ -1,5 +1,5 @@
 install:
-  - npm install
+  - npm i -g npm && npm install
 
 before_script:
   ## runs the 'start' script which

@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     modules : {
         /*
-            Elasticsearch header Store
+                Elasticsearch header Store
                 For API ES object
                 For Request
         */
@@ -71,61 +71,8 @@ export default new Vuex.Store({
                     });
                 },
 
-                setAggregations (state, { name, value, isDynamic, orderKey, orderDirection }) {
-                    if (isDynamic)
-                        Vue.set(state.aggregations, name, value);
-                    else {
-                      let _aggs = state.aggregations[name];
-
-                        // Initialization : the agg object doesn't still exist
-                        if (_aggs === undefined)
-                            _aggs = value;
-
-                        // Update : the agg object still exists, we just update it
-                        else {
-                            _aggs.forEach(agg => {
-                                let _found = value.filter(obj => {
-                                    return obj.key === agg.key;
-                                })[0];
-
-                                if (_found === undefined){
-                                  /***
-                                   * Fix for issue #4
-                                   * just command the line under
-                                   * we dont update doc_count to 0
-                                   */
-                                  //agg.doc_count = 0;
-                                }
-
-                                else
-                                    agg.doc_count = _found.doc_count;
-                            });
-
-                            // Wtf are you doing here ???
-
-                            //console.log(_aggs);
-                            // Sorting aggs in terms of orderKey and orderDirection
-/*                             _aggs.sort((e,e2) => {
-                              if(orderDirection==="asc"){
-                                if(orderKey==="_term"){
-                                  return e.key - e2.key;
-                                }else {
-                                  return e.doc_count - e2.doc_count;
-                                }
-                              }else {
-                                if(orderKey==="_term"){
-                                  return e2.key - e.key;
-                                } else {
-                                  return e2.doc_count - e.doc_count;
-                                }
-                              }
-                            });
-                            console.log(_aggs); */
-                        }
-
-                        // Save the new agg object
-                        Vue.set(state.aggregations, name, _aggs);
-                    }
+                setAggregations (state, { name, value, orderKey, orderDirection }) {
+                    Vue.set(state.aggregations, name, value);
                 },
 
                 addDebounce(state, value) {
@@ -142,7 +89,7 @@ export default new Vuex.Store({
                     else {
                         for (let key in state.debounce) {
                             if (!state.debounce.hasOwnProperty(key)) continue;
-                        
+
                             let _obj = state.debounce[key];
                             _obj.forEach(debounce => {
                                 debounce.clear();

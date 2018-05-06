@@ -25,30 +25,33 @@
             template : `
                 <section>
 
-                <h1 class='is-title'>Test - RefinementListFilter with hits</h1>
+                <h1 class='is-title'>Test - RefinementListFilter & Searchbox with hits</h1>
 
                 <hr class='is-line' />
                 <div class="columns">
                         <div class="column is-one-fifth">
-                        <refinement-list-filter :field="'state'" :size="23" title="State : " operator="OR" :displayCount="true" orderDirection="desc" orderKey="_count"  >
-                            <template slot="title">
-                            <h2>US State : </h2>
-                            </template>
-                            <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
-                                <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" ref="input">
-                                        <input
-                                        type="checkbox"
-                                        :name="item.key"
-                                        :value="item.key"
-                                        v-model="checkedItems"
-                                        @change="clickOnItem(checkedItems)">
-                                        <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} : {{ item.doc_count }} </label>
-                                        <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
-                                </div>
-                            </template>
-                        </refinement-list-filter>
+                        <div>
+                          <refinement-list-filter :field="'state'" :size="20" title="State : " operator="AND" :displayCount="true" orderKey="_count" orderDirection="desc" >
+                          <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
+                            <div  v-for="(item, index) in items" :key="index" class="is-item is-refinement-list" >
+                                    <input
+                                    type="checkbox"
+                                    :name="item.key"
+                                    :value="item.key"
+                                    v-model="checkedItems"
+                                    @change="clickOnItem(checkedItems)">
+                                    <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                                    <label v-else :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }}</label>
+                            </div>
+                          </template>
+                          </refinement-list-filter>
+                          <div class="gender_rlf">
+                            <refinement-list-filter :field="'gender'" :size="100" :title="'Gender : '" :displayCount="true" operator="OR"  orderKey="_count" orderDirection="desc"></refinement-list-filter>
+                          </div>
+                       </div>
                         </div>
                         <div class="column">
+                            <searchbox :autofocus="true" :realtime="false" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
                             <hits>
                                 <template slot="hits" slot-scope="{ hits }">
                                     <div class="is-score is-hits">
@@ -61,9 +64,17 @@
                                     </div>
                                 </template>
                             </hits>
-                            <paginate :previousText="'Previous page'" :nextText="'Next page'" :size="10" :unpiled="5"></paginate>
+                            <div style="margin: 20px auto;width: 90%">
+                                <search-button></search-button>
+                                <reset-button></reset-button>
+                            </div>
                         </div>
                 </div>
+
+
+
+
+
                 </section>
             `
         });

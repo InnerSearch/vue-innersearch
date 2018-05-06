@@ -36,7 +36,7 @@
     import { Component } from '../lib/Enums.js';
 
     export default {
-        name : 'datalist',
+        name : 'search-datalist',
         mixins : [generics],
 
         props : {

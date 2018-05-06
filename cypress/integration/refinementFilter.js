@@ -1,17 +1,36 @@
 const _URL = 'http://localhost:4000/#/test_refinementListFilter',
-      _URL2 = 'http://localhost:4000/#/test_refinementListFilter2',
-      _URL3 = 'http://localhost:4000/#/test_multipleRLF',
-      _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
-      _HITS = '.is-score.is-hits',
-      _ITEMS = 'div.hit',
-      _TITLE = '.is-refinement-menu-title',
+    _URL2 = 'http://localhost:4000/#/test_refinementListFilter2',
+    _URL3 = 'http://localhost:4000/#/test_multipleRLF',
+    _URL4 = 'http://localhost:4000/#/test_RLF_With_Searchbox',
+    _SEARCHBOX = '.is-field.is-searchbox',
+    _REFINEMENT_LIST_FILTER = '.is-component.is-refinement-list',
+    _HITS = '.is-score.is-hits',
+    _AGGS = '.is-item.is-refinement-list',
+    _ITEMS = 'div.hit',
+    _TITLE = '.is-refinement-menu-title',
 
-      _FIRSTNAME = '.firstname',
-      _LASTNAME = '.lastname',
-      _STATE = '.state',
-      _GENDER = '.gender';
+    _FIRSTNAME = '.firstname',
+    _LASTNAME = '.lastname',
+    _STATE = '.state',
+    _GENDER = '.gender';
 
 import refinementFilterList_sample_1 from '../fixtures/refinementFilterList_1.json';
+
+describe('Test RLF with Searchbox' , () => {
+    beforeEach(function() {
+        cy.visit(_URL4);
+        cy.server();
+    });
+    it('2nd non regression test for issue #4' , () => {
+        cy.get(_SEARCHBOX).type('fred');
+        cy.get('.is-component.is-search-button > .is-button').click();
+        cy.wait(1500).get('.gender_rlf > .is-component > .is-item > label').then ( $e => {
+            expect($e.get(0).innerHTML).to.equal("f ( 1 )");
+        });
+
+    });
+});
+
 
 describe('Test Multiple RLF', () => {
   beforeEach(function() {
@@ -20,9 +39,7 @@ describe('Test Multiple RLF', () => {
   });
 
 
-  /***
-   * https://github.com/InnerSearch/InnerSearch.js/issues/4
-   */
+
   it('non regression test for issue #4', () => {
     cy.get('.gender_rlf > .is-component > :nth-child(2) > input').click(); // Check F gender
     cy.get(':nth-child(14) > input').click(); // Check CA State
@@ -34,21 +51,23 @@ describe('Test Multiple RLF', () => {
         }
     });
   });
-  /***
-   * https://github.com/InnerSearch/InnerSearch.js/issues/5
-   */
+
+
   it('non regression test for issue #5', () => {
     cy.get(':nth-child(14) > input').click(); // Check CA State
     cy.get('.gender_rlf > .is-component > :nth-child(3) > input').click(); // Check M gender
-    cy.wait(500).get(':nth-child(9) > label').then(e => {
-      expect(e.get(0).innerHTML).to.contains('11');
-      cy.get(':nth-child(9) > input').click(); // Check CA State
+    let ctLabel = ':nth-child(28) > label';
+    cy.wait(500).get(ctLabel).then(e => {
+      expect(e.get(0).innerHTML).to.contains('11'); // CT State contains 11
+      cy.get(ctLabel).click(); // Check CT State
       cy.wait(1000).get('.gender_rlf > .is-component > :nth-child(2) > label').then(e => { expect(e.get(0).innerHTML).to.contains('15')});
     });
 
   });
 
 });
+
+
 
 describe('Test RefinementListFilter', () => {
   beforeEach(function() {
@@ -130,7 +149,7 @@ describe('Test RefinementListFilter2', () => {
 
   it('label slot should replace the default display using template', function () {
     cy.get(_REFINEMENT_LIST_FILTER + ' label[for="'+valCheck.name+'"]').contains('tx : 30');
+
   });
+
 });
-
-
