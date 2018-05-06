@@ -13,7 +13,7 @@ var env = config.lib.env
 
 baseWebpackConfig.entry = {
   'vue-innersearch': './src/innerSearch.js',
-  'theme' : './src/style.css'
+  'default-innersearch-theme' : './src/style.css'
 }
 
 var webpackConfig = merge(baseWebpackConfig, {
@@ -96,5 +96,4 @@ if (config.lib.bundleAnalyzerReport) {
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-console.log(webpackConfig);
 module.exports = webpackConfig
