@@ -11,16 +11,16 @@
         </div>
         <div class='is-component is-search-datalist'>
             <div class='is-icon is-search-datalist' v-on:click='focus()'></div>
-            <input class='is-field is-search-datalist' type='text' ref='input' v-model='entry' @keydown.down='next()' @keydown.up='previous()' @keydown.esc='hideSuggestions()' @keydown.enter='enter()' />
+            <input class='is-field is-search-datalist' type='text' ref='input' v-model='entry' @click="showForcedSuggestions()" @focus='showStrictSuggestions()' @blur='hideSuggestions()' @keydown.down='next()' @keydown.up='previous()' @keydown.esc='hideSuggestions()' @keydown.enter='enter()' />
         </div>
-        <div class='is-search-datalist-suggestions' v-if='showSuggestions'>
+        <div class='is-search-datalist-suggestions' v-if='canShowSuggestions'>
             <ul ref="suggestionBox">
                 <li class='noresult' v-show='suggestions.length === 0'>
                     <slot name='nosuggestion' v-bind:value='entry'>
                         No result for "{{ entry }}"
                     </slot>
                 </li>
-                <li v-for='(suggestion, index) in suggestions' :key='index' @click='add(index)' @mouseenter='select(index)' @mouseleave='unselect()' ref='suggestions'>
+                <li v-for='(suggestion, index) in suggestions' :key='index' @mousedown='add(index)' @mouseenter='select(index)' @mouseleave='unselect()' ref='suggestions'>
                     <slot name='suggestions' v-bind:suggestion='suggestion'>
                         {{ suggestion }}
                     </slot>
@@ -109,10 +109,10 @@
                 propertyFun : undefined, // function applied for propertie(s) of an item
                 suggestionFun : undefined, // function applied for suggestion search
                 localInstructions : [], // local request
-                showSuggestions : false, // show suggestions list
+                canShowSuggestions : false, // show suggestions list
                 selections : [], // selected items
                 suggestions : [], // suggestions list
-                highlightedSuggestion : undefined // current selected suggestion
+                highlightedSuggestion : undefined, // current selected suggestion
             };
         },
 
@@ -191,8 +191,29 @@
                     this.suggestions = response.hits.hits;
 
                     // Show the box
-                    this.showSuggestions = true;
+                    this.showStrictSuggestions();
                 });
+            },
+
+            // Show the autosuggestion box
+            showForcedSuggestions : function() {
+                // Update suggestions
+                let _suggsRequest = this.createRequestForSuggs(this.entry, this.mutableSuggestion, this.selections, this.suggestionFun, this.size);
+                this.header.client.search(_suggsRequest).then(response => {
+                    // Reset suggestions
+                    this.suggestions = [];
+
+                    this.suggestions = response.hits.hits;
+
+                    // Show the box
+                    this.canShowSuggestions = true;
+                });
+            },
+
+            // Show the autosuggestion box when the entry is not empty
+            showStrictSuggestions : function() {
+                if (this.entry.trim() !== '')
+                    this.canShowSuggestions = true;
             },
 
             // Hide the autosuggestion box
@@ -200,7 +221,7 @@
                 // Stop any debounced request only for searchdatalist components
                 this.resetDebounce('searchdatalist');
 
-                this.showSuggestions = false;
+                this.canShowSuggestions = false;
                 this.unselect();
             },
 
@@ -261,7 +282,7 @@
 
             // When 'enter' is pushed, add the highlighted item to the selections array
             enter : function() {
-                if (this.showSuggestions) {
+                if (this.canShowSuggestions) {
                     // If an item is selected
                     let _index = this.highlightedSuggestion;
                     if (_index !== undefined && this.$refs.suggestions[_index] !== undefined)
@@ -273,9 +294,12 @@
             
             // Scroll function
             selectAndScroll : function(index) {
-                let _itemHeight = this.$refs.suggestions[index].offsetHeight;
-                this.select(index);
-                this.$refs.suggestionBox.scrollTo(0, index * _itemHeight);
+                let _refSugg = this.$refs.suggestions[index];
+                if (_refSugg !== undefined) {
+                   let  _itemHeight = _refSugg.offsetHeight;
+                    this.select(index);
+                    this.$refs.suggestionBox.scrollTo(0, index * _itemHeight);
+                }
             },
 
             // Reset items and input
