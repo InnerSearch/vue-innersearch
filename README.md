@@ -1,3 +1,5 @@
+[![Banner](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/develop/docs/images/banner.png)]()
+
 # InnerSearch : Vue.js components for ElasticSearch
 [![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
 [![npm](https://img.shields.io/npm/dm/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
@@ -5,6 +7,7 @@
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FInnerSearch%2Fvue-innersearch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FInnerSearch%2Fvue-innersearch?ref=badge_shield)
 [![Build Status](https://travis-ci.org/InnerSearch/vue-innersearch.svg?branch=master)](https://travis-ci.org/InnerSearch/vue-innersearch)
 [![npm](https://img.shields.io/npm/l/vue-innersearch.svg)]()
+
 
 ## What is InnerSearch ?
 An Open Source project created to help developers working with vue.js and Elastic, give them the possibility to create search UIs within the hour.
@@ -64,7 +67,7 @@ Have a look at how to use the standalone UMD build in our [Jsbin example](http:/
 
 ## Quick Intro
 
-[Live demo](http://jsbin.com/jazezahevi/edit?html,output)
+[Live demo](http://vue-innersearch.surge.sh/)
 
 
 
