@@ -116,9 +116,9 @@
 
 			fetchPagination : function() {
 				// Disabled pagination reset for this fetch() call, and then reactive the listener
-				this.bus.$off(this.CID);
+				this.bus.$off('resetPagination');
 				this.fetch();
-				this.bus.$on(this.CID, this.resetPagination);
+				this.bus.$on('resetPagination', this.resetPagination);
 			},
 
 			clickOnPrevious : function() {
@@ -163,7 +163,7 @@
             this.CID = this.addComponent(Component.PAGINATE, this);
 
 			// Listening on self-component emissions
-			this.bus.$on(this.CID, this.resetPagination);
+			this.bus.$on('resetPagination', this.resetPagination);
 
 			this.mount();
 			this.body.from = this.nbPage;

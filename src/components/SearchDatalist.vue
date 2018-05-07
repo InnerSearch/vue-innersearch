@@ -113,6 +113,10 @@
                 selections : [], // selected items
                 suggestions : [], // suggestions list
                 highlightedSuggestion : undefined, // current selected suggestion
+                authorization : {
+                    mount : true,
+                    fetch : true
+                }
             };
         },
 
@@ -163,14 +167,20 @@
                 }
 
                 // Update the request
-                this.mount();
+                if (this.authorization.mount)
+                    this.mount();
+                else
+                    this.authorization.mount = !this.authorization.mount; // consume the exception
             }
         },
 
         methods : {
             // Execute the mixins Fetch method to update hits
             executeSearch : function() {
-                this.fetch();
+                if (this.authorization.fetch)
+                    this.fetch();
+                else
+                    this.authorization.fetch = !this.authorization.fetch; // consume the exception
             },
 
             // Focus on input
@@ -302,8 +312,15 @@
                 }
             },
 
+            // Set authorizations of mount and fetch methods to false (for reset behavior)
+            setAuthorizations : function() {
+                this.authorization.mount = false;
+                this.authorization.fetch = false;
+            },
+
             // Reset items and input
             reset : function() {
+                this.setAuthorizations();
                 this.entry = '';
                 this.selections = [];
             }
@@ -334,7 +351,7 @@
             
             // Debounce for suggestion list update
             let _debounce = debounce(this.updateItems, this.timeout); // Debounce method with the timeout value on the current SeachOn function
-            this.addDebounce('searchdatalist', _debounce); // Add debounce event to listed debounce into the Store
+            this.addDebounce(Component.SEARCHDATALIST, _debounce); // Add debounce event to listed debounce into the Store
             this.updateItems = _debounce; // Apply debounce
 
             // Convert field string to field array

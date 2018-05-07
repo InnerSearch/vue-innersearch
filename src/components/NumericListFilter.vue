@@ -35,9 +35,7 @@
                 localInstructions : [], // local request
             }
         },
-        created : function () {
-            this.CID = this.addComponent(Component.NUMERIC_LIST_FILTER, this);
-        },
+
         methods : {
             performRequest : function () {
                 let regex = new RegExp(/^[0-9][0-9]*$/);
@@ -62,6 +60,7 @@
                     this.fetch(this);
                 }
             },
+
             reset : function() {
                 this.from = null;
                 this.to = null;
@@ -69,5 +68,9 @@
                     this.removeInstructions();
             },
         },
+
+        created : function () {
+            this.CID = this.addComponent(Component.NUMERIC_LIST_FILTER, this);
+        }
     }
 </script>

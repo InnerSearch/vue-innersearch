@@ -59,7 +59,11 @@
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
-                localInstructions : [] // local request
+                localInstructions : [], // local request
+                authorization : {
+                    mount : true,
+                    fetch : true
+                }
             };
         },
 
@@ -70,18 +74,19 @@
         },
 
         watch : {
-            computedEntry : function(val) {
+            computedEntry : function(value) {
+
 				// Reset all deep instructions of local request
 				this.removeInstructions();
 
-                // Case where val is not empty : we add instructions
-                if (val.length > 0) {
+                // Case where value is not empty : we add instructions
+                if (value.length > 0) {
                     // Local request data initialization for each field value
                     let _instruction = {
                         fun : 'filter',
                         args : ['bool', arg => {
                             this.mutableField.forEach(attr => {
-                                arg[this.fun]('prefix', attr, val);
+                                arg[this.fun]('prefix', attr, value);
                             });
                             return arg;
                         }]
@@ -92,7 +97,18 @@
                 }
 
                 // Update the request
-                this.mount();
+                if (this.authorization.mount)
+                    this.mount();
+                else
+                    this.authorization.mount = !this.authorization.mount; // consume the exception
+
+                // Execute fetch() if realtime is enabled
+                if (this.realtime) {
+                    if (this.authorization.fetch)
+                        this.executeSearch();
+                    else
+                        this.authorization.fetch = !this.authorization.fetch; // consume the exception
+                }
             }
         },
 
@@ -102,14 +118,25 @@
                 this.$refs[tag].focus();
             },
 
-            // Execute the mixins Fetch method to update hits
+            // Execute the mixins Fetch method to update hits (also used in the dynamic watcher)
             executeSearch : function() {
                 this.fetch();
             },
 
+            // Set authorizations of mount and fetch methods to false (for reset behavior)
+            setAuthorizations : function() {
+                this.authorization.mount = false;
+                this.authorization.fetch = false;
+            },
+
             // Reset the input field
             reset : function() {
-                this.entry = '';
+                // If entry equals to an empty string, the watcher function will never be called
+                // That brings the authorization to stay locked at 'false'
+                if (this.computedEntry !== '') {
+                    this.setAuthorizations();
+                    this.entry = '';
+                }
             }
         },
 
@@ -126,24 +153,12 @@
 			// Interactive component declaration
             this.CID = this.addComponent(Component.SEARCHBOX, this);
 
-            // Create a dynamic watcher on the input which calls the mixins Fetch function
-            let _disableWatcherFetch = this.$watch(function() {
-                return this.entry;
-            }, {
-                handler : function(val) {
-                    this.executeSearch.call(this);
-                },
-                deep : true
-            });
-
-            // Behavior when realtime is enabled or not
+            // Apply debounce on executeSearch() function
             if (this.realtime) {
                 let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
-                this.addDebounce('searchbox', _debounce); // Add debounce event to listed debounce into the Store
+                this.addDebounce(Component.SEARCHBOX, _debounce); // Add debounce event to listed debounce into the Store
                 this.executeSearch = _debounce; // Apply debounce
             }
-            else
-                _disableWatcherFetch(); // Disable the watcher that disable fetch event
 
             // Convert field string to field array
             if (!Array.isArray(this.mutableField))

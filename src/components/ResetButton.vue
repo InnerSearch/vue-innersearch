@@ -17,6 +17,12 @@
             "text" : {
                 type : String,
                 default : "Reset"
+            },
+
+            // empty : clean all hit component displays
+            "empty" : {
+                type : Boolean,
+                default : true
             }
         },
 
@@ -28,13 +34,37 @@
 
         methods : {
             clickOn : function() {
-                // Call reset function for each 'resetable' component
+                /*
+                    Call reset function for each 'resetable' component
+                    We use a function call instead of $emit way of communication
+                    because of the asynchronous behaviour of bus. We need to call
+                    a 'reset()' function for intended components, and THEN, manually
+                    call mount() and fetch() methods from this component (to make
+                    only one request to the server by clicking on the reset button)
+                */
                 for (let key in Component) {
                     this.getComponents(Component[key]).forEach(component => {
                         if (component.reset !== undefined && typeof component.reset === 'function')
                             component.reset();
                     });
                 }
+
+                /*
+                    Important note : depending on how $nextTick works, it is possible that
+                    the mount() and fetch() request are not executed when all previous watcher have
+                    been executed. If it is the case, you have to change all reset() functions
+                    to return 'this.$nextTick()', and then, replace the line above by something
+                    like 'Promise.all(_ticks).then({ fetch, mount })' (this solution has not
+                    been tested)
+                */
+                this.$nextTick(() => {
+                    this.mount();
+                    this.fetch().then(() => {
+                        // Empty all hits components if the property 'empty' is set to true
+                        if (this.empty)
+                            this.bus.$emit('empty');
+                    });
+                });
             }
         },
 

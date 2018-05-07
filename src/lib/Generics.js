@@ -215,8 +215,11 @@ export default {
 			// Reset debounce events
 			this.resetDebounce();
 
+			// Reset the pagination by emitting to appropriate components
+			this.bus.$emit('resetPagination');
+
 			// Fetch the hits
-			this.header.client.search(this.request).then((resp) => {
+			return this.header.client.search(this.request).then((resp) => {
 
 				// Remove all hits
 				this.clearItems();
@@ -244,15 +247,11 @@ export default {
 
 					this.setScore(resp.hits.total)
 				}
+
+				//return Promise.resolve(hits);
+
 			}, function (err) {
 				this.setScore(0);
-			});
-
-
-			// Events emission for appropriate components
-			this.getComponents(Component.PAGINATE).forEach(component => {
-				if (component.CID !== undefined)
-					this.bus.$emit(component.CID);
 			});
 		},
 

@@ -259,7 +259,7 @@
             },
         },
 
-        created : function () {
+        created : function() {
             // Interactive component declaration
             this.CID = this.addComponent(Component.REFINEMENT_LIST_FILTER, this);
 

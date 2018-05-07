@@ -36,9 +36,21 @@
             }
         },
 
+        methods : {
+            empty : function() {
+                this.clearItems();
+                this.setScore(undefined);
+            }
+        },
+
         created : function() {
             // Interactive component declaration
             this.CID = this.addComponent(Component.HITS, this);
+
+            // Empty the component when the bus receive an 'empty' signal
+            this.bus.$on('empty', () => {
+                this.empty();
+            });
         }
     };
 </script>
