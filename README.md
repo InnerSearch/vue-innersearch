@@ -6,6 +6,8 @@
 [![Build Status](https://travis-ci.org/InnerSearch/vue-innersearch.svg?branch=master)](https://travis-ci.org/InnerSearch/vue-innersearch)
 [![npm](https://img.shields.io/npm/l/vue-innersearch.svg)]()
 
+[![Exemple UI](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/develop/docs/images/banner.png)]()
+
 ## What is InnerSearch ?
 An Open Source project created to help developers working with vue.js and Elastic, give them the possibility to create search UIs within the hour.
 
