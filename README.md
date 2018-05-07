@@ -67,7 +67,7 @@ Have a look at how to use the standalone UMD build in our [Jsbin example](http:/
 
 ## Quick Intro
 
-[Live demo](http://jsbin.com/jazezahevi/edit?html,output)
+[Live demo](http://vue-innersearch.surge.sh/)
 
 
 
