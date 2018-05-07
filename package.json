@@ -1,6 +1,6 @@
 {
   "name": "vue-innersearch",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Vue.js components for ElasticSearch",
   "main": "innersearch.js",
   "author": "InnerSearch Organization",

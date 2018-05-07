@@ -1,4 +1,4 @@
-[![Banner](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/develop/docs/images/banner.png)]()
+[![Banner](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/banner.png)]()
 
 # InnerSearch : Vue.js components for ElasticSearch
 [![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
