@@ -62,7 +62,7 @@
                     this.fetch().then(() => {
                         // Empty all hits components if the property 'empty' is set to true
                         if (this.empty)
-                            this.bus.$emit('empty');
+                            this.bus.$emit('emptyHits');
                     });
                 });
             }

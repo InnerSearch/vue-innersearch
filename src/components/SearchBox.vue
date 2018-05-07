@@ -118,7 +118,7 @@
                 this.$refs[tag].focus();
             },
 
-            // Execute the mixins Fetch method to update hits (also used in the dynamic watcher)
+            // Execute the mixins Fetch method to update hits (used in the watcher when realtime is enabled)
             executeSearch : function() {
                 this.fetch();
             },

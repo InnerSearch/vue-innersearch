@@ -228,9 +228,7 @@ export default {
 				//console.log("[Generics:Fetch] Response : ", resp);
 				//console.log("[Generics:Fetch] Aggs : ", resp.aggregations);
 
-				/***
-				 * Update aggregations after each ES request
-				 */
+				// Update aggregations after each ES request
 				let _params = {
 					'aggs' : resp.aggregations
 				};
@@ -247,8 +245,6 @@ export default {
 
 					this.setScore(resp.hits.total)
 				}
-
-				//return Promise.resolve(hits);
 
 			}, function (err) {
 				this.setScore(0);

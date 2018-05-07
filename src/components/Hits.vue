@@ -7,7 +7,7 @@
                 <strong v-else-if="hits.score > 1">{{ hits.score }} results found</strong>
             </div>
             <div v-for="(item, index) in hits.items" :key="index" :item="item">
-                <div>[Hit]</div>
+                <div>{{ item }}</div>
             </div>
         </slot>
     </section>
@@ -37,7 +37,7 @@
         },
 
         methods : {
-            empty : function() {
+            emptyHits : function() {
                 this.clearItems();
                 this.setScore(undefined);
             }
@@ -47,9 +47,8 @@
             // Interactive component declaration
             this.CID = this.addComponent(Component.HITS, this);
 
-            // Empty the component when the bus receive an 'empty' signal
-            this.bus.$on('empty', () => {
-                this.empty();
+            this.bus.$on('emptyHits', () => {
+                this.emptyHits();
             });
         }
     };
