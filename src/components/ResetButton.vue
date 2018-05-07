@@ -49,14 +49,6 @@
                     });
                 }
 
-                /*
-                    Important note : depending on how $nextTick works, it is possible that
-                    the mount() and fetch() request are not executed when all previous watcher have
-                    been executed. If it is the case, you have to change all reset() functions
-                    to return 'this.$nextTick()', and then, replace the line above by something
-                    like 'Promise.all(_ticks).then({ fetch, mount })' (this solution has not
-                    been tested)
-                */
                 this.$nextTick(() => {
                     this.mount();
                     this.fetch().then(() => {
