@@ -100,14 +100,14 @@
                 if (this.authorization.mount)
                     this.mount();
                 else
-                    this.authorization.mount = !this.authorization.mount; // consume the exception
+                    this.authorization.mount = true; // consume the exception
 
                 // Execute fetch() if realtime is enabled
                 if (this.realtime) {
                     if (this.authorization.fetch)
                         this.executeSearch();
                     else
-                        this.authorization.fetch = !this.authorization.fetch; // consume the exception
+                        this.authorization.fetch = true; // consume the exception
                 }
             }
         },
