@@ -63,7 +63,7 @@ vue-innersearch needs Vue and Vuex to work
   <script src="https://unpkg.com/vue-innersearch@0.0.9/vue-innersearch.min.js"></script>
 ````
 
-Have a look at how to use the standalone UMD build in our [Jsbin example](http://jsbin.com/jazezahevi/edit?html,output)
+Have a look at how to use the standalone UMD build in our [Jsbin example](http://jsbin.com/gayugup/edit?html,output)
 
 ## Quick Intro
 
