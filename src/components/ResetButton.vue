@@ -20,7 +20,7 @@
             },
 
             // empty : clean all hit component displays
-            "empty" : {
+            "emptyHits" : {
                 type : Boolean,
                 default : true
             }
@@ -52,8 +52,7 @@
                 this.$nextTick(() => {
                     this.mount();
                     this.fetch().then(() => {
-                        // Empty all hits components if the property 'empty' is set to true
-                        if (this.empty)
+                        if (this.emptyHits)
                             this.bus.$emit('emptyHits');
                     });
                 });
