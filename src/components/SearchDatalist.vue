@@ -366,6 +366,9 @@
             this.itemFun = (this.itemOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
             this.propertyFun = (this.propertyOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
             this.suggestionFun = (this.suggestionOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+
+            // Triggered by ResetButton component
+            this.bus.$on('reset', () => this.reset());
         }
     };
 </script>

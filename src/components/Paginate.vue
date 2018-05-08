@@ -1,8 +1,8 @@
 <template>
     <nav class="is-paginate is-component" v-if='hits.score != undefined'>
-        <a class="is-previous is-button" v-show="nbPage > 0" :value="previousText"  @click="clickOnPrevious" v-html="previousText"></a>
+        <a class="is-previous is-button" v-show="nbPage > 0" :value="previousText"  @click="clickOnPrevious()" v-html="previousText"></a>
 
-        <a class="is-next is-button" v-show="nbPage < maxPage - 1" :value="nextText" @click="clickOnNext" v-html="nextText"></a>
+        <a class="is-next is-button" v-show="nbPage < maxPage - 1" :value="nextText" @click="clickOnNext()" v-html="nextText"></a>
 
         <ul class="is-list">
             <li>

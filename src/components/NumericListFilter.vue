@@ -89,6 +89,9 @@
 
         created : function () {
             this.CID = this.addComponent(Component.NUMERIC_LIST_FILTER, this);
+
+            // Triggered by ResetButton component
+            this.bus.$on('reset', () => this.reset());
         }
     }
 </script>

@@ -31,6 +31,10 @@
 
                     <hr class='is-line' />
 
+                    <div>
+                        <tag-filter :for="'searchbox'"></tag-filter>
+                    </div>
+
                     <div class="is-columns">
                         <div class="is-column is-one-fifth">
                             <div>
@@ -70,7 +74,7 @@
                         </div>
                         <div class="is-column">
                             <div>
-                                <searchbox :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
+                                <searchbox :id="'searchbox'" :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
                                 <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
                                     <template slot="items" slot-scope="{ item }">

@@ -314,6 +314,9 @@
                     });
                 }
             });
+
+            // Triggered by ResetButton component
+            this.bus.$on('reset', () => this.reset());
         }
     };
 </script>

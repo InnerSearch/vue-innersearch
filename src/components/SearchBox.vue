@@ -1,6 +1,6 @@
 <template>
     <div class='is-component is-searchbox'>
-        <div class='is-icon is-searchbox' v-on:click='focusOnField("input")'></div>
+        <div class='is-icon is-searchbox' v-on:click='focus()'></div>
         <input class='is-field is-searchbox' type='text' ref='input' v-model='entry' />
     </div>
 </template>
@@ -15,6 +15,12 @@
         mixins : [generics],
 
         props : {
+            // id : specify an id (or a name) to identificate the component instance
+            'id' : {
+                type : [Number, String],
+                default : undefined
+            },
+
             // autofocus : it defines if the input is focused when the user load the page
             'autofocus' : {
                 type : Boolean,
@@ -56,10 +62,13 @@
         data : function() {
             return {
                 CID : undefined,
+                name : null,
                 mutableField : this.field, // mutable field allowing to update it
                 entry : '', // input value
                 fun : undefined, // function applied
                 localInstructions : [], // local request
+
+                tagFilters : [],
                 authorization : {
                     mount : true,
                     fetch : true
@@ -96,6 +105,11 @@
 					this.addInstruction(_instruction);
                 }
 
+                // Send the value to TagFilter component(s)
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, value);
+                });
+
                 // Update the request
                 if (this.authorization.mount)
                     this.mount();
@@ -114,8 +128,8 @@
 
         methods : {
             // Set the focus on "tag" DOM element when the function is called
-            focusOnField : function(tag) {
-                this.$refs[tag].focus();
+            focus : function() {
+                this.$refs.input.focus();
             },
 
             // Execute the mixins Fetch method to update hits (used in the watcher when realtime is enabled)
@@ -153,6 +167,10 @@
 			// Interactive component declaration
             this.CID = this.addComponent(Component.SEARCHBOX, this);
 
+            // Assign the name to the component if needed
+            if (this.id !== undefined)
+                this.name = this.id;
+
             // Apply debounce on executeSearch() function
             if (this.realtime) {
                 let _debounce = debounce(this.executeSearch, this.timeout); // Debounce method with the timeout value on the current SeachOn function
@@ -166,6 +184,15 @@
 
             // Function calculation depending on operator property
             this.fun = (this.operator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
+
+            // Triggered by ResetButton and TagFilter components
+            this.bus.$on('reset', () => this.reset());
+            this.bus.$on('reset_' + this.CID, () => {this.reset(); this.focus(); });
+
+            // Save TagFilter channel(s)
+            this.bus.$on('tagFilter_' + this.CID, (channel) => {
+                this.tagFilters.push(channel);
+            });
         }
     };
 </script>
