@@ -136,7 +136,7 @@
                 case Component.REFINEMENT_LIST_FILTER :
                     this.bus.$emit(_requestName, _responseName);
                     this.bus.$on(_responseName, value => {
-                        this.targetData = value !== null ? value : undefined;
+                        this.targetData = (value !== null && value.length !== 0) ? value : undefined;
                     });
                 break;
 

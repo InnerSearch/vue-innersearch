@@ -126,6 +126,12 @@
         },
 
         methods : {
+            sendTagFilterValues : function () {
+                // Send the value to TagFilter component(s)
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, this.checkedItems);
+                });
+            },
             uncheckAll : function () {
                 
                 Array.from( document.querySelectorAll('input[name="'+ this.field +'"]:checked'), input => input.checked = false );
@@ -139,6 +145,9 @@
                 this.fetch(this);
 
                 this.checkedItems = null;
+
+                this.sendTagFilterValues();
+
             },
 
             updateLabels : function(value) {
@@ -170,73 +179,67 @@
 
                     this.removeInstructions();
 
-                    // Update the request
-                    this.mount();
+                } else {
+                    this.checkedItems = checkedItems;
 
-                    // Execute request
-                    this.fetch(this);
-                    return;
-                }
+                    // Reset all deep instructions of local request
+                    this.removeInstructions();
 
-                this.checkedItems = checkedItems;
+                    // Read all checked items and create appropriate instruction for each of them
+                    // OR operator case
+                    var _instruction = undefined;
+                    if (this.operator.toLowerCase() === 'or') {
+                        if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
+                            _instruction = {
+                                fun : 'orFilter',
+                                args : ['term', this.field, checkedItems],
+                            };
+                        } else {
+                            _instruction = {
+                                fun : 'filter',
+                                args : ['bool', arg => {
+                                    this.checkedItems.forEach(item => {
+                                        arg.orFilter('term', this.field, item);
+                                    });
+                                    return arg;
+                                }]
+                            };
+                        }
 
-                // Reset all deep instructions of local request
-                this.removeInstructions();
-
-                // Read all checked items and create appropriate instruction for each of them
-                // OR operator case
-                var _instruction = undefined;
-                if (this.operator.toLowerCase() === 'or') {
-                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
-                        _instruction = {
-                            fun : 'orFilter',
-                            args : ['term', this.field, checkedItems],
-                        };
-                    } else {
-                        _instruction = {
-                            fun : 'filter',
-                            args : ['bool', arg => {
-                                this.checkedItems.forEach(item => {
-                                    arg.orFilter('term', this.field, item);
-                                });
-                                return arg;
-                            }]
-                        };
-                    }
-
-
-                    this.localInstructions.push(_instruction);
-                    this.addInstruction(_instruction);
-                }
-
-                // AND operator case
-                else {
-                    if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
-                        _instruction = {
-                            fun : 'andFilter',
-                            args : ['term', this.field, checkedItems],
-                        };
 
                         this.localInstructions.push(_instruction);
                         this.addInstruction(_instruction);
-                    } else {
-                        this.checkedItems.forEach(item => {
+                    }
+
+                    // AND operator case
+                    else {
+                        if(typeof checkedItems === 'string' || typeof checkedItems === 'number'){
                             _instruction = {
                                 fun : 'andFilter',
-                                args : ['term', this.field, item]
+                                args : ['term', this.field, checkedItems],
                             };
 
                             this.localInstructions.push(_instruction);
                             this.addInstruction(_instruction);
-                            
-                        });
+                        } else {
+                            this.checkedItems.forEach(item => {
+                                _instruction = {
+                                    fun : 'andFilter',
+                                    args : ['term', this.field, item]
+                                };
+
+                                this.localInstructions.push(_instruction);
+                                this.addInstruction(_instruction);
+                                
+                            });
+                        }
                     }
                 }
 
+                
+
                 // Send the value to TagFilter component(s)
-                this.tagFilters.forEach(tagFilter => {
-                    this.bus.$emit(tagFilter, this.checkedItems);
-                });
+                this.sendTagFilterValues();
 
                 // Update the request
                 this.mount();

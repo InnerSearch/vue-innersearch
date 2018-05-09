@@ -33,9 +33,21 @@
 
                     <div>
                         <tag-filter :for="'searchbox'"></tag-filter>
-                        <tag-filter :for="'rlf-list'" ></tag-filter>
-                        <tag-filter :for="'rlf-radio'"></tag-filter>
-                        <tag-filter :for="'rlf-check'"></tag-filter>
+                        <tag-filter :for="'rlf-list'" >
+                            <template slot-scope="{ data }">
+                                State : {{ data }}
+                            </template>
+                        </tag-filter>
+                        <tag-filter :for="'rlf-radio'">
+                            <template slot-scope="{ data }">
+                                    Age : {{ data }}
+                            </template>
+                        </tag-filter>
+                        <tag-filter :for="'rlf-check'">
+                            <template slot-scope="{ data }">
+                                Gender : {{ data }} 
+                            </template>
+                        </tag-filter>
                         <tag-filter :for="'nlf'"></tag-filter>
                         <tag-filter :for="'searchdatalist'">
                             <template slot-scope="{ data }">
@@ -59,7 +71,7 @@
                                     </template>
                                     <template slot="viewmore"></template>
                                 </refinement-list-filter>
-                                <refinement-list-filter :id="'rlf-radio'" :field="'age'" :search="true" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
+                                <refinement-list-filter :id="'rlf-radio'" :field="'age'" :search="false" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
                                     <template slot="title" slot-scope="{ title }">
                                         <h3 class="is-refinement-menu-title" style="width: fit-content;display: inline-block;margin-right: 120px;">{{title}}</h3>
                                     </template>

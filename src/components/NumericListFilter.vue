@@ -3,8 +3,8 @@
         <div class="is-nlf">
             <slot name="header"></slot>
                 <div class="is-nlf-inputs">
-                    <input class="is-range is-field" v-model="from" type="text" placeholder="from" @change="performRequest()" />
-                    <input class="is-range is-field"  v-model="to" type="text" placeholder="to" @change="performRequest()" />
+                    <input class="is-range is-field" v-model="from" type="number" placeholder="from" @change="performRequest()" />
+                    <input class="is-range is-field"  v-model="to" type="number" placeholder="to" @change="performRequest()" />
                 </div>
         </div>
     </section>
