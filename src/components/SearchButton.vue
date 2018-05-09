@@ -35,7 +35,7 @@
 
         created : function() {
 			// Interactive component declaration
-            this.CID = this.addComponent(Component.SEARCHBUTTON, this);
+            this.CID = this.addComponent(Component.SEARCH_BUTTON, this);
         }
     };
 </script>

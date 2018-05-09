@@ -48,7 +48,7 @@
 
         created : function() {
 			// Interactive component declaration
-            this.CID = this.addComponent(Component.RESETBUTTON, this);
+            this.CID = this.addComponent(Component.RESET_BUTTON, this);
         }
     };
 </script>

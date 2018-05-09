@@ -22,6 +22,11 @@
         name: "numeric-list-filter",
         mixins: [Generics],
         props: {
+            id : {
+                type : [Number, String],
+                default : undefined
+            },
+
             field : {
                 type : String,
                 default : null
@@ -30,9 +35,13 @@
 
         data : function() {
             return {
+                CID : undefined,
+                name : null,
                 from : undefined,
                 to : undefined,
-                localInstructions : [] // local request
+                localInstructions : [], // local request
+
+                tagFilters : []
             }
         },
 
@@ -72,6 +81,11 @@
                     this.addInstruction(_instruction);
                 }
 
+                // Send the value to TagFilter component(s)
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, _rangeObj);
+                });
+
                 // Update the request
                 this.mount();
 
@@ -82,6 +96,10 @@
             reset : function() {
                 this.from = undefined;
                 this.to = undefined;
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, {});
+                });
+
                 if (this.localInstructions.length !== 0)
                     this.removeInstructions();
             },
@@ -90,8 +108,18 @@
         created : function () {
             this.CID = this.addComponent(Component.NUMERIC_LIST_FILTER, this);
 
+            // Assign the name to the component if needed
+            if (this.id !== undefined)
+                this.name = this.id;
+
             // Triggered by ResetButton component
             this.bus.$on('reset', () => this.reset());
+            this.bus.$on('reset_' + this.CID, () => this.reset());
+
+            // Save TagFilter channel(s)
+            this.bus.$on('tagFilter_' + this.CID, (channel) => {
+                this.tagFilters.push(channel);
+            });
         }
     }
 </script>

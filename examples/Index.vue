@@ -33,12 +33,22 @@
 
                     <div>
                         <tag-filter :for="'searchbox'"></tag-filter>
+                        <tag-filter :for="'rlf-list'" ></tag-filter>
+                        <tag-filter :for="'rlf-radio'"></tag-filter>
+                        <tag-filter :for="'rlf-check'"></tag-filter>
+                        <tag-filter :for="'nlf'"></tag-filter>
+                        <tag-filter :for="'searchdatalist'">
+                            <template slot-scope="{ data }">
+                                {{ data._source.firstname }} {{ data._source.lastname }} (<strong>{{ data._source.gender }}</strong>)
+                            </template>
+                        </tag-filter>
+                        <tag-filter :for="'searchdatalist'" :clearAll="true"></tag-filter>
                     </div>
 
                     <div class="is-columns">
                         <div class="is-column is-one-fifth">
                             <div>
-                                <refinement-list-filter :field="'state'" :search="true" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="AND">
+                                <refinement-list-filter :id="'rlf-list'" :field="'state'" :search="true" :title="'State : '" :size="100"  orderKey="_count" orderDirection="desc" operator="AND">
                                     <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }"> 
                                         <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
                                             <option selected="selected"></option>
@@ -49,7 +59,7 @@
                                     </template>
                                     <template slot="viewmore"></template>
                                 </refinement-list-filter>
-                                <refinement-list-filter :field="'age'" :search="true" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
+                                <refinement-list-filter :id="'rlf-radio'" :field="'age'" :search="true" :title="'Age : '" :size="19"  orderKey="_count" orderDirection="desc" operator="OR">
                                     <template slot="title" slot-scope="{ title }">
                                         <h3 class="is-refinement-menu-title" style="width: fit-content;display: inline-block;margin-right: 120px;">{{title}}</h3>
                                     </template>
@@ -69,14 +79,14 @@
                                         <a href="#" v-on:click='uncheckAll()' style="font-size:0.8em">Clear</a>
                                     </template>
                                 </refinement-list-filter>
-                                <refinement-list-filter :field="'gender'" :search="true" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
+                                <refinement-list-filter :id="'rlf-check'" :field="'gender'" :search="true" :size="100" :title="'Gender : '" :displayCount="true" operator="OR" ></refinement-list-filter>
                             </div>
                         </div>
                         <div class="is-column">
                             <div>
                                 <searchbox :id="'searchbox'" :autofocus="true" :realtime="true" :timeout="200" :field="'firstname'" :placeholder="'Search by firstname'"></searchbox>
 
-                                <search-datalist :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
+                                <search-datalist :id="'searchdatalist'" :realtime="true" :field="'lastname'" :suggestion="['firstname', 'lastname']">
                                     <template slot="items" slot-scope="{ item }">
                                         {{ item._source.firstname }} {{ item._source.lastname }} (<strong>{{ item._source.gender }}</strong>)
                                     </template>
@@ -90,7 +100,7 @@
                                         <span v-html="suggestion.highlight.lastname ? suggestion.highlight.lastname[0] : suggestion._source.lastname"></span>
                                     </template>
                                 </search-datalist>
-                                <numeric-list-filter :field="'balance'">
+                                <numeric-list-filter :id="'nlf'" :field="'balance'">
                                     <template slot="header">
                                         <h3 class="is-nlf-title">Balance : </h3>
                                     </template>

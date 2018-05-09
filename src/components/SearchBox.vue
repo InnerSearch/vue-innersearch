@@ -187,7 +187,7 @@
 
             // Triggered by ResetButton and TagFilter components
             this.bus.$on('reset', () => this.reset());
-            this.bus.$on('reset_' + this.CID, () => {this.reset(); this.focus(); });
+            this.bus.$on('reset_' + this.CID, () => { this.reset(); this.focus(); });
 
             // Save TagFilter channel(s)
             this.bus.$on('tagFilter_' + this.CID, (channel) => {

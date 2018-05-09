@@ -40,6 +40,12 @@
         mixins : [generics],
 
         props : {
+            // id : specify an id (or a name) to identificate the component instance
+            'id' : {
+                type : [Number, String],
+                default : undefined
+            },
+
             // realtime : it defines if the Store object is updated for each change of the input
             'realtime' : {
                 type : Boolean,
@@ -113,10 +119,13 @@
                 selections : [], // selected items
                 suggestions : [], // suggestions list
                 highlightedSuggestion : undefined, // current selected suggestion
+
+                name : null,
                 authorization : {
                     mount : true,
                     fetch : true
-                }
+                },
+                tagFilters : []
             };
         },
 
@@ -165,6 +174,11 @@
                     this.localInstructions.push(_instruction);
 					this.addInstruction(_instruction);
                 }
+
+                // Send the value to TagFilter component(s)
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, this.selections);
+                });
 
                 // Update the request
                 if (this.authorization.mount)
@@ -333,7 +347,11 @@
 
         created : function() {
 			// Interactive component declaration
-            this.CID = this.addComponent(Component.SEARCHDATALIST, this);
+            this.CID = this.addComponent(Component.SEARCH_DATALIST, this);
+
+            // Assign the name to the component if needed
+            if (this.id !== undefined)
+                this.name = this.id;
 
             // Create a dynamic watcher on the input which calls the mixins Fetch function
             let _disableWatcherFetch = this.$watch(function() {
@@ -351,7 +369,7 @@
             
             // Debounce for suggestion list update
             let _debounce = debounce(this.updateItems, this.timeout); // Debounce method with the timeout value on the current SeachOn function
-            this.addDebounce(Component.SEARCHDATALIST, _debounce); // Add debounce event to listed debounce into the Store
+            this.addDebounce(Component.SEARCH_DATALIST, _debounce); // Add debounce event to listed debounce into the Store
             this.updateItems = _debounce; // Apply debounce
 
             // Convert field string to field array
@@ -367,8 +385,18 @@
             this.propertyFun = (this.propertyOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
             this.suggestionFun = (this.suggestionOperator.toUpperCase() === 'AND') ? 'filter' : 'orFilter';
 
-            // Triggered by ResetButton component
+            // Triggered by ResetButton and TagFilter components
             this.bus.$on('reset', () => this.reset());
+            this.bus.$on('reset_' + this.CID, () => { this.reset(); this.focus(); });
+            this.bus.$on('resetByValue_' + this.CID, (value) => {
+                this.remove(value);
+                this.focus();
+            });
+
+            // Save TagFilter channel(s)
+            this.bus.$on('tagFilter_' + this.CID, (channel) => {
+                this.tagFilters.push(channel);
+            });
         }
     };
 </script>

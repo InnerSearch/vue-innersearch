@@ -39,6 +39,11 @@
         mixins : [generics],
 
         props : {
+            id : {
+                type : [Number, String],
+                default : undefined
+            },
+
             field : {
                 type : String,
                 default : null
@@ -96,13 +101,16 @@
         data : function() {
             return {
                 CID : undefined,
+                name : null,
                 checkedItems : [], // list of checked items
                 localAggregations : [], // lcoal aggregation instructions
                 localInstructions : [], // local request
                 aggsSize : this.size,
                 test_ : null,
                 aggsCardinality : null,
-                viewMoreDisplay : "inherit"
+                viewMoreDisplay : "inherit",
+
+                tagFilters : []
             };
         },
 
@@ -123,7 +131,8 @@
                 Array.from( document.querySelectorAll('input[name="'+ this.field +'"]:checked'), input => input.checked = false );
 
                 this.removeInstructions();
-                    // Update the request
+
+                // Update the request
                 this.mount();
 
                 // Execute request
@@ -160,7 +169,8 @@
                     this.checkedItems = checkedItems;
 
                     this.removeInstructions();
-                        // Update the request
+
+                    // Update the request
                     this.mount();
 
                     // Execute request
@@ -221,9 +231,13 @@
                             
                         });
                     }
-                    
-
                 }
+
+                // Send the value to TagFilter component(s)
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, this.checkedItems);
+                });
+
                 // Update the request
                 this.mount();
 
@@ -254,6 +268,10 @@
             // Reset refinementlistfilter items
             reset : function() {
                 this.checkedItems = [];
+                this.tagFilters.forEach(tagFilter => {
+                    this.bus.$emit(tagFilter, null);
+                });
+
                 if (this.localInstructions.length !== 0)
                     this.removeInstructions();
             },
@@ -262,6 +280,10 @@
         created : function() {
             // Interactive component declaration
             this.CID = this.addComponent(Component.REFINEMENT_LIST_FILTER, this);
+
+            // Assign the name to the component if needed
+            if (this.id !== undefined)
+                this.name = this.id;
 
             // Add aggregation, no need to update it later
             let _aggsRequest = this.createRequestForAggs(this.field, this.size, this.orderKey, this.orderDirection);
@@ -317,6 +339,16 @@
 
             // Triggered by ResetButton component
             this.bus.$on('reset', () => this.reset());
+            this.bus.$on('reset_' + this.CID, () => this.reset());
+            this.bus.$on('resetByValue_' + this.CID, (value) => {
+                this.checkedItems.splice(this.checkedItems.indexOf(value), 1);
+                this.clickOnItem(this.checkedItems);
+            });
+
+            // Save TagFilter channel(s)
+            this.bus.$on('tagFilter_' + this.CID, (channel) => {
+                this.tagFilters.push(channel);
+            });
         }
     };
 </script>
