@@ -1,8 +1,8 @@
 ### ResetButton
 - **Tag name :** `<reset-button></reset-button>`
 - **Property :**
-  - `text` (_string_, default : _'Search'_) : Text displayed into the input button
-  - `emptyHits` (_boolean_, default : _true'_) : Hide every hits displayed in corresponding components
+  - `text` (_String_, default : _'Search'_) : Text displayed into the input button
+  - `emptyHits` (_Boolean_, default : _true_) : Hide every hits displayed in corresponding components
 - **Description :**
 Create a button that reset the entire form when the user clicks on.
 
