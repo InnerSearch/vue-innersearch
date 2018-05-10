@@ -128,7 +128,6 @@
                 case Component.SEARCH_DATALIST :
                     this.bus.$emit(_requestName, _responseName);
                     this.bus.$on(_responseName, value => {
-                        console.log(value);
                         this.targetData = value.length > 0 ? value : undefined;
                     });
                 break;

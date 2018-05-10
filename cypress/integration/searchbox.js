@@ -2,16 +2,18 @@ import searchbox_sample_1 from '../fixtures/searchbox_1.json';
 import searchbox_sample_2 from '../fixtures/searchbox_2.json';
 import searchbox_sample_3 from '../fixtures/searchbox_3.json';
 
-const _URL = 'http://localhost:4000/#/test_searchbox',
-	  _SEARCHBOX = '.is-field.is-searchbox',
-	  _BUTTON = '.is-button.is-search-button',
-	  _HITS = '.is-score.is-hits',
-	  _ITEMS = 'div.hit',
+const
+	_URL = 'http://localhost:4000/#/test_searchbox',
+	_ES_URL = '**/_search',
+	_SEARCHBOX = '.is-field.is-searchbox',
+	_BUTTON = '.is-button.is-search-button',
+	_HITS = '.is-score.is-hits',
+	_ITEMS = 'div.hit',
 
-	  _FIRSTNAME = '.firstname',
-	  _LASTNAME = '.lastname',
-	  _STATE = '.state',
-	  _GENDER = '.gender';
+	_FIRSTNAME = '.firstname',
+	_LASTNAME = '.lastname',
+	_STATE = '.state',
+	_GENDER = '.gender';
 
 function LoopForHits(sample) {
 	cy.get(_ITEMS).each((item, index) => {
@@ -27,6 +29,7 @@ describe('Test SearchBox with basic submit button', () => {
 	beforeEach(function() {
 		cy.visit(_URL);
 		cy.server();
+        cy.route('POST', _ES_URL).as('ES');
 	});
 
 	it('Field is focused by default' , function() {
@@ -40,25 +43,29 @@ describe('Test SearchBox with basic submit button', () => {
 
 	it('Hits results for : s', function() {
 		cy.get(_SEARCHBOX).type('s');
-		cy.wait(150).get(_HITS).contains('73 results found');
+		cy.wait('@ES');
+		cy.get(_HITS).contains('73 results found');
 		LoopForHits(searchbox_sample_1);
 	});
 
 	it('Hits results for : mia', function() {
 		cy.get(_SEARCHBOX).type('mia');
-		cy.wait(150).get(_HITS).contains('1 result found');
+		cy.wait('@ES');
+		cy.get(_HITS).contains('1 result found');
 		LoopForHits(searchbox_sample_2);
 	});
 
 	it('Hits results for : alford', function() {
 		cy.get(_SEARCHBOX).type('alford');
-		cy.wait(150).get(_HITS).contains('1 result found');
+		cy.wait('@ES');
+		cy.get(_HITS).contains('1 result found');
 		LoopForHits(searchbox_sample_3);
 	});
 
 	it('No case sensitive', function() {
 		cy.get(_SEARCHBOX).type('MiA');
-		cy.wait(150).get(_HITS).contains('1 result found');
+		cy.wait('@ES');
+		cy.get(_HITS).contains('1 result found');
 		LoopForHits(searchbox_sample_2);
 	});
 });

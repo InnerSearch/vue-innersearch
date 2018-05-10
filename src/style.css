@@ -39,7 +39,6 @@ h1, h2, h3, h4, h5, h6 {
     flex-basis : 0;
     flex-grow : 1;
     flex-shrink : 1;
-    padding : .75rem;
 }
 
 .is-title {
@@ -341,6 +340,7 @@ h1, h2, h3, h4, h5, h6 {
     justify-content : center;
     text-align : center;
     border : 1px solid transparent;
+    user-select : none;
 }
 
 .is-previous {

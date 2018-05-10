@@ -10,6 +10,7 @@ const Test_RefinementListFilter = () => import('../examples/Test_RefinementListF
 const Test_RefinementListFilter2 = () => import('../examples/Test_RefinementListFilter2.vue');
 const Test_multipleRLF = () => import('../examples/Test_multipleRLF.vue');
 const Test_multipleRLF_Searchbox = () => import('../examples/Test_RLF_Searchbox.vue');
+const Test_ResetButton = () => import('../examples/Test_ResetButton.vue');
 
 
 
@@ -22,6 +23,7 @@ const routes = [
 	{ path : '/test_refinementListFilter2', component : Test_RefinementListFilter2 },
 	{ path : '/test_multipleRLF', component : Test_multipleRLF },
 	{ path : '/test_RLF_With_Searchbox', component : Test_multipleRLF_Searchbox },
+	{ path : '/test_resetbutton', component : Test_ResetButton },
 
 	{ path : '*', redirect : 'index' }
 ];
