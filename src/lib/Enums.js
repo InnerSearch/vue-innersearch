@@ -1,10 +1,11 @@
 export const Component = Object.freeze({
     'SEARCHBOX' : 'Searchbox',
-    'SEARCHDATALIST' : 'SearchDatalist',
+    'SEARCH_DATALIST' : 'SearchDatalist',
     'REFINEMENT_LIST_FILTER' : 'Refinement-List-Filter',
     'PAGINATE' : 'Paginate',
-    'SEARCHBUTTON' : 'SearchButton',
-    'RESETBUTTON' : 'ResetButton',
+    'SEARCH_BUTTON' : 'SearchButton',
+    'RESET_BUTTON' : 'ResetButton',
+    'TAG_FILTER' : 'TagFilter',
     'HITS' : 'Hits',
     'NUMERIC_LIST_FILTER' : 'Numeric-List-Filter'
 });

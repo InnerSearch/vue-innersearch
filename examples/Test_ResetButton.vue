@@ -1,29 +1,24 @@
 <template>
-    <div id='defaultForm'>
-    </div>
+    <div id="defaultForm"></div>
 </template>
 
 <script>
-    /*
-        Simple way to use InnerSearch
-    */
+  import Vue from 'vue';
+  import InnerSearch from "../src/innerSearch.js";
+  import '../src/style.css';
 
-    import Vue from 'vue';
-    import InnerSearch from "../src/innerSearch.js";
-    import '../src/style.css';
+  Vue.use(InnerSearch);
 
-    Vue.use(InnerSearch);
+  window.addEventListener('load', function () {
+    new Vue({
+      el: '#defaultForm',
 
-    window.addEventListener('load', function () {
-        new Vue({
-            el: '#defaultForm',
-
-            created : function () {
-                // ES server configuration
-                this.setHost('http://es.yinyan.fr');
-                this.setIndex('bank');
-                this.setType('account');
-            },
+      created : function () {
+        // ES server configuration
+        this.setHost('http://es.yinyan.fr');
+        this.setIndex('bank');
+        this.setType('account');
+      },
 
             template : `
                 <section>
@@ -31,7 +26,7 @@
 
                     <hr class='is-line' />
 
-                    <div style="width : 90%; margin : 0 auto;">
+                    <div class="filters" style="width : 90%; margin : 0 auto;">
                         <tag-filter :for="'searchbox'"></tag-filter>
                         <tag-filter :for="'rlf-list'" >
                             <template slot-scope="{ data }">
@@ -119,7 +114,7 @@
                                 </numeric-list-filter>
                                 <div style="margin: 20px auto;width: 90%">
                                     <search-button></search-button>
-                                    <reset-button></reset-button>
+                                    <reset-button :emptyHits="false"></reset-button>
                                 </div>
                                 <hits>
                                     <template slot="hits" slot-scope="{ hits }">

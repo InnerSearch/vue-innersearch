@@ -76,7 +76,6 @@ export default new Vuex.Store({
                     if (state.debounce[value.component] === undefined)
                         state.debounce[value.component] = [];
                     state.debounce[value.component].push(value.debounce);
-                    console.log(state.debounce);
                 },
 
                 resetDebounce(state, value) {
