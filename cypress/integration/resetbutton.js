@@ -31,7 +31,7 @@ describe('Default ResetButton bevahior' , () => {
     });
 });
 
-describe('Basic ResetButton behavior' , () => {
+describe.only('Basic ResetButton behavior' , () => {
 	beforeEach(function() {
         cy.visit(_URL);
         cy.server();
@@ -43,8 +43,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_SEARCHBOX).type('f');
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_SEARCHBOX).should('be.empty');
+        cy.wait('@ES').get(_SEARCHBOX).should('be.empty');
         cy.get(_HITS).contains('1002 results found');
     });
 
@@ -54,8 +53,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_FIRST_SUGGESTION).click();
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_SEARCH_DATALIST).should('be.empty');
+        cy.wait('@ES').get(_SEARCH_DATALIST).should('be.empty');
         cy.get(_SELECTED_SUGGESTIONS).should('be.empty');
         cy.get(_HITS).contains('1002 results found');
     });
@@ -68,8 +66,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_to).type('40');
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_from).should('be.empty');
+        cy.wait('@ES').get(_from).should('be.empty');
         cy.get(_to).should('be.empty');
         cy.get(_HITS).contains('1002 results found');
     });
@@ -80,8 +77,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_select).select('ar');
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_HITS).contains('1002 results found');
+        cy.wait('@ES').get(_HITS).contains('1002 results found');
     });
 
     it('RLF reset (radio button)', () => {
@@ -90,8 +86,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_radio).first().check();
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_radio).first().should('not.be.checked');
+        cy.wait('@ES').get(_radio).first().should('not.be.checked');
         cy.get(_HITS).contains('1002 results found');
     });
 
@@ -101,8 +96,7 @@ describe('Basic ResetButton behavior' , () => {
         cy.get(_checkbox).first().check();
         cy.wait('@ES');
         cy.get(_RESET).click();
-        cy.wait('@ES');
-        cy.get(_checkbox).first().should('not.be.checked');
+        cy.wait('@ES').get(_checkbox).first().should('not.be.checked');
         cy.get(_HITS).contains('1002 results found');
     });
 
@@ -116,9 +110,8 @@ describe('Basic ResetButton behavior' , () => {
         cy.wait('@ES');
 
         cy.get(_RESET).click();
-        cy.wait('@ES');
-
-        cy.get(_page).should('not.have.class', 'is-active');
+        
+        cy.wait('@ES').get(_page).should('not.have.class', 'is-active');
         cy.get(_HITS).contains('1002 results found');
     });
 });
