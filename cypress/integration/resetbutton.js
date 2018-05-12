@@ -31,7 +31,7 @@ describe('Default ResetButton bevahior' , () => {
     });
 });
 
-describe.only('Basic ResetButton behavior' , () => {
+describe('Basic ResetButton behavior' , () => {
 	beforeEach(function() {
         cy.visit(_URL);
         cy.server();
