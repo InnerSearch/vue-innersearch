@@ -7,3 +7,5 @@
     - [Paginate](components/paginate.md)
     - [SearchDataList](components/searchDataList.md)
     - [NumericListFilter](components/numericListFilter.md)
+    - [ResetButton](components/resetbutton.md)
+    - [TagFilter](components/tagfilter.md)
