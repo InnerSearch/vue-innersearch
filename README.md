@@ -1,8 +1,8 @@
 [![Banner](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/banner.png)]()
 
 # InnerSearch : Vue.js components for ElasticSearch
-[![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
-[![npm](https://img.shields.io/npm/dm/vue-innersearch.svg)](https://www.npmjs.com/package/innersearch)
+[![npm](https://img.shields.io/npm/v/vue-innersearch.svg)](https://www.npmjs.com/package/vue-innersearch)
+[![npm](https://img.shields.io/npm/dm/vue-innersearch.svg)](https://www.npmjs.com/package/vue-innersearch)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FInnerSearch%2Fvue-innersearch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FInnerSearch%2Fvue-innersearch?ref=badge_shield)
 [![Build Status](https://travis-ci.org/InnerSearch/vue-innersearch.svg?branch=master)](https://travis-ci.org/InnerSearch/vue-innersearch)
 [![npm](https://img.shields.io/npm/l/vue-innersearch.svg)]()
