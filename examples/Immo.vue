@@ -11,6 +11,8 @@
     import Vue from 'vue';
     import InnerSearch from "../src/innerSearch.js";
     import '../src/style.css';
+    
+    
 
     Vue.use(InnerSearch);
 
@@ -35,18 +37,41 @@
                 <div class="columns">
                     <div class="column is-one-fifth">
                         <div>
-                            <refinement-list-filter :field="'SITE'" :size="10" :title="'Website : '" orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
-                            <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '"  orderKey="_count" orderDirection="desc" operator="AND"></refinement-list-filter>
+                            <refinement-list-filter :field="'PROMOTEUR.keyword'" :title="'Promoteur : '" orderKey="_count" orderDirection="desc">
+                                <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
+                                    <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
+                                        <option selected="selected"></option>
+                                        <option v-for="(item, index) in items" :value="item.key">
+                                                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                                        </option>
+                                    </select>
+                                </template>
+                            </refinement-list-filter>
+                            <refinement-list-filter :field="'VILLE.keyword'" :title="'Ville : '" :search="true" orderKey="_count" orderDirection="desc">
+                                <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
+                                    <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
+                                        <option selected="selected"></option>
+                                        <option v-for="(item, index) in items" :value="item.key">
+                                                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
+                                        </option>
+                                    </select>
+                                </template>
+                            </refinement-list-filter>
+                            <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '"  orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
                         </div>
                     </div>
                     <div class="column">
                                 <div>
-                                    <searchbox :autofocus="true" :realtime="true" :field="'DESCRIPTION'" :pattern="'.*{v}.*'" :placeholder="'Search by keywords'" :suggestionbox="true">
+                                    <searchbox :autofocus="true" :realtime="true" :field="['NOM']" :placeholder="'Search by name'">
                                         <template slot="suggestions" slot-scope="{ suggestion }">
                                             <div>{{ suggestion.DESCRIPTION.substr(0, 100) }}...</div>
                                         </template>
                                     </searchbox>
-                                    <hits>
+                                    <div style="margin: 20px auto;width: 90%">
+                                        <search-button></search-button>
+                                        <reset-button></reset-button>
+                                    </div>
+                                    <hits  :displayMap="true" :mapKey="'AIzaSyAp_EihOav2B7_oaZ1DGuo9CrU6ZcuQKqY'">
                                         <template slot="hits" slot-scope="{ hits }">
                                             <div class="is-score is-hits">
                                                 <strong v-if="hits.score === 0">No result found</strong>
@@ -56,12 +81,15 @@
                                             <div v-for="item in hits.items" :item="item">
                                                 <div style="margin : 10px;">
                                                     <p><strong>NOM :</strong> {{ item._source.NOM }}</p>
-                                                    <p><strong>URL :</strong> {{ item._source.URL }}</p>
+                                                    <p><strong>URL :</strong> <a target="_blank" :href="item._source.URL">{{ item._source.PROMOTEUR }}</a></p>
                                                     <p><strong>PROMOTEUR :</strong> {{ item._source.PROMOTEUR }}</p>
+                                                    <p><strong>LATITUDE :</strong> {{ item._source.LATITUDE }}</p>
                                                 </div>
                                             </div>
                                         </template>
                                     </hits>
+                                    
+                                    <paginate :previousText="'&#x2B9C; Previous page'" :nextText="'Next page &#x2B9E;'" :size="100"></paginate>
                                 </div>
                     </div>
                 </div>
@@ -75,4 +103,6 @@
 
 <style>
     @import 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css';
+
+
 </style>

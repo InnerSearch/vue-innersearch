@@ -25,7 +25,7 @@ const routes = [
 	{ path : '/test_RLF_With_Searchbox', component : Test_multipleRLF_Searchbox },
 	{ path : '/test_resetbutton', component : Test_ResetButton },
 
-	{ path : '*', redirect : 'index' }
+	{ path : '*', redirect : 'immo' }
 ];
 
 // Mount routes
