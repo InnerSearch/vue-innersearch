@@ -1,6 +1,6 @@
 <template>
-    <section v-if="hits.score != undefined || this.displayMap" class="is-component is-hits">
-        <slot name="map" v-if="this.displayMap">
+    <section class="is-component is-hits">
+        <slot name="map">
             <div class="google-map" id="mapGOOGLE"></div>
         </slot>
         <slot name="hits" v-bind:hits="hits">
@@ -24,10 +24,6 @@
         extends : Hits,
 
         props : {
-            displayMap : {
-                type : Boolean,
-                default : false,
-            },
             mapKey : {
                 type : String,
                 default : ''
@@ -82,7 +78,6 @@
             });
         },
         mounted: function () {
-            if(this.displayMap){
                 const options = {
                     key : this.mapKey,
                 }
@@ -120,8 +115,6 @@
                     });
 
                 });
-            }
-
         }
     };
 </script>

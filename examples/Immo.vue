@@ -67,7 +67,7 @@
                                         <search-button></search-button>
                                         <reset-button></reset-button>
                                     </div>
-                                    <map-hits  :displayMap="true" :mapKey="'AIzaSyAp_EihOav2B7_oaZ1DGuo9CrU6ZcuQKqY'">
+                                    <map-hits :mapKey="'AIzaSyAp_EihOav2B7_oaZ1DGuo9CrU6ZcuQKqY'">
                                         <template slot="hits" slot-scope="{ hits }">
                                             <div class="is-score is-hits">
                                                 <strong v-if="hits.score === 0">No result found</strong>
