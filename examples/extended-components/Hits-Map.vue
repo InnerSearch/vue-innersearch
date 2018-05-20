@@ -36,20 +36,9 @@
 
         data : function() {
             return {
-                CID : undefined,
-                mapName : "mapGOOGLE",
                 map : undefined,
                 markers : [],
                 markerBounds : undefined
-            }
-        },
-
-        computed : {
-            hits : function() {
-                return {
-                    items : this.items,
-                    score : this.score
-                };
             }
         },
 
@@ -63,10 +52,6 @@
         },
 
         methods : {
-            emptyHits : function() {
-                this.clearItems();
-                this.setScore(undefined);
-            },
             addMarker : function (lat,lon,contentString) {
                 if(lat !=="0" && lon !=="0"){
                     this.bus.$emit('addMarker',parseFloat(lat),parseFloat(lon),contentString);
