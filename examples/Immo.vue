@@ -10,6 +10,7 @@
 
     import Vue from 'vue';
     import InnerSearch from "../src/innerSearch.js";
+    import MapHits from "./extended-components/Hits-Map";
     import '../src/style.css';
     
     
@@ -19,6 +20,9 @@
     window.addEventListener('load', function () {
         new Vue({
             el: '#defaultForm',
+            components : {
+                'map-hits' : MapHits
+            },
 
             created : function () {
                 // ES server configuration
@@ -47,15 +51,7 @@
                                     </select>
                                 </template>
                             </refinement-list-filter>
-                            <refinement-list-filter :field="'VILLE.keyword'" :title="'Ville : '" :search="true" orderKey="_count" orderDirection="desc">
-                                <template slot="label" slot-scope="{ displayCount,clickOnLabel,clickOnItem,items,checkedItems }">
-                                    <select name="" id="test" v-model="checkedItems"  @change="clickOnItem(checkedItems)">
-                                        <option selected="selected"></option>
-                                        <option v-for="(item, index) in items" :value="item.key">
-                                                <label v-if="displayCount" :for="item.key" v-on:click='clickOnLabel(item.key)'>{{ item.key }} ( {{ item.doc_count }} )</label>
-                                        </option>
-                                    </select>
-                                </template>
+                            <refinement-list-filter :field="'VILLE.keyword'" :title="'Ville : '" :size="30" :search="true" orderKey="_count" orderDirection="desc">
                             </refinement-list-filter>
                             <refinement-list-filter :field="'CODE_POSTAL'" :size="10" :title="'Code postal : '"  orderKey="_count" orderDirection="desc" operator="OR"></refinement-list-filter>
                         </div>
@@ -71,7 +67,7 @@
                                         <search-button></search-button>
                                         <reset-button></reset-button>
                                     </div>
-                                    <hits  :displayMap="true" :mapKey="'AIzaSyAp_EihOav2B7_oaZ1DGuo9CrU6ZcuQKqY'">
+                                    <map-hits  :displayMap="true" :mapKey="'AIzaSyAp_EihOav2B7_oaZ1DGuo9CrU6ZcuQKqY'">
                                         <template slot="hits" slot-scope="{ hits }">
                                             <div class="is-score is-hits">
                                                 <strong v-if="hits.score === 0">No result found</strong>
@@ -87,7 +83,7 @@
                                                 </div>
                                             </div>
                                         </template>
-                                    </hits>
+                                    </map-hits>
                                     
                                     <paginate :previousText="'&#x2B9C; Previous page'" :nextText="'Next page &#x2B9E;'" :size="100"></paginate>
                                 </div>

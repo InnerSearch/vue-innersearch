@@ -1,4 +1,5 @@
 import Generics from './lib/Generics';
+import { Component }  from './lib/Enums.js';
 import Searchbox from './components/SearchBox';
 import SearchDatalist from './components/SearchDatalist';
 import RefinementListFilter from './components/RefinementListFilter';
@@ -47,5 +48,6 @@ export {
     TagFilter,
     Hits,
     NumericListFilter,
-    Generics
+    Generics,
+    Component
 };
