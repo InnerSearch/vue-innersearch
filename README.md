@@ -16,7 +16,7 @@ InnerSearch is a suite of UI components like SearchBox, RefinementListFilter, Pa
 
 The aim is to rapidly create beautiful specified search interfaces using declarative components without being an ElasticSearch and Vue.js expert.
 
-Thanks too component props and slot features from Vue.js, the components are easily customizable
+Thanks to component props and slot features from Vue.js, the components are easily customizable
 
 An UI example buit with InnerSearch : 
 [![Exemple UI](https://raw.githubusercontent.com/InnerSearch/vue-innersearch/master/docs/images/exemple-ui.png)]()
