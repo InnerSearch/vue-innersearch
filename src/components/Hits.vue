@@ -16,17 +16,14 @@
 <script>
     import generics from './../lib/Generics';
     import { Component } from '../lib/Enums.js';
-
     export default {
         name : "hits",
         mixins : [generics],
-
         data : function() {
             return {
                 CID : undefined
             }
         },
-
         computed : {
             hits : function() {
                 return {
@@ -35,18 +32,15 @@
                 };
             }
         },
-
         methods : {
             emptyHits : function() {
                 this.clearItems();
                 this.setScore(undefined);
             }
         },
-
         created : function() {
             // Interactive component declaration
             this.CID = this.addComponent(Component.HITS, this);
-
             this.bus.$on('emptyHits', () => {
                 this.emptyHits();
             });
