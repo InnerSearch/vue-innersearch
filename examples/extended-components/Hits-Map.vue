@@ -42,7 +42,10 @@
             hits : function () {
                 this.clearMarkers();
                 for( var i = 0; i < this.hits.items.length; i++ ){
-                    this.addMarker(this.hits.items[i]._source.LATITUDE,this.hits.items[i]._source.LONGITUDE,this.hits.items[i]._source.NOM);
+                    let lat = this.hits.items[i]._source.Coord[1];
+                    let lon = this.hits.items[i]._source.Coord[0];
+                    let name = this.hits.items[i]._source.Dba;
+                    this.addMarker(lat,lon,name);
                 }
             }
         },
