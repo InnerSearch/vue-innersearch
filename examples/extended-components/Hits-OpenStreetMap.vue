@@ -1,8 +1,8 @@
 <template>
     <section class="is-component is-hits">
-        <h3>Google Maps</h3>
+        <h3>Open Street Map </h3>
         <slot name="map">
-            <div class="google-map" id="mapGOOGLE"></div>
+            <div class="google-map" id="openStreetMap"></div>
         </slot>
         <slot name="hits" v-bind:hits="hits">
             <div class="is-score is-hits">
@@ -16,16 +16,18 @@
         </slot>
     </section>
 </template>
+
 <script>
     import { Hits,Component }  from "../../src/innerSearch.js";
     import loadGoogleMapsApi  from 'load-google-maps-api';
+    import * as L from 'leaflet' 
 
     export default {
-        name : "map-hits",
+        name : "openstreetmap-hits",
         extends : Hits,
 
         props : {
-            mapKey : {
+            leaftletToken : {
                 type : String,
                 default : ''
             }
@@ -54,16 +56,15 @@
         methods : {
             addMarker : function (lat,lon,contentString) {
                 if(lat !=="0" && lon !=="0"){
-                    this.bus.$emit('addMarker',parseFloat(lat),parseFloat(lon),contentString);
+                    this.bus.$emit('addMarkerLeaflet',parseFloat(lat),parseFloat(lon),contentString);
                 }
             },
-            // Removes the markers from the map
+            // Removes the markers from the map, but keeps them in the array.
             clearMarkers : function () {
                 for (var i = 0; i < this.markers.length; i++) {
-                    this.markers[i].setMap(null);
+                    this.map.removeLayer(this.markers[i]);
                 }
                 this.markers = [];
-                this.bus.$emit('resetMarkerBounds');
             },
         },
 
@@ -78,48 +79,34 @@
             });
         },
         mounted: function () {
-                const options = {
-                    key : this.mapKey,
-                }
-                loadGoogleMapsApi(options).then((google) => {
-                    this.map = new google.Map(document.querySelector('#mapGOOGLE'), {
-                    center: {
-                        lat: 40.7484405,
-                        lng: -73.9944191
-                    },
-                    zoom: 12
-                    });
 
-                    this.markerBounds = new google.LatLngBounds();
+                this.map = L.map('openStreetMap').setView([40.7484405, -73.9944191], 12);
 
-                    this.bus.$on('resetMarkerBounds' ,() => {
-                        this.markerBounds = new google.LatLngBounds();
-                    });
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 12,
+                    id: 'mapbox.streets',
+                    accessToken: this.leaftletToken
+                }).addTo(this.map); 
 
+                this.bus.$on('addMarkerLeaflet', (lat,lon,contentString) => {
 
-                    this.bus.$on('addMarker', (lat,lon,contentString) => {
-                        var position = new google.LatLng(lat,lon);
-                        var marker = new google.Marker({
-                            position: position,
-                            map: this.map
-                        });
-                        this.markers.push(marker);
-                        var infowindow = new google.InfoWindow({
-                            content: contentString
-                        });
-                        marker.addListener('click', function() {
-                            infowindow.open(this.map, marker);
-                        });
-                        this.markerBounds.extend(position);
-                        this.map.fitBounds(this.markerBounds);
-                    });
+                    var position = L.latLng(lat,lon);
+                    var marker = L.marker(position,{
+                        title : contentString, 
+                    }).addTo(this.map);
 
+                    this.markers.push(marker);
+
+                    var markerGroup = new L.featureGroup(this.markers);
+                    this.map.fitBounds(markerGroup.getBounds());
                 });
         }
     };
 </script>
 
 <style>
+@import url("https://unpkg.com/leaflet@1.3.4/dist/leaflet.css");
 .google-map {
     width: 800px;
     height: 600px;
