@@ -9,6 +9,8 @@ import ResetButton from './components/ResetButton';
 import TagFilter from './components/TagFilter';
 import Hits from './components/Hits';
 import NumericListFilter from "./components/NumericListFilter"
+import ElasticModule from './lib/store/elastic'
+import HitsModule from './lib/store/hits'
 
 const InnerSearch = {
     Searchbox,
@@ -21,7 +23,19 @@ const InnerSearch = {
     Paginate,
     NumericListFilter,
 
-    install(Vue, options) {
+    install(Vue, { store }) {
+
+        if (!store) {
+            throw new Error("Please provide vuex store.");
+       }
+
+       store.registerModule('Elasticsearch', ElasticModule);
+       store.registerModule('Hits', HitsModule);
+
+       // added vuex store as a property of Vue instance
+       Vue.prototype.$store = store;
+
+
         Vue.component('searchbox', Searchbox);
         Vue.component('search-datalist', SearchDatalist);
         Vue.component('refinement-list-filter', RefinementListFilter);
@@ -30,7 +44,7 @@ const InnerSearch = {
         Vue.component('reset-button', ResetButton);
         Vue.component('tag-filter', TagFilter);
         Vue.component('hits', Hits);
-        Vue.component("numeric-list-filter", NumericListFilter);
+        Vue.component("numeric-list-filter", NumericListFilter);          
 
         Vue.mixin(Generics);
     }

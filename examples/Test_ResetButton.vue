@@ -3,23 +3,27 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import InnerSearch from "../src/innerSearch.js";
-  import '../src/style.css';
+    import Vue from 'vue';
+    import Vuex from 'vuex';
+    import InnerSearch from "../src/innerSearch.js";
+    import '../src/style.css';
 
-  Vue.use(InnerSearch);
+    Vue.use(Vuex);
 
-  window.addEventListener('load', function () {
-    new Vue({
-      el: '#defaultForm',
+    const store = new Vuex.Store();
+    Vue.use(InnerSearch, { store : store});
 
-      created : function () {
-        // ES server configuration
-        this.setHost('http://es.yinyan.fr');
-        this.setIndex('bank');
-        this.setType('account');
-      },
 
+    window.addEventListener('load', function () {
+        new Vue({
+            el: '#defaultForm',
+
+            created : function () {
+            // ES server configuration
+            this.setHost('http://es.yinyan.fr');
+            this.setIndex('bank');
+            this.setType('account');
+            },
             template : `
                 <section>
                     <h1 class='is-title'>innerSearch.js</h1>
@@ -131,7 +135,7 @@
 
                                 <paginate :previousText="'&#x2B9C; Previous page'" :nextText="'Next page &#x2B9E;'" :size="10"></paginate>
                             </div>
-                         </div>
+                            </div>
                     </div>
                 </section>
             `

@@ -9,20 +9,36 @@
     */
 
     import Vue from 'vue';
+    import Vuex from 'vuex';
     import InnerSearch from "../src/innerSearch.js";
     import '../src/style.css';
 
-    Vue.use(InnerSearch);
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store();
+    Vue.use(InnerSearch, { store : store});
+    console.log(new Vue);
+    
 
     window.addEventListener('load', function () {
         new Vue({
             el: '#defaultForm',
 
             created : function () {
+                console.log(this);
                 // ES server configuration
                 this.setHost('http://es.yinyan.fr');
                 this.setIndex('bank');
                 this.setType('account');
+
+                // adding default search
+                /*
+                this.addInstruction({
+                    fun : 'filter',
+                    args : ['term','age','28']
+                });
+                */
+                
             },
 
             template : `

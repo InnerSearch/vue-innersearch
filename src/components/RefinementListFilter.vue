@@ -30,7 +30,6 @@
 
 <script>
     import generics from './../lib/Generics';
-    import Store from './../lib/Store';
     import { Component } from '../lib/Enums.js';
 
 

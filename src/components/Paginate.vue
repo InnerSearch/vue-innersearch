@@ -44,7 +44,6 @@
 </template>
 
 <script>
-    import Store from './../lib/Store'
 	import generics from './../lib/Generics'
     import Bodybuilder from 'bodybuilder'
     import { Component } from './../lib/Enums.js';

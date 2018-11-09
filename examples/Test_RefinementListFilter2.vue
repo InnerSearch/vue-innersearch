@@ -5,10 +5,15 @@
 
 <script>
     import Vue from 'vue';
+    import Vuex from 'vuex';
     import InnerSearch from "../src/innerSearch.js";
     import '../src/style.css';
 
-    Vue.use(InnerSearch);
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store();
+    Vue.use(InnerSearch, { store : store});
+
 
     window.addEventListener('load', function () {
         new Vue({

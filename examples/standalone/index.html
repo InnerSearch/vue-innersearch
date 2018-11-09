@@ -21,8 +21,10 @@
   <script src="vue-innersearch.min.js"></script>
   
   <script>
-    //Vue.use(Vuex);
-    Vue.use(innerSearch.default);
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store();
+    Vue.use(innerSearch.default, { store : store});
     
     window.addEventListener('load', function () {
         new Vue({

@@ -1,8 +1,5 @@
-import Vue from 'vue';
 import elasticsearch from 'elasticsearch';
 import Bodybuilder from 'bodybuilder';
-import Store from './Store';
-import { Component } from './Enums.js';
 
 export default {
 	computed : {
@@ -17,43 +14,43 @@ export default {
 		},
 
 		// Request header (index, type, client)
-		header : () => {
-			return Store.getters["Elasticsearch/getHeader"];
+		header : function () {
+			return this.$store.getters["Elasticsearch/getHeader"];
 		},
 
 		// Request query (generated bodybuilder json request)
-		body : () => {
-			return Store.getters["Elasticsearch/getBody"];
+		body : function () {
+			return this.$store.getters["Elasticsearch/getBody"];
 		},
 
 		// Instructions (contains bodybuilder functions)
-		instructions : () => {
-			return Store.getters["Elasticsearch/getInstructions"];
+		instructions : function () {
+			return this.$store.getters["Elasticsearch/getInstructions"];
 		},
 
 		// Aggregations (contains all components aggregations objects)
-		aggregations : () => {
-			return Store.getters["Elasticsearch/getAggregations"];
+		aggregations : function () {
+			return this.$store.getters["Elasticsearch/getAggregations"];
 		},
 
 		// Communication bus
-		bus : () => {
-			return Store.getters["Elasticsearch/getBus"];
+		bus : function () {
+			return this.$store.getters["Elasticsearch/getBus"];
 		},
 
 		// Interactive components (for $emit events)
-		components : () => {
-			return Store.getters["Elasticsearch/getComponents"]
+		components : function () {
+			return this.$store.getters["Elasticsearch/getComponents"]
 		},
 
 		// Output items
-		items : () => {
-			return Store.getters["Hits/getItems"];
+		items : function () {
+			return this.$store.getters["Hits/getItems"];
 		},
 
 		// Items count
-		score : () => {
-			return Store.getters["Hits/getScore"];
+		score : function () {
+			return this.$store.getters["Hits/getScore"];
 		},
 	},
 
@@ -61,45 +58,45 @@ export default {
 		/*
 			Store Elasticsearch Header Setters
 		*/
-		setHost : (host) => {
-			Store.commit("Elasticsearch/setHost", new elasticsearch.Client({ host }));
+		setHost : function (host){
+			this.$store.commit("Elasticsearch/setHost", new elasticsearch.Client({ host }));
 		},
-		setIndex : (index) => {
-			Store.commit("Elasticsearch/setIndex", index);
+		setIndex : function(index){
+			this.$store.commit("Elasticsearch/setIndex", index);
 		},
-		setType : (type) => {
-			Store.commit("Elasticsearch/setType", type);
+		setType : function(type){
+			this.$store.commit("Elasticsearch/setType", type);
 		},
 
 
 		/*
 			Store Elasticsearch Body Setter
 		*/
-		setBody : (body) => {
-			Store.commit("Elasticsearch/setBody", body);
+		setBody : function (body) {
+			this.$store.commit("Elasticsearch/setBody", body);
 		},
 
 
 		/*
 			Store Elasticsearch Instructions Add
 		*/
-		addInstruction : (instruction) => {
-			Store.commit("Elasticsearch/addInstruction", instruction);
+		addInstruction : function (instruction) {
+			this.$store.commit("Elasticsearch/addInstruction", instruction);
 		},
 
 		/*
 			Store Elasticsearch Instructions Remove
 		*/
-		removeInstruction : (instruction) => {
-			Store.commit("Elasticsearch/removeInstruction", instruction);
+		removeInstruction : function (instruction) {
+			this.$store.commit("Elasticsearch/removeInstruction", instruction);
 		},
 
 
 		/*
 			Store Elasticsearch Aggregations Settings
 		*/
-		setAggregations : (name, value, isDynamic, orderKey, orderDirection) => {
-			Store.commit("Elasticsearch/setAggregations", { name, value, isDynamic, orderKey, orderDirection });
+		setAggregations : function (name, value, isDynamic, orderKey, orderDirection) {
+			this.$store.commit("Elasticsearch/setAggregations", { name, value, isDynamic, orderKey, orderDirection });
 		},
 
 
@@ -107,8 +104,8 @@ export default {
 			Add a debounce event to ES store
 			That permits to clear (reset) all listed hanged debounces when an user is triggered fetch()
 		*/
-		addDebounce : (component, debounce) => {
-			Store.commit("Elasticsearch/addDebounce", { component, debounce });
+		addDebounce : function (component, debounce) {
+			this.$store.commit("Elasticsearch/addDebounce", { component, debounce });
 		},
 
 
@@ -116,8 +113,8 @@ export default {
 			Reset all the listed debounces
 			Called by fetch()
 		*/
-		resetDebounce : (component = null) => {
-			Store.commit("Elasticsearch/resetDebounce", component);
+		resetDebounce : function (component = null) {
+			this.$store.commit("Elasticsearch/resetDebounce", component);
 		},
 
 
@@ -126,10 +123,10 @@ export default {
 			Returns the component ID (CID)
 		*/
 		addComponent : function(type, self) {
-			let _CID = Store.getters["Elasticsearch/getCid"],
+			let _CID = this.$store.getters["Elasticsearch/getCid"],
 				_name = type + '_' + _CID;
 
-			Store.commit('Elasticsearch/addComponent', { type, self });
+			this.$store.commit('Elasticsearch/addComponent', { type, self });
 			
 			return _name;
 		},
@@ -150,24 +147,24 @@ export default {
 		/*
 			Add item into the Store
 		*/
-		addItem : (item) => {
-			Store.commit("Hits/addItem", item);
+		addItem : function(item) {
+			this.$store.commit("Hits/addItem", item);
 		},
 
 
 		/*
 			Empty the store items list
 		*/
-		clearItems : () => {
-			Store.commit("Hits/clearItems");
+		clearItems : function () {
+			this.$store.commit("Hits/clearItems");
 		},
 
 
 		/*
 			Set the score of items
 		*/
-		setScore : (score) => {
-			Store.commit("Hits/setScore", score);
+		setScore : function(score) {
+			this.$store.commit("Hits/setScore", score);
 		},
 
 

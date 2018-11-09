@@ -46,12 +46,16 @@
 <script>
 
     import Vue from 'vue';
+    import Vuex from 'vuex';
     import InnerSearch from "../src/innerSearch.js";
     import MapHits from "./extended-components/Hits-Map";
     import OpenStreetMapHits from "./extended-components/Hits-OpenStreetMap";
     import '../src/style.css';
 
-    Vue.use(InnerSearch);
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store();
+    Vue.use(InnerSearch, { store : store});
 
     export default {
         
