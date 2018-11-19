@@ -27,4 +27,8 @@ Examples :
 </hits>
 ```
 
+Extended Components : 
+
+- [HitsMap](../examples/hitsMap.md)
+
 

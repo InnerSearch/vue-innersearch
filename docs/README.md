@@ -59,10 +59,17 @@ This should open a new tab in your browser at [http://localhost:8080](http://loc
 
 You need to tell Vue to use the Vue InnerSearch plugin so that all components are available
 
+Innersearch is depending on vuex so you need to create a vuex store and provide it at this installation
+
 ```javascript
 import InnerSearch from 'vue-innersearch';
+import Vuex from 'vuex';
 
-Vue.use(InnerSearch);
+Vue.use(Vuex);
+
+const store = new Vuex.Store();
+
+Vue.use(InnerSearch, { store : store});
 ```
 
 If you only want specific components like SearchBox and Hits components, you can do the following.

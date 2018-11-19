@@ -7,3 +7,5 @@
     - [Paginate](components/paginate.md)
     - [SearchDataList](components/searchDataList.md)
     - [NumericListFilter](components/numericListFilter.md)
+- [Extended Components]()
+    - [HitsMap](examples/hitsMap.md)
