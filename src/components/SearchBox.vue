@@ -95,7 +95,7 @@
                         fun : 'filter',
                         args : ['bool', arg => {
                             this.mutableField.forEach(attr => {
-                                arg[this.fun]('prefix', attr, value);
+                                arg[this.fun]('query_string', attr, value);
                             });
                             return arg;
                         }]

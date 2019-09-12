@@ -274,7 +274,7 @@ export default {
 			// Feed the request
 			let _body = Bodybuilder().size(size);
 			fields.forEach(field => {
-				_body[fun]('prefix', field, value);
+				_body[fun]('query_string', field, value);
 			});
 
 			// Don't fetch items already selected
